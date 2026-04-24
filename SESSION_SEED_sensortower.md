@@ -95,7 +95,7 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 ### Dashboard (`app.py`)
 - Sidebar: units (°C/°F), time-range presets (24h / 3d / 7d / 30d / All / Custom)
 - Latest-reading freshness indicator
-- **Overview** — custom HTML metric cards (small font to fit 9 cards), vertical-gradient info box, last-24h chart with NEWA overlay
+- **Overview** — custom HTML metric cards (small font to fit 9 cards) showing the *latest* reading regardless of window; vertical-gradient info box; chart that follows the sidebar time range, with a header that echoes the active preset ("Tower — last 24 h", etc.) and a NEWA overlay
 - **Time series** — full timeseries + delta-from-ground, both with NEWA overlay
 - **Inversions** — gradient chart with freezing-inversion shading (light blue rectangles where gradient > 0.3 AND ground < freeze line), heatmap, peak-events table
 - **Threshold exposure** — MSU bud-stage selector (default Full bloom), summary table, daily grouped bars (0–720 min fixed axis + hours on right side)
@@ -141,6 +141,7 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 ## Non-obvious gotchas
 
 - **Streamlit ≠ browser reload.** After a code push, Streamlit Cloud needs an explicit *app reboot* (Manage app → ⋯ → Reboot) to pick up new code. A browser reload only re-renders the current container.
+- **Charts must respect the sidebar time range.** Earlier bug: the Overview chart was `.tail(24*12)` which ignored the preset selector. Any new chart should slice the already-filtered frame (`wide_disp` for tower T, `newa_series(var, start_ts, end_ts)` for NEWA) — never re-window with `.tail()` or `.head()` unless there's a specific "latest N" reason.
 - **Private repo breaks Streamlit free tier.** Streamlit Community Cloud only has OAuth access to public repos by default; installing the "Deploy to Streamlit" GitHub App for a private repo was brittle. Currently the repo is public — keep it that way unless you set up the GitHub App properly.
 - **Line endings matter.** GitHub Actions runners produce LF; Windows git produces CRLF. `.gitattributes` forces LF on the data CSVs and source files to prevent every CI run from rewriting the whole file with cosmetic diffs.
 - **NEWA sid has a space in it.** `"ny_geng nwon"` — the space is significant. URL-encode it correctly if you ever move to form-encoded POST.
