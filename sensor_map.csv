@@ -1,0 +1,10 @@
+sensor_sn,height_in,installed_at_local,notes
+22411529,2,2026-04-19T16:00:00,Ground / grass layer
+22411528,22,2026-04-19T16:00:00,Lower trunk / mulch zone
+22411526,42,2026-04-19T16:00:00,Lower canopy
+22411189,62,2026-04-19T16:00:00,Mid-canopy
+22411190,82,2026-04-19T16:00:00,Mid-to-upper canopy
+22411530,102,2026-04-19T16:00:00,Upper canopy
+22411191,122,2026-04-19T16:00:00,Top of canopy / canopy edge
+22411525,142,2026-04-19T16:00:00,Above canopy
+22411527,162,2026-04-19T16:00:00,Well above canopy

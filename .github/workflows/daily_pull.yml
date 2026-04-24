@@ -1,0 +1,51 @@
+name: Daily LI-COR Cloud pull
+
+on:
+  schedule:
+    # 10:00 UTC ≈ 06:00 EDT / 05:00 EST — runs after previous UTC day closes
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+    inputs:
+      pull_date:
+        description: "Date to pull (YYYY-MM-DD UTC). Leave blank for yesterday."
+        required: false
+        default: ""
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Pull yesterday's data
+        env:
+          LICOR_TOKEN: ${{ secrets.LICOR_TOKEN }}
+          LICOR_DEVICE_SN: ${{ vars.LICOR_DEVICE_SN || '22411541' }}
+          PULL_DATE: ${{ github.event.inputs.pull_date }}
+        run: python scripts/pull_daily.py
+
+      - name: Commit new data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/licor_*.csv
+          if git diff --cached --quiet; then
+            echo "No new data to commit."
+          else
+            git commit -m "data: daily LI-COR pull $(date -u +%Y-%m-%d)"
+            git push
+          fi
