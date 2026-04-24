@@ -431,31 +431,72 @@ elif page == "Threshold exposure":
         )
 
         dt = wide_c.index.to_series().diff().dt.total_seconds().fillna(300)
-        rows = []
-        for h in height_cols:
-            col = wide_c[h]
-            below_10 = (col <= th_c["kill10"]) * dt
-            below_90 = (col <= th_c["kill90"]) * dt
-            rows.append(
-                {
+
+        # Group samples by "frost night" (noon-to-noon) so an event that
+        # crosses midnight stays as one event rather than splitting into two
+        # calendar-day buckets.
+        nights = (wide_c.index - pd.Timedelta(hours=12)).normalize()
+
+        # Build a per-event table for each night with any 10% kill exposure.
+        event_tables: list[tuple[pd.Timestamp, pd.DataFrame]] = []
+        for night_start, night_idx in pd.Series(nights, index=wide_c.index).groupby(nights):
+            sub = wide_c.loc[night_idx.index]
+            sub_dt = dt.loc[night_idx.index]
+            rows_e = []
+            any_exposure = False
+            for h in height_cols:
+                col = sub[h]
+                below_10 = ((col <= th_c["kill10"]) * sub_dt).sum()
+                below_90 = ((col <= th_c["kill90"]) * sub_dt).sum()
+                if below_10 > 0:
+                    any_exposure = True
+                rows_e.append({
                     "Height": f"{h} in",
                     f"Min temp ({unit_label})": f"{(c_to_f(col.min()) if is_f else col.min()):.2f}",
-                    "Min in °C": f"{col.min():.2f}",
-                    "Minutes ≤ 10% kill": int(below_10.sum() // 60),
-                    "Minutes ≤ 90% kill": int(below_90.sum() // 60),
-                }
-            )
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+                    "Minutes ≤ 10% kill": int(below_10 // 60),
+                    "Minutes ≤ 90% kill": int(below_90 // 60),
+                })
+            if any_exposure:
+                event_tables.append((night_start, pd.DataFrame(rows_e)))
 
-        st.subheader("Minutes per day below 10% kill threshold")
-        # Attribute each interval to the day it started in (local time)
-        days = wide_c.index.normalize()
+        if not event_tables:
+            st.info(
+                f"No exposure to the 10% kill threshold for **{stage}** in the "
+                f"selected window. Minimum temperature at 2 in was "
+                f"{(c_to_f(wide_c[2].min()) if 2 in wide_c.columns and is_f else wide_c[2].min() if 2 in wide_c.columns else float('nan')):.2f} {unit_label}."
+            )
+        else:
+            st.caption(
+                f"**{len(event_tables)} frost night{'' if len(event_tables)==1 else 's'}** "
+                "with exposure below the 10% kill threshold in the selected window. "
+                "Each night runs noon-to-noon so events that cross midnight stay in one bucket."
+            )
+            # Two-column grid: pair events side-by-side to save vertical space.
+            for i in range(0, len(event_tables), 2):
+                cols = st.columns(2)
+                for j, col in enumerate(cols):
+                    if i + j >= len(event_tables):
+                        continue
+                    night_start, tbl = event_tables[i + j]
+                    next_morning = (night_start + pd.Timedelta(days=1)).date()
+                    with col:
+                        st.markdown(
+                            f"**Night of {night_start.date()}** "
+                            f"*({night_start.date()} PM → {next_morning} AM)*"
+                        )
+                        st.dataframe(tbl, use_container_width=True, hide_index=True)
+
+        st.subheader("Minutes per frost night below 10% kill threshold")
+        # Group by "frost night" (noon-to-noon) so an event that crosses midnight
+        # appears as ONE bar. Night of YYYY-MM-DD = that afternoon through next
+        # morning. Shift back 12 h then floor to day.
+        nights = (wide_c.index - pd.Timedelta(hours=12)).normalize()
         per_day = {}
         for i, h in enumerate(height_cols):
             mins = ((wide_c[h] <= th_c["kill10"]) * dt / 60)
-            per_day[h] = mins.groupby(days).sum()
+            per_day[h] = mins.groupby(nights).sum()
         per_day_df = pd.DataFrame(per_day)
-        per_day_df = per_day_df.loc[(per_day_df.sum(axis=1) > 0)]  # drop zero-exposure days
+        per_day_df = per_day_df.loc[(per_day_df.sum(axis=1) > 0)]  # drop zero-exposure nights
 
         if per_day_df.empty:
             st.info("No exposure to 10% kill threshold in the selected window.")
@@ -473,7 +514,7 @@ elif page == "Threshold exposure":
             fig.update_layout(
                 barmode="group",
                 height=400, margin=dict(l=30, r=10, t=30, b=50),
-                xaxis_title="Date (local)",
+                xaxis_title="Frost night (noon-to-noon, labeled by start date)",
                 yaxis=dict(
                     title="Minutes ≤ 10% kill",
                     range=[0, 720],           # fixed 0–12 hours across stages
