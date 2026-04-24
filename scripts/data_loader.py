@@ -150,6 +150,42 @@ def load_all(
     return combined
 
 
+def load_newa(data_dir: str | Path = "data") -> pd.DataFrame:
+    """
+    Load all NEWA daily CSVs from data/newa/ into a long DataFrame.
+
+    Returns columns: datetime_local, variable, value, units, source.
+    Empty DataFrame with the same schema if no files exist.
+    """
+    data_dir = Path(data_dir) / "newa"
+    cols = ["datetime_local", "variable", "value", "units", "source"]
+    if not data_dir.exists():
+        return pd.DataFrame(columns=cols)
+
+    files = sorted(data_dir.glob("newa_*.csv"))
+    if not files:
+        return pd.DataFrame(columns=cols)
+
+    frames = []
+    for f in files:
+        df = pd.read_csv(f)
+        df["datetime_local"] = pd.to_datetime(df["timestamp_local"], utc=False)
+        # NEWA strings carry the -04:00/-05:00 offset; normalize to LOCAL_TZ
+        if df["datetime_local"].dt.tz is None:
+            df["datetime_local"] = df["datetime_local"].dt.tz_localize(LOCAL_TZ)
+        else:
+            df["datetime_local"] = df["datetime_local"].dt.tz_convert(LOCAL_TZ)
+        df["source"] = f"newa:{f.name}"
+        frames.append(df[cols])
+    out = pd.concat(frames, ignore_index=True)
+    out = (
+        out.sort_values(["datetime_local", "variable"])
+        .drop_duplicates(subset=["datetime_local", "variable"], keep="last")
+        .reset_index(drop=True)
+    )
+    return out
+
+
 def wide_temperature(long_df: pd.DataFrame) -> pd.DataFrame:
     """Pivot the long DataFrame to wide temperature format.
 

@@ -31,21 +31,26 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Pull yesterday's data
+      - name: Pull LI-COR tower data
         env:
           LICOR_TOKEN: ${{ secrets.LICOR_TOKEN }}
           LICOR_DEVICE_SN: ${{ vars.LICOR_DEVICE_SN || '22411541' }}
           PULL_DATE: ${{ github.event.inputs.pull_date }}
         run: python scripts/pull_daily.py
 
+      - name: Pull NEWA Geneva (AgriTech Gates) data
+        env:
+          PULL_DATE: ${{ github.event.inputs.pull_date }}
+        run: python scripts/pull_newa_daily.py
+
       - name: Commit new data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/licor_*.csv
+          git add data/licor_*.csv data/newa/*.csv
           if git diff --cached --quiet; then
             echo "No new data to commit."
           else
-            git commit -m "data: daily LI-COR pull $(date -u +%Y-%m-%d)"
+            git commit -m "data: daily LI-COR + NEWA pull $(date -u +%Y-%m-%d)"
             git push
           fi

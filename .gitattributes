@@ -1,6 +1,7 @@
 # Force LF for data CSVs so Windows/Linux runners produce identical blobs
 # (avoids CRLF/LF-only diffs on every GitHub Actions pull)
 data/licor_*.csv text eol=lf
+data/newa/*.csv  text eol=lf
 
 # Source files: LF in the repo, auto-convert on Windows checkout
 *.py        text eol=lf

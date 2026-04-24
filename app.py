@@ -22,6 +22,7 @@ from scripts.data_loader import (
     THRESHOLDS,
     LOCAL_TZ,
     load_all,
+    load_newa,
     wide_temperature,
 )
 
@@ -39,6 +40,11 @@ st.set_page_config(
 @st.cache_data(ttl=600)
 def cached_load_all() -> pd.DataFrame:
     return load_all(DATA_DIR, SENSOR_MAP_PATH)
+
+
+@st.cache_data(ttl=600)
+def cached_load_newa() -> pd.DataFrame:
+    return load_newa(DATA_DIR)
 
 
 def c_to_f(c: float | pd.Series) -> float | pd.Series:
@@ -96,7 +102,14 @@ st.sidebar.caption(
 
 page = st.sidebar.radio(
     "View",
-    ["Overview", "Time series", "Inversions", "Threshold exposure", "Humidity & dew point"],
+    [
+        "Overview",
+        "Time series",
+        "Inversions",
+        "Threshold exposure",
+        "Humidity & dew point",
+        "NEWA comparison",
+    ],
 )
 
 # ---------------------------- Temperature frames ----------------------------
@@ -457,6 +470,181 @@ elif page == "Humidity & dew point":
                 legend=dict(traceorder="reversed"),
             )
             show_chart(fig)
+
+
+elif page == "NEWA comparison":
+    st.header("Tower vs NEWA (Geneva AgriTech Gates)")
+    st.caption(
+        "Our tower at 5-min logging, LI-COR HOBO RX2100, versus the co-located "
+        "NEWA Cornell AgriTech Gates station at 1-hour cadence. NEWA sensors are "
+        "at ~1.5 m / 59 in standard height, closest to our **62 in** mid-canopy sensor."
+    )
+
+    newa_all = cached_load_newa()
+    if newa_all.empty:
+        st.warning(
+            "No NEWA data yet. The daily workflow pulls it on the same schedule as the tower data."
+        )
+    else:
+        newa_win = newa_all[
+            (newa_all["datetime_local"] >= start_ts)
+            & (newa_all["datetime_local"] < end_ts)
+        ].copy()
+        if newa_win.empty:
+            st.info("No NEWA data in the selected date range.")
+        else:
+            tower_height = st.selectbox(
+                "Tower height to compare",
+                height_cols,
+                index=height_cols.index(62) if 62 in height_cols else 0,
+            )
+            tower_series_c = (
+                wide_c[tower_height].resample("1h").mean()
+                if not wide_c.empty else pd.Series(dtype=float)
+            )
+            newa_temp = (
+                newa_win[newa_win["variable"] == "Temperature"]
+                .set_index("datetime_local")["value"]
+            )
+            newa_rh = (
+                newa_win[newa_win["variable"] == "RH"]
+                .set_index("datetime_local")["value"]
+            )
+            newa_dp = (
+                newa_win[newa_win["variable"] == "Dew Point"]
+                .set_index("datetime_local")["value"]
+            )
+
+            # Convert to display units
+            if is_f:
+                tower_disp = c_to_f(tower_series_c)
+                newa_temp_disp = c_to_f(newa_temp)
+                newa_dp_disp = c_to_f(newa_dp)
+            else:
+                tower_disp = tower_series_c
+                newa_temp_disp = newa_temp
+                newa_dp_disp = newa_dp
+
+            # --- Overlay chart ---
+            st.subheader(f"Temperature overlay — tower {tower_height} in vs NEWA")
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=tower_disp.index, y=tower_disp, mode="lines",
+                name=f"Tower {tower_height} in", line=dict(color="#1f77b4", width=2),
+            ))
+            fig.add_trace(go.Scatter(
+                x=newa_temp_disp.index, y=newa_temp_disp, mode="lines+markers",
+                name="NEWA (AgriTech Gates)", line=dict(color="#d62728", width=2, dash="dash"),
+                marker=dict(size=4),
+            ))
+            fig.add_hline(y=freeze_line, line_dash="dot", line_color="steelblue")
+            fig.update_layout(
+                height=420, margin=dict(l=30, r=10, t=30, b=30),
+                xaxis_title="Local time",
+                yaxis_title=f"Temperature ({unit_label})",
+            )
+            show_chart(fig)
+
+            # --- Agreement statistics ---
+            st.subheader("Agreement statistics (hourly)")
+            stats_rows = []
+            for h in height_cols:
+                tower_h = wide_c[h].resample("1h").mean() if h in wide_c.columns else pd.Series(dtype=float)
+                aligned = pd.concat(
+                    [tower_h.rename("tower"), newa_temp.rename("newa")], axis=1
+                ).dropna()
+                if aligned.empty:
+                    continue
+                diff = aligned["tower"] - aligned["newa"]
+                stats_rows.append({
+                    "Height": f"{h} in",
+                    "n hours": len(aligned),
+                    "Bias °C (tower − NEWA)": round(diff.mean(), 2),
+                    "RMSE °C": round((diff ** 2).mean() ** 0.5, 2),
+                    "Correlation": round(aligned.corr().iloc[0, 1], 4),
+                })
+            if stats_rows:
+                st.dataframe(pd.DataFrame(stats_rows), use_container_width=True, hide_index=True)
+                st.caption(
+                    "Positive bias = tower warmer than NEWA. Near-ground sensors (2–22 in) "
+                    "typically show larger bias during radiation frost because NEWA's 1.5 m "
+                    "sensor sits above the coldest near-surface layer."
+                )
+
+            # --- Scatter 1:1 ---
+            st.subheader(f"Scatter — tower {tower_height} in vs NEWA")
+            scatter = pd.concat(
+                [tower_series_c.rename("tower"), newa_temp.rename("newa")], axis=1
+            ).dropna()
+            if not scatter.empty:
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(
+                    x=scatter["newa"], y=scatter["tower"], mode="markers",
+                    marker=dict(size=6, color="#1f77b4", opacity=0.7),
+                    name="Hourly pairs",
+                ))
+                lo = min(scatter["newa"].min(), scatter["tower"].min()) - 1
+                hi = max(scatter["newa"].max(), scatter["tower"].max()) + 1
+                fig.add_trace(go.Scatter(
+                    x=[lo, hi], y=[lo, hi], mode="lines",
+                    line=dict(color="gray", dash="dash"), name="1:1",
+                ))
+                fig.update_layout(
+                    height=420, margin=dict(l=30, r=10, t=30, b=30),
+                    xaxis_title="NEWA temperature (°C)",
+                    yaxis_title=f"Tower {tower_height} in (°C)",
+                    xaxis=dict(range=[lo, hi]), yaxis=dict(range=[lo, hi]),
+                )
+                show_chart(fig)
+
+            # --- RH & dew point ---
+            st.subheader("Relative humidity & dew point")
+            cols = st.columns(2)
+            if not newa_rh.empty:
+                rh_fig = go.Figure()
+                rh_fig.add_trace(go.Scatter(
+                    x=newa_rh.index, y=newa_rh, mode="lines",
+                    name="NEWA RH", line=dict(color="#d62728"),
+                ))
+                # Tower RH at the selected height (if API pulls exist)
+                tower_rh = df_win[
+                    (df_win["measurement_type"] == "RH")
+                    & (df_win["height_in"] == tower_height)
+                ].set_index("datetime_local")["value"].resample("1h").mean()
+                if not tower_rh.empty:
+                    rh_fig.add_trace(go.Scatter(
+                        x=tower_rh.index, y=tower_rh, mode="lines",
+                        name=f"Tower {tower_height} in RH", line=dict(color="#1f77b4"),
+                    ))
+                rh_fig.update_layout(
+                    height=320, margin=dict(l=30, r=10, t=30, b=30),
+                    xaxis_title="Local time", yaxis_title="RH (%)",
+                )
+                cols[0].plotly_chart(rh_fig, use_container_width=True)
+
+            if not newa_dp.empty:
+                dp_fig = go.Figure()
+                dp_fig.add_trace(go.Scatter(
+                    x=newa_dp_disp.index, y=newa_dp_disp, mode="lines",
+                    name="NEWA Dew point", line=dict(color="#d62728"),
+                ))
+                tower_dp = df_win[
+                    (df_win["measurement_type"] == "Dew Point")
+                    & (df_win["height_in"] == tower_height)
+                ].set_index("datetime_local")["value"].resample("1h").mean()
+                if not tower_dp.empty:
+                    if is_f:
+                        tower_dp = c_to_f(tower_dp)
+                    dp_fig.add_trace(go.Scatter(
+                        x=tower_dp.index, y=tower_dp, mode="lines",
+                        name=f"Tower {tower_height} in DP", line=dict(color="#1f77b4"),
+                    ))
+                dp_fig.update_layout(
+                    height=320, margin=dict(l=30, r=10, t=30, b=30),
+                    xaxis_title="Local time", yaxis_title=f"Dew point ({unit_label})",
+                )
+                cols[1].plotly_chart(dp_fig, use_container_width=True)
+
 
 st.sidebar.markdown("---")
 st.sidebar.caption("Data refreshed daily via GitHub Actions. Last commit drives freshness.")
