@@ -71,6 +71,25 @@ if df.empty:
     st.error("No data available yet. Check that CSVs exist in `data/` and that the daily pull has run.")
     st.stop()
 
+newa_all = cached_load_newa()
+
+# Consistent NEWA styling wherever we overlay it on tower charts
+NEWA_COLOR = "#d62728"
+NEWA_DASH = "dash"
+NEWA_LABEL = "NEWA (AgriTech Gates)"
+
+
+def newa_series(variable: str, start_ts, end_ts) -> pd.Series:
+    """Return a NEWA series for the given variable within the window, in native °C / %."""
+    if newa_all.empty:
+        return pd.Series(dtype=float)
+    m = (
+        (newa_all["variable"] == variable)
+        & (newa_all["datetime_local"] >= start_ts)
+        & (newa_all["datetime_local"] < end_ts)
+    )
+    return newa_all.loc[m].set_index("datetime_local")["value"].sort_index()
+
 units = st.sidebar.radio("Units", ["°C", "°F"], horizontal=True)
 is_f = units == "°F"
 
@@ -182,6 +201,16 @@ if page == "Overview":
                     name=f"{h} in", line=dict(color=color),
                 )
             )
+        newa_t = newa_series("Temperature", recent.index.min(), end_ts)
+        if not newa_t.empty:
+            fig.add_trace(
+                go.Scatter(
+                    x=newa_t.index, y=(c_to_f(newa_t) if is_f else newa_t),
+                    mode="lines+markers", name=NEWA_LABEL,
+                    line=dict(color=NEWA_COLOR, width=2, dash=NEWA_DASH),
+                    marker=dict(size=4),
+                )
+            )
         fig.add_hline(y=freeze_line, line_dash="dash", line_color="steelblue",
                       annotation_text=f"Freeze ({freeze_line:g} {unit_label})")
         fig.add_hline(y=bloom_line, line_dash="dot", line_color="firebrick",
@@ -209,6 +238,16 @@ elif page == "Time series":
                     name=f"{h} in", line=dict(color=color),
                 )
             )
+        newa_t = newa_series("Temperature", start_ts, end_ts)
+        if not newa_t.empty:
+            fig.add_trace(
+                go.Scatter(
+                    x=newa_t.index, y=(c_to_f(newa_t) if is_f else newa_t),
+                    mode="lines+markers", name=NEWA_LABEL,
+                    line=dict(color=NEWA_COLOR, width=2, dash=NEWA_DASH),
+                    marker=dict(size=4),
+                )
+            )
         fig.add_hline(y=freeze_line, line_dash="dash", line_color="steelblue")
         fig.add_hline(y=bloom_line, line_dash="dot", line_color="firebrick")
         fig.update_layout(
@@ -230,6 +269,21 @@ elif page == "Time series":
                 go.Scatter(
                     x=delta.index, y=delta[h], mode="lines",
                     name=f"{h} in", line=dict(color=color),
+                )
+            )
+        # NEWA delta from tower 2in — shows how NEWA sits relative to the gradient
+        newa_t_c = newa_series("Temperature", start_ts, end_ts)
+        if not newa_t_c.empty and 2 in wide_c.columns:
+            # Align NEWA's hourly points against tower 2in at the same timestamps
+            ground_at_newa = wide_c[2].reindex(newa_t_c.index, method="nearest", tolerance=pd.Timedelta("30min"))
+            newa_delta_c = newa_t_c - ground_at_newa
+            newa_delta_disp = newa_delta_c * (9 / 5) if is_f else newa_delta_c
+            fig2.add_trace(
+                go.Scatter(
+                    x=newa_delta_disp.index, y=newa_delta_disp,
+                    mode="lines+markers", name=NEWA_LABEL,
+                    line=dict(color=NEWA_COLOR, width=2, dash=NEWA_DASH),
+                    marker=dict(size=4),
                 )
             )
         fig2.add_hline(y=0, line_color="black", line_width=1)
@@ -441,6 +495,14 @@ elif page == "Humidity & dew point":
                     go.Scatter(x=rh_wide.index, y=rh_wide[h], mode="lines",
                                name=f"{h} in", line=dict(color=color))
                 )
+            newa_rh = newa_series("RH", start_ts, end_ts)
+            if not newa_rh.empty:
+                fig.add_trace(
+                    go.Scatter(x=newa_rh.index, y=newa_rh, mode="lines+markers",
+                               name=NEWA_LABEL,
+                               line=dict(color=NEWA_COLOR, width=2, dash=NEWA_DASH),
+                               marker=dict(size=4))
+                )
             fig.update_layout(
                 height=400, margin=dict(l=30, r=10, t=30, b=30),
                 xaxis_title="Local time", yaxis_title="RH (%)",
@@ -464,6 +526,15 @@ elif page == "Humidity & dew point":
                     go.Scatter(x=dp_wide.index, y=dp_wide[h], mode="lines",
                                name=f"{h} in", line=dict(color=color))
                 )
+            newa_dp = newa_series("Dew Point", start_ts, end_ts)
+            if not newa_dp.empty:
+                newa_dp_disp = c_to_f(newa_dp) if is_f else newa_dp
+                fig.add_trace(
+                    go.Scatter(x=newa_dp_disp.index, y=newa_dp_disp, mode="lines+markers",
+                               name=NEWA_LABEL,
+                               line=dict(color=NEWA_COLOR, width=2, dash=NEWA_DASH),
+                               marker=dict(size=4))
+                )
             fig.update_layout(
                 height=400, margin=dict(l=30, r=10, t=30, b=30),
                 xaxis_title="Local time", yaxis_title=f"Dew point ({unit_label})",
@@ -480,7 +551,6 @@ elif page == "NEWA comparison":
         "at ~1.5 m / 59 in standard height, closest to our **62 in** mid-canopy sensor."
     )
 
-    newa_all = cached_load_newa()
     if newa_all.empty:
         st.warning(
             "No NEWA data yet. The daily workflow pulls it on the same schedule as the tower data."
