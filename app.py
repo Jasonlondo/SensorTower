@@ -75,7 +75,7 @@ newa_all = cached_load_newa()
 
 # Consistent NEWA styling wherever we overlay it on tower charts
 NEWA_COLOR = "#d62728"
-NEWA_DASH = "dash"
+NEWA_DASH = "3,3"  # custom fine dash pattern (px on, px off)
 NEWA_LABEL = "NEWA (AgriTech Gates)"
 
 
