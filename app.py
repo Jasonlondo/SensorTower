@@ -45,9 +45,14 @@ def c_to_f(c: float | pd.Series) -> float | pd.Series:
     return c * 9 / 5 + 32
 
 
-def show_chart(fig: go.Figure) -> None:
-    """Render a Plotly figure with 2-decimal tick and hover formatting."""
-    fig.update_yaxes(tickformat=".2f", hoverformat=".2f")
+def show_chart(fig: go.Figure, yformat: str = ".2f") -> None:
+    """Render a Plotly figure with consistent tick and hover formatting.
+
+    yformat: Plotly d3-format string for y-axis ticks and hovers.
+    Temperature charts use ".2f" (default). Integer-valued charts (e.g.,
+    minutes exposure) use ".0f".
+    """
+    fig.update_yaxes(tickformat=yformat, hoverformat=yformat)
     st.plotly_chart(fig, use_container_width=True)
 
 
@@ -377,10 +382,16 @@ elif page == "Threshold exposure":
                 height=400, margin=dict(l=30, r=10, t=30, b=30),
                 xaxis_title="Date (local)",
                 yaxis_title="Minutes ≤ 10% kill",
+                yaxis=dict(
+                    range=[0, 720],           # fixed 0–12 hours across stages
+                    dtick=60,                  # major gridline every 60 min
+                    minor=dict(dtick=30, showgrid=True, gridcolor="rgba(128,128,128,0.15)"),
+                    showgrid=True, gridcolor="rgba(128,128,128,0.35)",
+                ),
                 legend=dict(traceorder="reversed"),
                 bargap=0.15, bargroupgap=0.02,
             )
-            show_chart(fig)
+            show_chart(fig, yformat=".0f")
 
 
 elif page == "Humidity & dew point":
