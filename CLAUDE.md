@@ -56,17 +56,19 @@ Files are CSV exports from the datalogger. The filename prefix (e.g., `freeze2`,
 
 ## Critical Temperature Thresholds (Apple)
 
-| Growth Stage | 10% Kill (°C) | 90% Kill (°C) | 10% Kill (°F) | 90% Kill (°F) |
-|--------------|--------------|--------------|--------------|--------------|
-| Silver tip   | −15.0        | −26.0        | 5.0          | −14.8        |
-| Green tip    | −9.4         | −15.6        | 15.1         | 3.9          |
-| Half-inch green | −7.2     | −12.2        | 19.0         | 10.0         |
-| Tight cluster | −5.0        | −8.9         | 23.0         | 16.0         |
-| Pink         | −3.9         | −6.7         | 25.0         | 19.9         |
-| Full bloom   | −2.2         | −4.0         | 28.0         | 24.8         |
-| Petal fall   | −2.2         | −4.0         | 28.0         | 24.8         |
+| Growth Stage    | 10% Kill (°C) | 90% Kill (°C) | 10% Kill (°F) | 90% Kill (°F) |
+|-----------------|---------------|---------------|---------------|---------------|
+| Silver tip      | −9.4          | −16.7         | 15            | 2             |
+| Green tip       | −7.8          | −12.2         | 18            | 10            |
+| Half-inch green | −5.0          | −9.4          | 23            | 15            |
+| Tight cluster   | −2.8          | −6.1          | 27            | 21            |
+| First pink      | −2.2          | −4.4          | 28            | 24            |
+| Full pink       | −2.2          | −3.9          | 28            | 25            |
+| First bloom     | −2.2          | −3.9          | 28            | 25            |
+| Full bloom      | −2.2          | −3.9          | 28            | 25            |
+| Post bloom      | −2.2          | −3.9          | 28            | 25            |
 
-Source: NC State Extension frost damage thresholds for apple.
+**Source:** MSU Extension, *Critical Spring Temperatures for Tree Fruit Bud Development Stages* ([PDF](https://www.canr.msu.edu/fruit/uploads/files/PictureTableofFruitFreezeDamageThresholds.pdf)). Apple values originate from **WSU EB0913**; compiled by Mark Longstroth, MSU Extension Educator. Native publication units are °F; °C values above are converted from the published °F table.
 
 ---
 

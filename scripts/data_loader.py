@@ -24,15 +24,22 @@ LOCAL_TZ = ZoneInfo("America/New_York")
 
 INSTALL_LOCAL = pd.Timestamp("2026-04-19 16:00", tz=LOCAL_TZ)
 
-# Apple bloom-stage critical temps (°C), NC State Extension
+# Apple bloom-stage critical temps (°C).
+# Source: MSU Extension "Critical Spring Temperatures for Tree Fruit Bud
+# Development Stages" (compiled by Mark Longstroth from WSU EB0913).
+# https://www.canr.msu.edu/fruit/uploads/files/PictureTableofFruitFreezeDamageThresholds.pdf
+# Native source units are °F; values below are converted from the
+# published °F table (shown in the trailing comment).
 THRESHOLDS = {
-    "Silver tip":        {"kill10": -15.0, "kill90": -26.0},
-    "Green tip":         {"kill10": -9.4,  "kill90": -15.6},
-    "Half-inch green":   {"kill10": -7.2,  "kill90": -12.2},
-    "Tight cluster":     {"kill10": -5.0,  "kill90": -8.9},
-    "Pink":              {"kill10": -3.9,  "kill90": -6.7},
-    "Full bloom":        {"kill10": -2.2,  "kill90": -4.0},
-    "Petal fall":        {"kill10": -2.2,  "kill90": -4.0},
+    "Silver tip":        {"kill10":  -9.44, "kill90": -16.67},  # 15°F / 2°F
+    "Green tip":         {"kill10":  -7.78, "kill90": -12.22},  # 18°F / 10°F
+    "Half-inch green":   {"kill10":  -5.00, "kill90":  -9.44},  # 23°F / 15°F
+    "Tight cluster":     {"kill10":  -2.78, "kill90":  -6.11},  # 27°F / 21°F
+    "First pink":        {"kill10":  -2.22, "kill90":  -4.44},  # 28°F / 24°F
+    "Full pink":         {"kill10":  -2.22, "kill90":  -3.89},  # 28°F / 25°F
+    "First bloom":       {"kill10":  -2.22, "kill90":  -3.89},  # 28°F / 25°F
+    "Full bloom":        {"kill10":  -2.22, "kill90":  -3.89},  # 28°F / 25°F
+    "Post bloom":        {"kill10":  -2.22, "kill90":  -3.89},  # 28°F / 25°F
 }
 
 

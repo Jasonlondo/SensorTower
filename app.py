@@ -330,11 +330,16 @@ elif page == "Threshold exposure":
     if wide_c.empty:
         st.warning("No temperature data in selected window.")
     else:
-        stage = st.selectbox("Bloom stage", list(THRESHOLDS.keys()), index=5)  # default full bloom
+        stages = list(THRESHOLDS.keys())
+        default_idx = stages.index("Full bloom") if "Full bloom" in stages else 0
+        stage = st.selectbox("Bloom stage", stages, index=default_idx)
         th_c = THRESHOLDS[stage]
         st.caption(
             f"10% kill: **{th_c['kill10']:.1f}°C** ({c_to_f(th_c['kill10']):.1f}°F) | "
-            f"90% kill: **{th_c['kill90']:.1f}°C** ({c_to_f(th_c['kill90']):.1f}°F)"
+            f"90% kill: **{th_c['kill90']:.1f}°C** ({c_to_f(th_c['kill90']):.1f}°F) · "
+            f"Source: [MSU Extension bud-stage table]"
+            f"(https://www.canr.msu.edu/fruit/uploads/files/PictureTableofFruitFreezeDamageThresholds.pdf) "
+            f"(apple data from WSU EB0913, compiled by M. Longstroth)."
         )
 
         dt = wide_c.index.to_series().diff().dt.total_seconds().fillna(300)

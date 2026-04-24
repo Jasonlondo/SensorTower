@@ -32,17 +32,19 @@ How does temperature stratify vertically through an apple canopy during frost an
 
 ## Critical Temperature Thresholds (Apple)
 
-| Growth Stage | 10% Kill (°C) | 90% Kill (°C) |
-|--------------|--------------|--------------|
-| Silver tip   | −15.0        | −26.0        |
-| Green tip    | −9.4         | −15.6        |
-| Half-inch green | −7.2      | −12.2        |
-| Tight cluster | −5.0        | −8.9         |
-| Pink         | −3.9         | −6.7         |
-| Full bloom   | −2.2         | −4.0         |
-| Petal fall   | −2.2         | −4.0         |
+| Growth Stage    | 10% Kill (°C) | 90% Kill (°C) |
+|-----------------|---------------|---------------|
+| Silver tip      | −9.4          | −16.7         |
+| Green tip       | −7.8          | −12.2         |
+| Half-inch green | −5.0          | −9.4          |
+| Tight cluster   | −2.8          | −6.1          |
+| First pink      | −2.2          | −4.4          |
+| Full pink       | −2.2          | −3.9          |
+| First bloom     | −2.2          | −3.9          |
+| Full bloom      | −2.2          | −3.9          |
+| Post bloom      | −2.2          | −3.9          |
 
-Source: NC State Extension
+Source: MSU Extension, *Critical Spring Temperatures for Tree Fruit Bud Development Stages* (apple values from WSU EB0913, compiled by M. Longstroth). Native °F converted to °C.
 
 ---
 
