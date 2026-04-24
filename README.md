@@ -14,6 +14,7 @@ LI-COR Cloud  ──►  GitHub Actions (daily cron)  ──►  data/licor_YYYY
 - Data lives in `data/` (committed to git) — no live API calls from the dashboard
 - Legacy datalogger CSVs (`freeze*.csv`) and API-pulled CSVs (`licor_*.csv`) are unified by `scripts/data_loader.py`
 - The `sensor_map.csv` crosswalk maps each serial number to its physical height — rebuilt empirically by matching API values against the original datalogger CSVs
+- Workflow runs every 15 minutes with `*/15 * * * *` cron. Each run pulls a rolling window (yesterday 00:00 UTC → now for LI-COR; same for NEWA local time) and splits output into per-day CSVs. Effective dashboard lag: ~15–30 min including GitHub Actions scheduler jitter.
 
 ## Repo layout
 

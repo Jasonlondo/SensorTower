@@ -93,30 +93,52 @@ def newa_series(variable: str, start_ts, end_ts) -> pd.Series:
 units = st.sidebar.radio("Units", ["°C", "°F"], horizontal=True)
 is_f = units == "°F"
 
-# Date range
 min_dt = df["datetime_local"].min()
 max_dt = df["datetime_local"].max()
-default_start = max(min_dt, max_dt - pd.Timedelta(days=7))
-date_range = st.sidebar.date_input(
-    "Date range",
-    value=(default_start.date(), max_dt.date()),
-    min_value=min_dt.date(),
-    max_value=max_dt.date(),
-)
-if isinstance(date_range, tuple) and len(date_range) == 2:
-    start_d, end_d = date_range
-else:
-    start_d = end_d = date_range  # type: ignore[assignment]
 
-start_ts = pd.Timestamp(start_d, tz=LOCAL_TZ)
-end_ts = pd.Timestamp(end_d, tz=LOCAL_TZ) + pd.Timedelta(days=1)
+# Time-range preset selector — clearer than a free-form date picker
+preset = st.sidebar.radio(
+    "Time range",
+    ["Last 24 h", "Last 3 days", "Last 7 days", "Last 30 days", "All data", "Custom…"],
+    index=1,
+)
+
+if preset == "Last 24 h":
+    start_ts = max_dt - pd.Timedelta(hours=24)
+    end_ts = max_dt + pd.Timedelta(minutes=5)
+elif preset == "Last 3 days":
+    start_ts = max_dt - pd.Timedelta(days=3)
+    end_ts = max_dt + pd.Timedelta(minutes=5)
+elif preset == "Last 7 days":
+    start_ts = max_dt - pd.Timedelta(days=7)
+    end_ts = max_dt + pd.Timedelta(minutes=5)
+elif preset == "Last 30 days":
+    start_ts = max_dt - pd.Timedelta(days=30)
+    end_ts = max_dt + pd.Timedelta(minutes=5)
+elif preset == "All data":
+    start_ts = min_dt - pd.Timedelta(minutes=5)
+    end_ts = max_dt + pd.Timedelta(minutes=5)
+else:  # Custom…
+    default_start = max(min_dt, max_dt - pd.Timedelta(days=7))
+    date_range = st.sidebar.date_input(
+        "Custom start/end (local)",
+        value=(default_start.date(), max_dt.date()),
+        min_value=min_dt.date(),
+        max_value=max_dt.date(),
+    )
+    if isinstance(date_range, tuple) and len(date_range) == 2:
+        start_d, end_d = date_range
+    else:
+        start_d = end_d = date_range  # type: ignore[assignment]
+    start_ts = pd.Timestamp(start_d, tz=LOCAL_TZ)
+    end_ts = pd.Timestamp(end_d, tz=LOCAL_TZ) + pd.Timedelta(days=1)
 
 mask = (df["datetime_local"] >= start_ts) & (df["datetime_local"] < end_ts)
 df_win = df.loc[mask].copy()
 
 st.sidebar.caption(
-    f"Full record: {min_dt.strftime('%Y-%m-%d')} → {max_dt.strftime('%Y-%m-%d')} "
-    f"({df['datetime_local'].nunique():,} timestamps)"
+    f"Latest reading: **{max_dt.strftime('%Y-%m-%d %H:%M %Z')}**  \n"
+    f"Record span: {min_dt.strftime('%Y-%m-%d')} → {max_dt.strftime('%Y-%m-%d')}"
 )
 
 page = st.sidebar.radio(

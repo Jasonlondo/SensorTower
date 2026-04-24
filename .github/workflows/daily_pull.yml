@@ -1,13 +1,14 @@
-name: Daily LI-COR Cloud pull
+name: Near-realtime LI-COR + NEWA pull
 
 on:
   schedule:
-    # 10:00 UTC ≈ 06:00 EDT / 05:00 EST — runs after previous UTC day closes
-    - cron: "0 10 * * *"
+    # Every 15 minutes. GitHub Actions cron has ~5–15 min jitter on top,
+    # so expect ~15–30 min effective latency from sensor to dashboard.
+    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       pull_date:
-        description: "Date to pull (YYYY-MM-DD UTC). Leave blank for yesterday."
+        description: "Date to pull (YYYY-MM-DD). Leave blank for rolling yesterday+today window."
         required: false
         default: ""
 
@@ -47,10 +48,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Pull latest in case another scheduled run landed between our checkout and push
+          git pull --rebase origin main || true
           git add data/licor_*.csv data/newa/*.csv
           if git diff --cached --quiet; then
             echo "No new data to commit."
           else
-            git commit -m "data: daily LI-COR + NEWA pull $(date -u +%Y-%m-%d)"
+            git commit -m "data: auto-pull $(date -u +%Y-%m-%dT%H:%MZ)"
             git push
           fi
+
+concurrency:
+  group: realtime-pull
+  cancel-in-progress: false
