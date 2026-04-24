@@ -48,7 +48,7 @@ def c_to_f(c: float | pd.Series) -> float | pd.Series:
 def show_chart(fig: go.Figure) -> None:
     """Render a Plotly figure with 2-decimal tick and hover formatting."""
     fig.update_yaxes(tickformat=".2f", hoverformat=".2f")
-    show_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 # ---------------------------- Sidebar ----------------------------
