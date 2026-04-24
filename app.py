@@ -210,20 +210,19 @@ if page == "Overview":
         )
         st.info(f"Vertical gradient: **{inv_disp:+.2f} {unit_label}** aloft minus ground  →  {state}")
 
-    st.header("Tower at a glance")
+    st.header(f"Tower — {preset.lower()}")
     if not wide_disp.empty:
-        recent = wide_disp.tail(24 * 12)  # last ~24h at 5-min cadence
         fig = go.Figure()
         palette = px.colors.sequential.Viridis
         for i, h in enumerate(height_cols):
             color = palette[int(i / max(len(height_cols) - 1, 1) * (len(palette) - 1))]
             fig.add_trace(
                 go.Scatter(
-                    x=recent.index, y=recent[h], mode="lines",
+                    x=wide_disp.index, y=wide_disp[h], mode="lines",
                     name=f"{h} in", line=dict(color=color),
                 )
             )
-        newa_t = newa_series("Temperature", recent.index.min(), end_ts)
+        newa_t = newa_series("Temperature", start_ts, end_ts)
         if not newa_t.empty:
             fig.add_trace(
                 go.Scatter(
