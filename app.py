@@ -45,6 +45,12 @@ def c_to_f(c: float | pd.Series) -> float | pd.Series:
     return c * 9 / 5 + 32
 
 
+def show_chart(fig: go.Figure) -> None:
+    """Render a Plotly figure with 2-decimal tick and hover formatting."""
+    fig.update_yaxes(tickformat=".2f", hoverformat=".2f")
+    show_chart(fig)
+
+
 # ---------------------------- Sidebar ----------------------------
 st.sidebar.title("🌡️ Sensor Tower")
 st.sidebar.caption("Cornell AgriTech — Honeycrisp/Fuji apple block")
@@ -163,7 +169,7 @@ if page == "Overview":
             xaxis_title="Local time", yaxis_title=f"Temperature ({unit_label})",
             legend=dict(traceorder="reversed"),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        show_chart(fig)
 
     st.header("Data coverage")
     coverage = (
@@ -198,7 +204,7 @@ elif page == "Time series":
             xaxis_title="Local time", yaxis_title=f"Temperature ({unit_label})",
             legend=dict(traceorder="reversed"),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        show_chart(fig)
 
     st.subheader("Delta from ground (2 in)")
     if 2 in wide_disp.columns:
@@ -220,7 +226,7 @@ elif page == "Time series":
             xaxis_title="Local time", yaxis_title=f"ΔT from 2in ({unit_label})",
             legend=dict(traceorder="reversed"),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        show_chart(fig2)
 
 
 elif page == "Inversions":
@@ -247,7 +253,7 @@ elif page == "Inversions":
             xaxis_title="Local time",
             yaxis_title=f"Aloft minus ground ({unit_label})",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        show_chart(fig)
 
         st.subheader("Heatmap")
         z = wide_disp[height_cols].T.values
@@ -266,7 +272,7 @@ elif page == "Inversions":
             xaxis_title="Local time",
             yaxis_title="Height",
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        show_chart(fig2)
 
         st.subheader("Peak inversion events")
         # Find the top-10 inversion peaks, separated by ≥3h
@@ -337,7 +343,7 @@ elif page == "Threshold exposure":
             xaxis_title="Local time", yaxis_title="Cumulative minutes ≤ 10% kill",
             legend=dict(traceorder="reversed"),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        show_chart(fig)
 
 
 elif page == "Humidity & dew point":
@@ -366,7 +372,7 @@ elif page == "Humidity & dew point":
                 xaxis_title="Local time", yaxis_title="RH (%)",
                 legend=dict(traceorder="reversed"),
             )
-            st.plotly_chart(fig, use_container_width=True)
+            show_chart(fig)
 
         if not dp.empty:
             st.subheader(f"Dew point ({unit_label})")
@@ -389,7 +395,7 @@ elif page == "Humidity & dew point":
                 xaxis_title="Local time", yaxis_title=f"Dew point ({unit_label})",
                 legend=dict(traceorder="reversed"),
             )
-            st.plotly_chart(fig, use_container_width=True)
+            show_chart(fig)
 
 st.sidebar.markdown("---")
 st.sidebar.caption("Data refreshed daily via GitHub Actions. Last commit drives freshness.")
