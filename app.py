@@ -175,16 +175,6 @@ if page == "Overview":
         )
         show_chart(fig)
 
-    st.header("Data coverage")
-    coverage = (
-        df.assign(day=df["datetime_local"].dt.date)
-          .groupby(["day", "source"])
-          .size()
-          .rename("rows")
-          .reset_index()
-    )
-    st.dataframe(coverage.tail(30), use_container_width=True, hide_index=True)
-
 
 elif page == "Time series":
     st.header(f"Full time series ({unit_label})")
@@ -242,8 +232,32 @@ elif page == "Inversions":
         bot_min = wide_disp[[h for h in [2, 22, 42] if h in wide_disp.columns]].min(axis=1)
         gradient = top_mean - bot_min
 
+        # Identify contiguous freezing-inversion periods:
+        #   gradient > 0.3 (real inversion) AND ground min below freezing
+        freezing_inv = (gradient > 0.3) & (bot_min < freeze_line)
+        # Convert to (start, end) pairs of contiguous runs
+        runs = []
+        in_run = False
+        run_start = None
+        idx = freezing_inv.index
+        for i, flag in enumerate(freezing_inv.values):
+            if flag and not in_run:
+                run_start = idx[i]
+                in_run = True
+            elif not flag and in_run:
+                runs.append((run_start, idx[i - 1]))
+                in_run = False
+        if in_run:
+            runs.append((run_start, idx[-1]))
+
         fig = go.Figure()
-        colors = ["firebrick" if g > 0 else "steelblue" for g in gradient]
+        # Shade freezing-inversion intervals first so lines draw on top
+        for rs, re_ in runs:
+            fig.add_vrect(
+                x0=rs, x1=re_,
+                fillcolor="rgba(135, 206, 250, 0.28)",  # icy blue
+                line_width=0, layer="below",
+            )
         fig.add_trace(
             go.Scatter(
                 x=gradient.index, y=gradient, mode="lines",
@@ -252,12 +266,17 @@ elif page == "Inversions":
             )
         )
         fig.add_hline(y=0, line_color="black", line_width=1)
+        caption = (
+            f"Shaded periods: inversion AND ground below {freeze_line:g} {unit_label} — "
+            f"{len(runs)} event{'' if len(runs)==1 else 's'} in window."
+        )
         fig.update_layout(
             height=400, margin=dict(l=30, r=10, t=30, b=30),
             xaxis_title="Local time",
             yaxis_title=f"Aloft minus ground ({unit_label})",
         )
         show_chart(fig)
+        st.caption(caption)
 
         st.subheader("Heatmap")
         z = wide_disp[height_cols].T.values
@@ -330,24 +349,38 @@ elif page == "Threshold exposure":
             )
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
-        st.subheader("Time-below threshold (cumulative)")
-        fig = go.Figure()
-        palette = px.colors.sequential.Viridis
+        st.subheader("Minutes per day below 10% kill threshold")
+        # Attribute each interval to the day it started in (local time)
+        days = wide_c.index.normalize()
+        per_day = {}
         for i, h in enumerate(height_cols):
-            color = palette[int(i / max(len(height_cols) - 1, 1) * (len(palette) - 1))]
-            cum_min = ((wide_c[h] <= th_c["kill10"]) * dt / 60).cumsum()
-            fig.add_trace(
-                go.Scatter(
-                    x=wide_c.index, y=cum_min, mode="lines",
-                    name=f"{h} in", line=dict(color=color),
+            mins = ((wide_c[h] <= th_c["kill10"]) * dt / 60)
+            per_day[h] = mins.groupby(days).sum()
+        per_day_df = pd.DataFrame(per_day)
+        per_day_df = per_day_df.loc[(per_day_df.sum(axis=1) > 0)]  # drop zero-exposure days
+
+        if per_day_df.empty:
+            st.info("No exposure to 10% kill threshold in the selected window.")
+        else:
+            fig = go.Figure()
+            palette = px.colors.sequential.Viridis
+            for i, h in enumerate(height_cols):
+                color = palette[int(i / max(len(height_cols) - 1, 1) * (len(palette) - 1))]
+                fig.add_trace(
+                    go.Bar(
+                        x=per_day_df.index, y=per_day_df[h],
+                        name=f"{h} in", marker_color=color,
+                    )
                 )
+            fig.update_layout(
+                barmode="group",
+                height=400, margin=dict(l=30, r=10, t=30, b=30),
+                xaxis_title="Date (local)",
+                yaxis_title="Minutes ≤ 10% kill",
+                legend=dict(traceorder="reversed"),
+                bargap=0.15, bargroupgap=0.02,
             )
-        fig.update_layout(
-            height=400, margin=dict(l=30, r=10, t=30, b=30),
-            xaxis_title="Local time", yaxis_title="Cumulative minutes ≤ 10% kill",
-            legend=dict(traceorder="reversed"),
-        )
-        show_chart(fig)
+            show_chart(fig)
 
 
 elif page == "Humidity & dew point":
