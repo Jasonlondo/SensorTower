@@ -144,7 +144,12 @@ def load_all(
 
 
 def wide_temperature(long_df: pd.DataFrame) -> pd.DataFrame:
-    """Pivot the long DataFrame to wide temperature format (backward-compat with legacy scripts)."""
+    """Pivot the long DataFrame to wide temperature format.
+
+    Returns a DataFrame with a datetime_local column and one integer-named
+    column per height (e.g., 2, 22, 42, ..., 162). Integer columns keep the
+    app's `wide_disp[h]` lookups straightforward.
+    """
     temp = long_df[long_df["measurement_type"] == "Temperature"].copy()
     if temp.empty:
         return pd.DataFrame()
@@ -152,6 +157,5 @@ def wide_temperature(long_df: pd.DataFrame) -> pd.DataFrame:
         index="datetime_local", columns="height_in", values="value", aggfunc="last"
     ).reset_index()
     wide.columns.name = None
-    rename = {h: f"{h}in" for h in HEIGHTS if h in wide.columns}
-    wide = wide.rename(columns=rename).sort_values("datetime_local").reset_index(drop=True)
+    wide = wide.sort_values("datetime_local").reset_index(drop=True)
     return wide
