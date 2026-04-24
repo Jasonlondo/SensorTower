@@ -113,12 +113,22 @@ if page == "Overview":
         latest_row_disp = wide_disp.loc[latest_ts]
         st.caption(f"Latest reading: **{latest_ts.strftime('%Y-%m-%d %H:%M %Z')}**")
 
+        st.markdown(
+            """
+            <style>
+            [data-testid="stMetricValue"] { font-size: 1.25rem; }
+            [data-testid="stMetricLabel"] { font-size: 0.85rem; }
+            [data-testid="stMetricDelta"] { font-size: 0.75rem; }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
         cols = st.columns(len(height_cols))
         ref = latest_row_disp.get(2, latest_row_disp.iloc[0])
         for col, h in zip(cols, height_cols):
             val = latest_row_disp[h]
             delta_raw = val - ref
-            delta = None if h == 2 else f"{delta_raw:+.2f} Δ from 2in"
+            delta = None if h == 2 else f"{delta_raw:+.2f}"
             col.metric(f"{h} in", f"{val:.2f} {unit_label}", delta=delta)
 
         # Current inversion state
