@@ -379,14 +379,22 @@ elif page == "Threshold exposure":
                 )
             fig.update_layout(
                 barmode="group",
-                height=400, margin=dict(l=30, r=10, t=30, b=30),
+                height=400, margin=dict(l=30, r=10, t=30, b=50),
                 xaxis_title="Date (local)",
-                yaxis_title="Minutes ≤ 10% kill",
                 yaxis=dict(
+                    title="Minutes ≤ 10% kill",
                     range=[0, 720],           # fixed 0–12 hours across stages
                     dtick=60,                  # major gridline every 60 min
                     minor=dict(dtick=30, showgrid=True, gridcolor="rgba(128,128,128,0.15)"),
                     showgrid=True, gridcolor="rgba(128,128,128,0.35)",
+                ),
+                yaxis2=dict(
+                    title="Hours",
+                    range=[0, 12],
+                    dtick=1,
+                    overlaying="y",
+                    side="right",
+                    showgrid=False,            # suppress duplicate gridlines
                 ),
                 legend=dict(traceorder="reversed"),
                 bargap=0.15, bargroupgap=0.02,
