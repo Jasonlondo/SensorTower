@@ -83,7 +83,7 @@ timestamp_local,variable,value,units
 2026-04-25T10:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-04-25T10:00:00-04:00,Precipitation,2.2859999999999996,mm
 2026-04-25T10:00:00-04:00,RH,95.0,%
-2026-04-25T10:00:00-04:00,Solar Radiation,15.0,W/m²
+2026-04-25T10:00:00-04:00,Solar Radiation,16.0,W/m²
 2026-04-25T10:00:00-04:00,Temperature,5.888888888888889,°C
 2026-04-25T10:00:00-04:00,Wind Direction,110.0,deg
 2026-04-25T10:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -127,5 +127,13 @@ timestamp_local,variable,value,units
 2026-04-25T15:00:00-04:00,Temperature,7.6111111111111125,°C
 2026-04-25T15:00:00-04:00,Wind Direction,108.0,deg
 2026-04-25T15:00:00-04:00,Wind Speed,3.7104320000000004,m/s
-2026-04-25T16:00:00-04:00,Leaf Wetness,60.0,min/h
-2026-04-25T16:00:00-04:00,Precipitation,0.254,mm
+2026-04-25T16:00:00-04:00,Dew Point,6.611111111111111,°C
+2026-04-25T16:00:00-04:00,Leaf Wetness,27.0,min/h
+2026-04-25T16:00:00-04:00,Precipitation,0.0,mm
+2026-04-25T16:00:00-04:00,RH,94.0,%
+2026-04-25T16:00:00-04:00,Solar Radiation,32.0,W/m²
+2026-04-25T16:00:00-04:00,Temperature,7.5,°C
+2026-04-25T16:00:00-04:00,Wind Direction,122.0,deg
+2026-04-25T16:00:00-04:00,Wind Speed,3.978656,m/s
+2026-04-25T17:00:00-04:00,Leaf Wetness,60.0,min/h
+2026-04-25T17:00:00-04:00,Precipitation,0.254,mm
