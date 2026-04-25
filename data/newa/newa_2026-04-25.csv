@@ -135,5 +135,10 @@ timestamp_local,variable,value,units
 2026-04-25T16:00:00-04:00,Temperature,7.5,°C
 2026-04-25T16:00:00-04:00,Wind Direction,122.0,deg
 2026-04-25T16:00:00-04:00,Wind Speed,3.978656,m/s
-2026-04-25T17:00:00-04:00,Leaf Wetness,60.0,min/h
-2026-04-25T17:00:00-04:00,Precipitation,0.254,mm
+2026-04-25T17:00:00-04:00,Dew Point,6.500000000000002,°C
+2026-04-25T17:00:00-04:00,Leaf Wetness,56.0,min/h
+2026-04-25T17:00:00-04:00,Precipitation,0.508,mm
+2026-04-25T17:00:00-04:00,RH,96.0,%
+2026-04-25T17:00:00-04:00,Temperature,7.11111111111111,°C
+2026-04-25T17:00:00-04:00,Wind Direction,111.0,deg
+2026-04-25T17:00:00-04:00,Wind Speed,3.978656,m/s
