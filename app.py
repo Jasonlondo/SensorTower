@@ -200,15 +200,34 @@ if page == "Overview":
                 unsafe_allow_html=True,
             )
 
-        # Current inversion state
-        top_mean = latest_row_c[[h for h in [122, 142, 162] if h in wide_c.columns]].mean()
-        bot_min = latest_row_c[[h for h in [2, 22, 42] if h in wide_c.columns]].min()
-        inv_c = top_mean - bot_min
+        # Current vertical gradient — top mean minus the actual 2 in ground reading.
+        # (Earlier we used min(2,22,42) which silently skipped the 2 in sensor
+        # when it was the WARMEST near-ground sensor on sunny afternoons,
+        # producing misleadingly small gradient numbers.)
+        top_heights = [h for h in [122, 142, 162] if h in wide_c.columns]
+        top_mean = latest_row_c[top_heights].mean() if top_heights else float("nan")
+        ground = latest_row_c.get(2)
+        if ground is None or pd.isna(ground):
+            # Fallback: lowest available height
+            available_low = [h for h in [2, 22, 42, 62] if h in wide_c.columns]
+            ground = latest_row_c[available_low[0]] if available_low else float("nan")
+            ground_label = f"{available_low[0]} in" if available_low else "—"
+        else:
+            ground_label = "2 in"
+        inv_c = top_mean - ground
         inv_disp = inv_c * 9 / 5 if is_f else inv_c
-        state = "inversion (ground colder than aloft)" if inv_c > 0.3 else (
-            "well-mixed" if abs(inv_c) <= 0.3 else "unstable (ground warmer than aloft)"
+        if pd.isna(inv_c):
+            state = "—"
+        elif inv_c > 0.3:
+            state = "inversion (ground colder than aloft — frost-favorable)"
+        elif inv_c < -0.3:
+            state = "daytime profile (ground warmer than aloft)"
+        else:
+            state = "well-mixed"
+        st.info(
+            f"Vertical gradient: **{inv_disp:+.2f} {unit_label}** "
+            f"(top-mean of 122/142/162 in minus {ground_label}) → {state}"
         )
-        st.info(f"Vertical gradient: **{inv_disp:+.2f} {unit_label}** aloft minus ground  →  {state}")
 
     st.header(f"Tower — {preset.lower()}")
     if not wide_disp.empty:
