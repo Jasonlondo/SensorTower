@@ -13,6 +13,7 @@ dew point to °C on ingest so they match the tower data.
 """
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
@@ -20,7 +21,8 @@ from typing import Any
 import requests
 
 ENDPOINT = "https://hrly.nrcc.cornell.edu/stnHrly"
-DEFAULT_TIMEOUT = 30
+DEFAULT_TIMEOUT = 60   # NRCC occasionally takes >30s
+MAX_RETRIES = 5
 
 # Geneva (AgriTech Gates) is the station nearest our sensor tower.
 # The internal NEWA sid uses a network-specific suffix ("nwon") rather
@@ -42,18 +44,31 @@ class NEWAClient:
     timeout: int = DEFAULT_TIMEOUT
 
     def _post(self, body: dict[str, Any]) -> dict[str, Any]:
-        r = requests.post(
-            ENDPOINT,
-            json=body,
-            headers={"content-type": "application/json"},
-            timeout=self.timeout,
+        """POST with retries for transient network errors (timeouts, conn resets)."""
+        last_exc: Exception | None = None
+        for attempt in range(MAX_RETRIES):
+            try:
+                r = requests.post(
+                    ENDPOINT,
+                    json=body,
+                    headers={"content-type": "application/json"},
+                    timeout=self.timeout,
+                )
+            except (requests.Timeout, requests.ConnectionError) as e:
+                last_exc = e
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(2 ** attempt)
+                continue
+            if r.status_code != 200:
+                raise NEWAAPIError(f"{r.status_code} {r.reason}: {r.text[:300]}")
+            text = r.text.strip()
+            if text.startswith("Invalid") or not text.startswith("{"):
+                raise NEWAAPIError(f"NEWA returned: {text[:300]}")
+            return r.json()
+        raise NEWAAPIError(
+            f"Network error after {MAX_RETRIES} attempts: "
+            f"{type(last_exc).__name__}: {last_exc}"
         )
-        if r.status_code != 200:
-            raise NEWAAPIError(f"{r.status_code} {r.reason}: {r.text[:300]}")
-        text = r.text.strip()
-        if text.startswith("Invalid") or not text.startswith("{"):
-            raise NEWAAPIError(f"NEWA returned: {text[:300]}")
-        return r.json()
 
     def fetch_hourly(self, sdate: datetime, edate: datetime | str = "now") -> dict[str, Any]:
         """

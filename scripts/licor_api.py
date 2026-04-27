@@ -15,8 +15,9 @@ from typing import Any
 import requests
 
 BASE_URL = "https://api.licor.cloud"
-DEFAULT_TIMEOUT = 30
+DEFAULT_TIMEOUT = 60   # bumped from 30 — LI-COR occasionally needs >30 s on large windows
 MAX_RECORDS_PER_CALL = 100_000
+MAX_RETRIES = 5
 
 
 class LicorAPIError(RuntimeError):
@@ -44,16 +45,34 @@ class LicorClient:
         return {"Authorization": f"Bearer {self.token}"}
 
     def _get(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+        """GET with retries for both 429 throttling and transient network errors.
+
+        Retries: 5 attempts with exponential backoff (1, 2, 4, 8, 16 s).
+        """
         url = f"{self.base_url}{path}"
-        for attempt in range(3):
-            r = requests.get(url, headers=self._headers(), params=params, timeout=self.timeout)
+        last_exc: Exception | None = None
+        for attempt in range(MAX_RETRIES):
+            try:
+                r = requests.get(
+                    url, headers=self._headers(), params=params, timeout=self.timeout
+                )
+            except (requests.Timeout, requests.ConnectionError) as e:
+                last_exc = e
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(2 ** attempt)
+                continue
             if r.status_code == 429:
-                time.sleep(2 ** attempt)
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(2 ** attempt)
                 continue
             if r.status_code == 200:
                 return r.json()
             raise LicorAPIError(f"{r.status_code} {r.reason}: {r.text[:300]}")
-        raise LicorAPIError("Rate-limited after 3 retries")
+        if last_exc is not None:
+            raise LicorAPIError(
+                f"Network error after {MAX_RETRIES} attempts: {type(last_exc).__name__}: {last_exc}"
+            )
+        raise LicorAPIError(f"Rate-limited after {MAX_RETRIES} retries")
 
     def list_devices(self, include_sensors: bool = True) -> dict[str, Any]:
         return self._get("/v2/devices", {"includeSensors": str(include_sensors).lower()})
