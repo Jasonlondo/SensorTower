@@ -54,7 +54,7 @@ timestamp_local,variable,value,units
 2026-04-30T06:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-04-30T06:00:00-04:00,Temperature,6.0555555555555545,°C
 2026-04-30T06:00:00-04:00,Wind Direction,286.0,deg
-2026-04-30T06:00:00-04:00,Wind Speed,3.57632,m/s
+2026-04-30T06:00:00-04:00,Wind Speed,3.442208,m/s
 2026-04-30T07:00:00-04:00,Dew Point,5.1111111111111125,°C
 2026-04-30T07:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-04-30T07:00:00-04:00,Precipitation,0.0,mm
@@ -95,4 +95,12 @@ timestamp_local,variable,value,units
 2026-04-30T11:00:00-04:00,Temperature,8.666666666666666,°C
 2026-04-30T11:00:00-04:00,Wind Direction,308.0,deg
 2026-04-30T11:00:00-04:00,Wind Speed,4.112768,m/s
+2026-04-30T12:00:00-04:00,Dew Point,4.111111111111111,°C
+2026-04-30T12:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-04-30T12:00:00-04:00,Precipitation,0.0,mm
+2026-04-30T12:00:00-04:00,RH,68.0,%
+2026-04-30T12:00:00-04:00,Solar Radiation,27.0,W/m²
+2026-04-30T12:00:00-04:00,Temperature,9.833333333333336,°C
+2026-04-30T12:00:00-04:00,Wind Direction,318.0,deg
+2026-04-30T12:00:00-04:00,Wind Speed,4.425696,m/s
+2026-04-30T13:00:00-04:00,Precipitation,0.0,mm
