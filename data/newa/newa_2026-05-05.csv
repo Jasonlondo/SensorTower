@@ -139,7 +139,7 @@ timestamp_local,variable,value,units
 2026-05-05T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-05T17:00:00-04:00,Precipitation,0.0,mm
 2026-05-05T17:00:00-04:00,RH,63.0,%
-2026-05-05T17:00:00-04:00,Solar Radiation,35.0,W/m²
+2026-05-05T17:00:00-04:00,Solar Radiation,30.0,W/m²
 2026-05-05T17:00:00-04:00,Temperature,20.611111111111107,°C
 2026-05-05T17:00:00-04:00,Wind Direction,302.0,deg
 2026-05-05T17:00:00-04:00,Wind Speed,2.68224,m/s
@@ -155,7 +155,7 @@ timestamp_local,variable,value,units
 2026-05-05T19:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-05T19:00:00-04:00,Precipitation,0.0,mm
 2026-05-05T19:00:00-04:00,RH,70.0,%
-2026-05-05T19:00:00-04:00,Solar Radiation,5.0,W/m²
+2026-05-05T19:00:00-04:00,Solar Radiation,6.0,W/m²
 2026-05-05T19:00:00-04:00,Temperature,12.777777777777779,°C
 2026-05-05T19:00:00-04:00,Wind Direction,336.0,deg
 2026-05-05T19:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -183,5 +183,11 @@ timestamp_local,variable,value,units
 2026-05-05T22:00:00-04:00,Temperature,8.0,°C
 2026-05-05T22:00:00-04:00,Wind Direction,56.0,deg
 2026-05-05T22:00:00-04:00,Wind Speed,0.983488,m/s
+2026-05-05T23:00:00-04:00,Dew Point,6.944444444444445,°C
 2026-05-05T23:00:00-04:00,Leaf Wetness,60.0,min/h
-2026-05-05T23:00:00-04:00,Precipitation,3.0479999999999996,mm
+2026-05-05T23:00:00-04:00,Precipitation,3.302,mm
+2026-05-05T23:00:00-04:00,RH,93.0,%
+2026-05-05T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-05-05T23:00:00-04:00,Temperature,8.0,°C
+2026-05-05T23:00:00-04:00,Wind Direction,69.0,deg
+2026-05-05T23:00:00-04:00,Wind Speed,0.983488,m/s
