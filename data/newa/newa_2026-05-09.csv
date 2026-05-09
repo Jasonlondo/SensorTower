@@ -1,0 +1,8 @@
+timestamp_local,variable,value,units
+2026-05-09T00:00:00-04:00,Dew Point,1.4444444444444453,°C
+2026-05-09T00:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-05-09T00:00:00-04:00,Precipitation,0.0,mm
+2026-05-09T00:00:00-04:00,RH,70.0,%
+2026-05-09T00:00:00-04:00,Temperature,6.500000000000002,°C
+2026-05-09T00:00:00-04:00,Wind Direction,220.0,deg
+2026-05-09T00:00:00-04:00,Wind Speed,0.983488,m/s
