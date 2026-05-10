@@ -139,6 +139,14 @@ timestamp_local,variable,value,units
 2026-05-10T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-10T17:00:00-04:00,Precipitation,0.0,mm
 2026-05-10T17:00:00-04:00,RH,42.0,%
+2026-05-10T17:00:00-04:00,Solar Radiation,47.0,W/m²
 2026-05-10T17:00:00-04:00,Temperature,14.5,°C
 2026-05-10T17:00:00-04:00,Wind Direction,355.0,deg
 2026-05-10T17:00:00-04:00,Wind Speed,2.995168,m/s
+2026-05-10T18:00:00-04:00,Dew Point,0.7222222222222207,°C
+2026-05-10T18:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-05-10T18:00:00-04:00,Precipitation,0.0,mm
+2026-05-10T18:00:00-04:00,RH,43.0,%
+2026-05-10T18:00:00-04:00,Temperature,13.0,°C
+2026-05-10T18:00:00-04:00,Wind Direction,0.0,deg
+2026-05-10T18:00:00-04:00,Wind Speed,2.995168,m/s
