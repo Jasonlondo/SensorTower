@@ -1,0 +1,8 @@
+timestamp_local,variable,value,units
+2026-05-13T00:00:00-04:00,Dew Point,4.333333333333332,°C
+2026-05-13T00:00:00-04:00,Leaf Wetness,60.0,min/h
+2026-05-13T00:00:00-04:00,Precipitation,0.0,mm
+2026-05-13T00:00:00-04:00,RH,74.0,%
+2026-05-13T00:00:00-04:00,Temperature,8.722222222222223,°C
+2026-05-13T00:00:00-04:00,Wind Direction,198.0,deg
+2026-05-13T00:00:00-04:00,Wind Speed,0.312928,m/s
