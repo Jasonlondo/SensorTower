@@ -115,7 +115,7 @@ timestamp_local,variable,value,units
 2026-05-13T14:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-13T14:00:00-04:00,Precipitation,0.0,mm
 2026-05-13T14:00:00-04:00,RH,67.0,%
-2026-05-13T14:00:00-04:00,Solar Radiation,27.0,W/m²
+2026-05-13T14:00:00-04:00,Solar Radiation,28.0,W/m²
 2026-05-13T14:00:00-04:00,Temperature,19.499999999999996,°C
 2026-05-13T14:00:00-04:00,Wind Direction,197.0,deg
 2026-05-13T14:00:00-04:00,Wind Speed,2.995168,m/s
@@ -131,7 +131,7 @@ timestamp_local,variable,value,units
 2026-05-13T16:00:00-04:00,Leaf Wetness,11.0,min/h
 2026-05-13T16:00:00-04:00,Precipitation,0.0,mm
 2026-05-13T16:00:00-04:00,RH,75.0,%
-2026-05-13T16:00:00-04:00,Solar Radiation,21.0,W/m²
+2026-05-13T16:00:00-04:00,Solar Radiation,22.0,W/m²
 2026-05-13T16:00:00-04:00,Temperature,12.722222222222221,°C
 2026-05-13T16:00:00-04:00,Wind Direction,275.0,deg
 2026-05-13T16:00:00-04:00,Wind Speed,7.689088,m/s
@@ -163,6 +163,7 @@ timestamp_local,variable,value,units
 2026-05-13T20:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-13T20:00:00-04:00,Precipitation,0.0,mm
 2026-05-13T20:00:00-04:00,RH,70.0,%
+2026-05-13T20:00:00-04:00,Solar Radiation,1.0,W/m²
 2026-05-13T20:00:00-04:00,Temperature,12.0,°C
 2026-05-13T20:00:00-04:00,Wind Direction,279.0,deg
 2026-05-13T20:00:00-04:00,Wind Speed,5.006848,m/s
@@ -170,6 +171,23 @@ timestamp_local,variable,value,units
 2026-05-13T21:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-13T21:00:00-04:00,Precipitation,0.0,mm
 2026-05-13T21:00:00-04:00,RH,76.0,%
+2026-05-13T21:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-05-13T21:00:00-04:00,Temperature,10.5,°C
 2026-05-13T21:00:00-04:00,Wind Direction,216.0,deg
 2026-05-13T21:00:00-04:00,Wind Speed,0.312928,m/s
+2026-05-13T22:00:00-04:00,Dew Point,6.222222222222224,°C
+2026-05-13T22:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-05-13T22:00:00-04:00,Precipitation,0.0,mm
+2026-05-13T22:00:00-04:00,RH,78.0,%
+2026-05-13T22:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-05-13T22:00:00-04:00,Temperature,9.888888888888888,°C
+2026-05-13T22:00:00-04:00,Wind Direction,272.0,deg
+2026-05-13T22:00:00-04:00,Wind Speed,2.68224,m/s
+2026-05-13T23:00:00-04:00,Dew Point,5.777777777777777,°C
+2026-05-13T23:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-05-13T23:00:00-04:00,Precipitation,0.0,mm
+2026-05-13T23:00:00-04:00,RH,79.0,%
+2026-05-13T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-05-13T23:00:00-04:00,Temperature,9.222222222222221,°C
+2026-05-13T23:00:00-04:00,Wind Direction,264.0,deg
+2026-05-13T23:00:00-04:00,Wind Speed,3.308096,m/s
