@@ -147,7 +147,7 @@ timestamp_local,variable,value,units
 2026-05-14T18:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-05-14T18:00:00-04:00,Precipitation,0.0,mm
 2026-05-14T18:00:00-04:00,RH,93.0,%
-2026-05-14T18:00:00-04:00,Solar Radiation,13.0,W/m²
+2026-05-14T18:00:00-04:00,Solar Radiation,14.0,W/m²
 2026-05-14T18:00:00-04:00,Temperature,6.611111111111111,°C
 2026-05-14T18:00:00-04:00,Wind Direction,337.0,deg
 2026-05-14T18:00:00-04:00,Wind Speed,1.6987519999999998,m/s
