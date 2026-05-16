@@ -91,7 +91,7 @@ timestamp_local,variable,value,units
 2026-05-16T11:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-16T11:00:00-04:00,Precipitation,0.0,mm
 2026-05-16T11:00:00-04:00,RH,43.0,%
-2026-05-16T11:00:00-04:00,Solar Radiation,59.0,W/m²
+2026-05-16T11:00:00-04:00,Solar Radiation,57.0,W/m²
 2026-05-16T11:00:00-04:00,Temperature,21.27777777777778,°C
 2026-05-16T11:00:00-04:00,Wind Direction,237.0,deg
 2026-05-16T11:00:00-04:00,Wind Speed,4.291583999999999,m/s
@@ -139,6 +139,14 @@ timestamp_local,variable,value,units
 2026-05-16T17:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-05-16T17:00:00-04:00,Precipitation,1.016,mm
 2026-05-16T17:00:00-04:00,RH,87.0,%
+2026-05-16T17:00:00-04:00,Solar Radiation,19.0,W/m²
 2026-05-16T17:00:00-04:00,Temperature,16.77777777777778,°C
 2026-05-16T17:00:00-04:00,Wind Direction,303.0,deg
 2026-05-16T17:00:00-04:00,Wind Speed,2.01168,m/s
+2026-05-16T18:00:00-04:00,Dew Point,15.5,°C
+2026-05-16T18:00:00-04:00,Leaf Wetness,59.0,min/h
+2026-05-16T18:00:00-04:00,Precipitation,1.778,mm
+2026-05-16T18:00:00-04:00,RH,91.0,%
+2026-05-16T18:00:00-04:00,Temperature,17.0,°C
+2026-05-16T18:00:00-04:00,Wind Direction,243.0,deg
+2026-05-16T18:00:00-04:00,Wind Speed,1.6987519999999998,m/s
