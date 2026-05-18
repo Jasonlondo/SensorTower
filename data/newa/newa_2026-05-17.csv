@@ -147,7 +147,7 @@ timestamp_local,variable,value,units
 2026-05-17T18:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-17T18:00:00-04:00,Precipitation,0.0,mm
 2026-05-17T18:00:00-04:00,RH,62.0,%
-2026-05-17T18:00:00-04:00,Solar Radiation,30.0,W/m²
+2026-05-17T18:00:00-04:00,Solar Radiation,29.0,W/m²
 2026-05-17T18:00:00-04:00,Temperature,26.5,°C
 2026-05-17T18:00:00-04:00,Wind Direction,27.0,deg
 2026-05-17T18:00:00-04:00,Wind Speed,3.308096,m/s
@@ -163,6 +163,7 @@ timestamp_local,variable,value,units
 2026-05-17T20:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-17T20:00:00-04:00,Precipitation,0.0,mm
 2026-05-17T20:00:00-04:00,RH,72.0,%
+2026-05-17T20:00:00-04:00,Solar Radiation,3.0,W/m²
 2026-05-17T20:00:00-04:00,Temperature,21.888888888888893,°C
 2026-05-17T20:00:00-04:00,Wind Direction,60.0,deg
 2026-05-17T20:00:00-04:00,Wind Speed,0.983488,m/s
@@ -170,6 +171,23 @@ timestamp_local,variable,value,units
 2026-05-17T21:00:00-04:00,Leaf Wetness,17.0,min/h
 2026-05-17T21:00:00-04:00,Precipitation,0.0,mm
 2026-05-17T21:00:00-04:00,RH,80.0,%
+2026-05-17T21:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-05-17T21:00:00-04:00,Temperature,19.111111111111114,°C
 2026-05-17T21:00:00-04:00,Wind Direction,60.0,deg
 2026-05-17T21:00:00-04:00,Wind Speed,0.0,m/s
+2026-05-17T22:00:00-04:00,Dew Point,15.833333333333334,°C
+2026-05-17T22:00:00-04:00,Leaf Wetness,60.0,min/h
+2026-05-17T22:00:00-04:00,Precipitation,0.0,mm
+2026-05-17T22:00:00-04:00,RH,85.0,%
+2026-05-17T22:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-05-17T22:00:00-04:00,Temperature,18.388888888888886,°C
+2026-05-17T22:00:00-04:00,Wind Direction,347.0,deg
+2026-05-17T22:00:00-04:00,Wind Speed,0.0,m/s
+2026-05-17T23:00:00-04:00,Dew Point,15.555555555555555,°C
+2026-05-17T23:00:00-04:00,Leaf Wetness,60.0,min/h
+2026-05-17T23:00:00-04:00,Precipitation,0.0,mm
+2026-05-17T23:00:00-04:00,RH,87.0,%
+2026-05-17T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-05-17T23:00:00-04:00,Temperature,17.77777777777778,°C
+2026-05-17T23:00:00-04:00,Wind Direction,347.0,deg
+2026-05-17T23:00:00-04:00,Wind Speed,0.312928,m/s
