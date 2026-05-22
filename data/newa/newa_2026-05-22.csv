@@ -91,7 +91,7 @@ timestamp_local,variable,value,units
 2026-05-22T11:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-22T11:00:00-04:00,Precipitation,0.0,mm
 2026-05-22T11:00:00-04:00,RH,57.0,%
-2026-05-22T11:00:00-04:00,Solar Radiation,53.0,W/m²
+2026-05-22T11:00:00-04:00,Solar Radiation,41.0,W/m²
 2026-05-22T11:00:00-04:00,Temperature,14.000000000000002,°C
 2026-05-22T11:00:00-04:00,Wind Direction,98.0,deg
 2026-05-22T11:00:00-04:00,Wind Speed,2.995168,m/s
@@ -139,6 +139,14 @@ timestamp_local,variable,value,units
 2026-05-22T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-22T17:00:00-04:00,Precipitation,0.0,mm
 2026-05-22T17:00:00-04:00,RH,48.0,%
+2026-05-22T17:00:00-04:00,Solar Radiation,31.0,W/m²
 2026-05-22T17:00:00-04:00,Temperature,18.277777777777782,°C
 2026-05-22T17:00:00-04:00,Wind Direction,91.0,deg
 2026-05-22T17:00:00-04:00,Wind Speed,2.995168,m/s
+2026-05-22T18:00:00-04:00,Dew Point,8.166666666666668,°C
+2026-05-22T18:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-05-22T18:00:00-04:00,Precipitation,0.0,mm
+2026-05-22T18:00:00-04:00,RH,57.0,%
+2026-05-22T18:00:00-04:00,Temperature,16.72222222222222,°C
+2026-05-22T18:00:00-04:00,Wind Direction,24.0,deg
+2026-05-22T18:00:00-04:00,Wind Speed,2.01168,m/s
