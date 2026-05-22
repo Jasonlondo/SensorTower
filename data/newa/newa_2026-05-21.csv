@@ -123,7 +123,7 @@ timestamp_local,variable,value,units
 2026-05-21T15:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-21T15:00:00-04:00,Precipitation,0.0,mm
 2026-05-21T15:00:00-04:00,RH,49.0,%
-2026-05-21T15:00:00-04:00,Solar Radiation,67.0,W/m²
+2026-05-21T15:00:00-04:00,Solar Radiation,68.0,W/m²
 2026-05-21T15:00:00-04:00,Temperature,14.000000000000002,°C
 2026-05-21T15:00:00-04:00,Wind Direction,21.0,deg
 2026-05-21T15:00:00-04:00,Wind Speed,2.68224,m/s
@@ -131,7 +131,7 @@ timestamp_local,variable,value,units
 2026-05-21T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-21T16:00:00-04:00,Precipitation,0.0,mm
 2026-05-21T16:00:00-04:00,RH,46.0,%
-2026-05-21T16:00:00-04:00,Solar Radiation,59.0,W/m²
+2026-05-21T16:00:00-04:00,Solar Radiation,62.0,W/m²
 2026-05-21T16:00:00-04:00,Temperature,14.222222222222221,°C
 2026-05-21T16:00:00-04:00,Wind Direction,24.0,deg
 2026-05-21T16:00:00-04:00,Wind Speed,2.995168,m/s
@@ -171,6 +171,23 @@ timestamp_local,variable,value,units
 2026-05-21T21:00:00-04:00,Leaf Wetness,3.0,min/h
 2026-05-21T21:00:00-04:00,Precipitation,0.0,mm
 2026-05-21T21:00:00-04:00,RH,59.0,%
+2026-05-21T21:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-05-21T21:00:00-04:00,Temperature,9.277777777777779,°C
 2026-05-21T21:00:00-04:00,Wind Direction,3.0,deg
 2026-05-21T21:00:00-04:00,Wind Speed,1.296416,m/s
+2026-05-21T22:00:00-04:00,Dew Point,1.2222222222222239,°C
+2026-05-21T22:00:00-04:00,Leaf Wetness,2.0,min/h
+2026-05-21T22:00:00-04:00,Precipitation,0.0,mm
+2026-05-21T22:00:00-04:00,RH,65.0,%
+2026-05-21T22:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-05-21T22:00:00-04:00,Temperature,7.3888888888888875,°C
+2026-05-21T22:00:00-04:00,Wind Direction,354.0,deg
+2026-05-21T22:00:00-04:00,Wind Speed,0.0,m/s
+2026-05-21T23:00:00-04:00,Dew Point,1.6111111111111103,°C
+2026-05-21T23:00:00-04:00,Leaf Wetness,58.0,min/h
+2026-05-21T23:00:00-04:00,Precipitation,0.0,mm
+2026-05-21T23:00:00-04:00,RH,76.0,%
+2026-05-21T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-05-21T23:00:00-04:00,Temperature,5.499999999999999,°C
+2026-05-21T23:00:00-04:00,Wind Direction,354.0,deg
+2026-05-21T23:00:00-04:00,Wind Speed,0.715264,m/s
