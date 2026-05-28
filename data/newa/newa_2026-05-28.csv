@@ -91,7 +91,7 @@ timestamp_local,variable,value,units
 2026-05-28T11:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-28T11:00:00-04:00,Precipitation,0.0,mm
 2026-05-28T11:00:00-04:00,RH,81.0,%
-2026-05-28T11:00:00-04:00,Solar Radiation,36.0,W/m²
+2026-05-28T11:00:00-04:00,Solar Radiation,34.0,W/m²
 2026-05-28T11:00:00-04:00,Temperature,13.88888888888889,°C
 2026-05-28T11:00:00-04:00,Wind Direction,345.0,deg
 2026-05-28T11:00:00-04:00,Wind Speed,2.68224,m/s
@@ -131,6 +131,7 @@ timestamp_local,variable,value,units
 2026-05-28T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-28T16:00:00-04:00,Precipitation,0.0,mm
 2026-05-28T16:00:00-04:00,RH,54.0,%
+2026-05-28T16:00:00-04:00,Solar Radiation,50.0,W/m²
 2026-05-28T16:00:00-04:00,Temperature,18.000000000000004,°C
 2026-05-28T16:00:00-04:00,Wind Direction,321.0,deg
 2026-05-28T16:00:00-04:00,Wind Speed,2.995168,m/s
@@ -138,6 +139,14 @@ timestamp_local,variable,value,units
 2026-05-28T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-28T17:00:00-04:00,Precipitation,0.0,mm
 2026-05-28T17:00:00-04:00,RH,54.0,%
+2026-05-28T17:00:00-04:00,Solar Radiation,47.0,W/m²
 2026-05-28T17:00:00-04:00,Temperature,18.277777777777782,°C
 2026-05-28T17:00:00-04:00,Wind Direction,334.0,deg
 2026-05-28T17:00:00-04:00,Wind Speed,3.7104320000000004,m/s
+2026-05-28T18:00:00-04:00,Dew Point,8.444444444444446,°C
+2026-05-28T18:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-05-28T18:00:00-04:00,Precipitation,0.0,mm
+2026-05-28T18:00:00-04:00,RH,55.0,%
+2026-05-28T18:00:00-04:00,Temperature,17.61111111111111,°C
+2026-05-28T18:00:00-04:00,Wind Direction,337.0,deg
+2026-05-28T18:00:00-04:00,Wind Speed,2.2799039999999997,m/s
