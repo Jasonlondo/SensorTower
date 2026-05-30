@@ -147,7 +147,7 @@ timestamp_local,variable,value,units
 2026-05-29T18:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-05-29T18:00:00-04:00,Precipitation,0.0,mm
 2026-05-29T18:00:00-04:00,RH,45.0,%
-2026-05-29T18:00:00-04:00,Solar Radiation,35.0,W/m²
+2026-05-29T18:00:00-04:00,Solar Radiation,34.0,W/m²
 2026-05-29T18:00:00-04:00,Temperature,21.722222222222218,°C
 2026-05-29T18:00:00-04:00,Wind Direction,268.0,deg
 2026-05-29T18:00:00-04:00,Wind Speed,5.990336,m/s
