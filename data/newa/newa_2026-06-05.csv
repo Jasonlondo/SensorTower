@@ -75,7 +75,7 @@ timestamp_local,variable,value,units
 2026-06-05T09:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-05T09:00:00-04:00,Precipitation,0.0,mm
 2026-06-05T09:00:00-04:00,RH,47.0,%
-2026-06-05T09:00:00-04:00,Solar Radiation,23.0,W/m²
+2026-06-05T09:00:00-04:00,Solar Radiation,26.0,W/m²
 2026-06-05T09:00:00-04:00,Temperature,25.27777777777778,°C
 2026-06-05T09:00:00-04:00,Wind Direction,274.0,deg
 2026-06-05T09:00:00-04:00,Wind Speed,1.296416,m/s
@@ -83,7 +83,7 @@ timestamp_local,variable,value,units
 2026-06-05T10:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-05T10:00:00-04:00,Precipitation,0.0,mm
 2026-06-05T10:00:00-04:00,RH,43.0,%
-2026-06-05T10:00:00-04:00,Solar Radiation,39.0,W/m²
+2026-06-05T10:00:00-04:00,Solar Radiation,38.0,W/m²
 2026-06-05T10:00:00-04:00,Temperature,27.88888888888889,°C
 2026-06-05T10:00:00-04:00,Wind Direction,253.0,deg
 2026-06-05T10:00:00-04:00,Wind Speed,1.296416,m/s
@@ -123,6 +123,7 @@ timestamp_local,variable,value,units
 2026-06-05T15:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-05T15:00:00-04:00,Precipitation,0.0,mm
 2026-06-05T15:00:00-04:00,RH,36.0,%
+2026-06-05T15:00:00-04:00,Solar Radiation,58.0,W/m²
 2026-06-05T15:00:00-04:00,Temperature,30.61111111111111,°C
 2026-06-05T15:00:00-04:00,Wind Direction,257.0,deg
 2026-06-05T15:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -130,6 +131,14 @@ timestamp_local,variable,value,units
 2026-06-05T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-05T16:00:00-04:00,Precipitation,0.0,mm
 2026-06-05T16:00:00-04:00,RH,38.0,%
+2026-06-05T16:00:00-04:00,Solar Radiation,42.0,W/m²
 2026-06-05T16:00:00-04:00,Temperature,29.77777777777778,°C
 2026-06-05T16:00:00-04:00,Wind Direction,292.0,deg
 2026-06-05T16:00:00-04:00,Wind Speed,2.2799039999999997,m/s
+2026-06-05T17:00:00-04:00,Dew Point,15.11111111111111,°C
+2026-06-05T17:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-06-05T17:00:00-04:00,Precipitation,0.0,mm
+2026-06-05T17:00:00-04:00,RH,38.0,%
+2026-06-05T17:00:00-04:00,Temperature,31.11111111111111,°C
+2026-06-05T17:00:00-04:00,Wind Direction,312.0,deg
+2026-06-05T17:00:00-04:00,Wind Speed,1.6987519999999998,m/s
