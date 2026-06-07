@@ -155,7 +155,7 @@ timestamp_local,variable,value,units
 2026-06-06T19:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-06T19:00:00-04:00,Precipitation,0.0,mm
 2026-06-06T19:00:00-04:00,RH,54.0,%
-2026-06-06T19:00:00-04:00,Solar Radiation,19.0,W/m²
+2026-06-06T19:00:00-04:00,Solar Radiation,20.0,W/m²
 2026-06-06T19:00:00-04:00,Temperature,25.222222222222225,°C
 2026-06-06T19:00:00-04:00,Wind Direction,296.0,deg
 2026-06-06T19:00:00-04:00,Wind Speed,5.006848,m/s
