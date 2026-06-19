@@ -107,6 +107,7 @@ timestamp_local,variable,value,units
 2026-06-19T13:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-19T13:00:00-04:00,Precipitation,0.0,mm
 2026-06-19T13:00:00-04:00,RH,55.0,%
+2026-06-19T13:00:00-04:00,Solar Radiation,64.0,W/m²
 2026-06-19T13:00:00-04:00,Temperature,22.38888888888889,°C
 2026-06-19T13:00:00-04:00,Wind Direction,284.0,deg
 2026-06-19T13:00:00-04:00,Wind Speed,5.006848,m/s
@@ -114,6 +115,14 @@ timestamp_local,variable,value,units
 2026-06-19T14:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-19T14:00:00-04:00,Precipitation,0.0,mm
 2026-06-19T14:00:00-04:00,RH,53.0,%
+2026-06-19T14:00:00-04:00,Solar Radiation,59.0,W/m²
 2026-06-19T14:00:00-04:00,Temperature,23.000000000000004,°C
 2026-06-19T14:00:00-04:00,Wind Direction,284.0,deg
 2026-06-19T14:00:00-04:00,Wind Speed,5.006848,m/s
+2026-06-19T15:00:00-04:00,Dew Point,12.833333333333334,°C
+2026-06-19T15:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-06-19T15:00:00-04:00,Precipitation,0.0,mm
+2026-06-19T15:00:00-04:00,RH,54.0,%
+2026-06-19T15:00:00-04:00,Temperature,22.61111111111111,°C
+2026-06-19T15:00:00-04:00,Wind Direction,300.0,deg
+2026-06-19T15:00:00-04:00,Wind Speed,3.978656,m/s
