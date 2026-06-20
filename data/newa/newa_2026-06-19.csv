@@ -131,7 +131,7 @@ timestamp_local,variable,value,units
 2026-06-19T16:00:00-04:00,Leaf Wetness,20.0,min/h
 2026-06-19T16:00:00-04:00,Precipitation,0.0,mm
 2026-06-19T16:00:00-04:00,RH,77.0,%
-2026-06-19T16:00:00-04:00,Solar Radiation,39.0,W/m²
+2026-06-19T16:00:00-04:00,Solar Radiation,40.0,W/m²
 2026-06-19T16:00:00-04:00,Temperature,16.38888888888889,°C
 2026-06-19T16:00:00-04:00,Wind Direction,286.0,deg
 2026-06-19T16:00:00-04:00,Wind Speed,2.01168,m/s
@@ -139,7 +139,7 @@ timestamp_local,variable,value,units
 2026-06-19T17:00:00-04:00,Leaf Wetness,15.0,min/h
 2026-06-19T17:00:00-04:00,Precipitation,0.254,mm
 2026-06-19T17:00:00-04:00,RH,74.0,%
-2026-06-19T17:00:00-04:00,Solar Radiation,24.0,W/m²
+2026-06-19T17:00:00-04:00,Solar Radiation,28.0,W/m²
 2026-06-19T17:00:00-04:00,Temperature,17.38888888888889,°C
 2026-06-19T17:00:00-04:00,Wind Direction,274.0,deg
 2026-06-19T17:00:00-04:00,Wind Speed,4.69392,m/s
@@ -171,6 +171,23 @@ timestamp_local,variable,value,units
 2026-06-19T21:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-19T21:00:00-04:00,Precipitation,0.0,mm
 2026-06-19T21:00:00-04:00,RH,74.0,%
+2026-06-19T21:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-06-19T21:00:00-04:00,Temperature,17.61111111111111,°C
 2026-06-19T21:00:00-04:00,Wind Direction,279.0,deg
 2026-06-19T21:00:00-04:00,Wind Speed,2.01168,m/s
+2026-06-19T22:00:00-04:00,Dew Point,10.833333333333334,°C
+2026-06-19T22:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-06-19T22:00:00-04:00,Precipitation,0.0,mm
+2026-06-19T22:00:00-04:00,RH,64.0,%
+2026-06-19T22:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-06-19T22:00:00-04:00,Temperature,17.72222222222222,°C
+2026-06-19T22:00:00-04:00,Wind Direction,281.0,deg
+2026-06-19T22:00:00-04:00,Wind Speed,3.308096,m/s
+2026-06-19T23:00:00-04:00,Dew Point,10.722222222222221,°C
+2026-06-19T23:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-06-19T23:00:00-04:00,Precipitation,0.0,mm
+2026-06-19T23:00:00-04:00,RH,67.0,%
+2026-06-19T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-06-19T23:00:00-04:00,Temperature,16.88888888888889,°C
+2026-06-19T23:00:00-04:00,Wind Direction,279.0,deg
+2026-06-19T23:00:00-04:00,Wind Speed,3.308096,m/s
