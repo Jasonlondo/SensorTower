@@ -1,0 +1,10 @@
+timestamp_local,variable,value,units
+2026-06-25T00:00:00-04:00,Dew Point,13.61111111111111,°C
+2026-06-25T00:00:00-04:00,Leaf Wetness,40.0,min/h
+2026-06-25T00:00:00-04:00,Precipitation,0.0,mm
+2026-06-25T00:00:00-04:00,RH,82.0,%
+2026-06-25T00:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-06-25T00:00:00-04:00,Temperature,16.72222222222222,°C
+2026-06-25T00:00:00-04:00,Wind Direction,256.0,deg
+2026-06-25T00:00:00-04:00,Wind Speed,0.715264,m/s
+2026-06-25T01:00:00-04:00,Precipitation,0.0,mm
