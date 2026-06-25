@@ -155,7 +155,7 @@ timestamp_local,variable,value,units
 2026-06-24T19:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-06-24T19:00:00-04:00,Precipitation,0.0,mm
 2026-06-24T19:00:00-04:00,RH,54.0,%
-2026-06-24T19:00:00-04:00,Solar Radiation,19.0,W/m²
+2026-06-24T19:00:00-04:00,Solar Radiation,18.0,W/m²
 2026-06-24T19:00:00-04:00,Temperature,22.77777777777778,°C
 2026-06-24T19:00:00-04:00,Wind Direction,330.0,deg
 2026-06-24T19:00:00-04:00,Wind Speed,0.312928,m/s
