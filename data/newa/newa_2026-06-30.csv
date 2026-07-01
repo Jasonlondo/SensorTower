@@ -155,7 +155,7 @@ timestamp_local,variable,value,units
 2026-06-30T19:00:00-04:00,Leaf Wetness,10.0,min/h
 2026-06-30T19:00:00-04:00,Precipitation,0.0,mm
 2026-06-30T19:00:00-04:00,RH,81.0,%
-2026-06-30T19:00:00-04:00,Solar Radiation,5.0,W/m²
+2026-06-30T19:00:00-04:00,Solar Radiation,6.0,W/m²
 2026-06-30T19:00:00-04:00,Temperature,27.5,°C
 2026-06-30T19:00:00-04:00,Wind Direction,80.0,deg
 2026-06-30T19:00:00-04:00,Wind Speed,0.715264,m/s
