@@ -91,6 +91,7 @@ timestamp_local,variable,value,units
 2026-07-02T11:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-02T11:00:00-04:00,Precipitation,0.0,mm
 2026-07-02T11:00:00-04:00,RH,68.0,%
+2026-07-02T11:00:00-04:00,Solar Radiation,57.0,W/m²
 2026-07-02T11:00:00-04:00,Temperature,32.27777777777778,°C
 2026-07-02T11:00:00-04:00,Wind Direction,281.0,deg
 2026-07-02T11:00:00-04:00,Wind Speed,2.2799039999999997,m/s
@@ -98,6 +99,14 @@ timestamp_local,variable,value,units
 2026-07-02T12:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-02T12:00:00-04:00,Precipitation,0.0,mm
 2026-07-02T12:00:00-04:00,RH,65.0,%
+2026-07-02T12:00:00-04:00,Solar Radiation,66.0,W/m²
 2026-07-02T12:00:00-04:00,Temperature,32.5,°C
 2026-07-02T12:00:00-04:00,Wind Direction,260.0,deg
 2026-07-02T12:00:00-04:00,Wind Speed,3.308096,m/s
+2026-07-02T13:00:00-04:00,Dew Point,24.944444444444446,°C
+2026-07-02T13:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-07-02T13:00:00-04:00,Precipitation,0.0,mm
+2026-07-02T13:00:00-04:00,RH,62.0,%
+2026-07-02T13:00:00-04:00,Temperature,33.22222222222222,°C
+2026-07-02T13:00:00-04:00,Wind Direction,253.0,deg
+2026-07-02T13:00:00-04:00,Wind Speed,2.995168,m/s
