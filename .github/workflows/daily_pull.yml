@@ -54,13 +54,20 @@ jobs:
           echo "Both LI-COR and NEWA pulls failed — flagging the run as failed."
           exit 1
 
+      - name: Update archive and prune stale raw files
+        # Rolls aged-out data into data/archive/tower_hourly_archive.csv (temp + RH,
+        # hourly) BEFORE deleting raw licor day-files older than the retention window.
+        # Idempotent — safe to run every cycle.
+        run: python scripts/build_archive.py
+
       - name: Commit new data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Pull latest in case another scheduled run landed between our checkout and push
           git pull --rebase origin main || true
-          git add data/licor_*.csv data/newa/*.csv
+          # -A so pruned (deleted) day-files and the archive are all staged, not just adds.
+          git add -A data/
           if git diff --cached --quiet; then
             echo "No new data to commit."
           else

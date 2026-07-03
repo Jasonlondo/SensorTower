@@ -29,6 +29,13 @@ from scripts.data_loader import (
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
 SENSOR_MAP_PATH = ROOT / "sensor_map.csv"
+ARCHIVE_PATH = DATA_DIR / "archive" / "tower_hourly_archive.csv"
+
+# The app loads only this many days of raw day-files into memory to stay under
+# Streamlit Community Cloud's ~1 GB RAM cap. Everything older lives in the hourly
+# archive (downloadable in the sidebar). Keep <= build_archive.RETENTION_DAYS (35)
+# so the loaded window never outruns what raw files still exist on disk.
+APP_WINDOW_DAYS = 30
 
 st.set_page_config(
     page_title="Sensor Tower — Apple Canopy Frost Monitor",
@@ -38,13 +45,19 @@ st.set_page_config(
 
 
 @st.cache_data(ttl=600)
-def cached_load_all() -> pd.DataFrame:
-    return load_all(DATA_DIR, SENSOR_MAP_PATH)
+def cached_load_all(window_days: int) -> pd.DataFrame:
+    return load_all(DATA_DIR, SENSOR_MAP_PATH, window_days=window_days)
 
 
 @st.cache_data(ttl=600)
-def cached_load_newa() -> pd.DataFrame:
-    return load_newa(DATA_DIR)
+def cached_load_newa(window_days: int) -> pd.DataFrame:
+    return load_newa(DATA_DIR, window_days=window_days)
+
+
+@st.cache_data(ttl=600)
+def cached_archive_bytes() -> bytes | None:
+    """Raw bytes of the downloadable hourly archive, or None if it doesn't exist yet."""
+    return ARCHIVE_PATH.read_bytes() if ARCHIVE_PATH.exists() else None
 
 
 def c_to_f(c: float | pd.Series) -> float | pd.Series:
@@ -66,12 +79,12 @@ def show_chart(fig: go.Figure, yformat: str = ".2f") -> None:
 st.sidebar.title("🌡️ Sensor Tower")
 st.sidebar.caption("Cornell AgriTech — Honeycrisp/Fuji apple block")
 
-df = cached_load_all()
+df = cached_load_all(APP_WINDOW_DAYS)
 if df.empty:
     st.error("No data available yet. Check that CSVs exist in `data/` and that the daily pull has run.")
     st.stop()
 
-newa_all = cached_load_newa()
+newa_all = cached_load_newa(APP_WINDOW_DAYS)
 
 # Consistent NEWA styling wherever we overlay it on tower charts
 NEWA_COLOR = "#d62728"
@@ -99,7 +112,7 @@ max_dt = df["datetime_local"].max()
 # Time-range preset selector — clearer than a free-form date picker
 preset = st.sidebar.radio(
     "Time range",
-    ["Last 24 h", "Last 3 days", "Last 7 days", "Last 30 days", "All data", "Custom…"],
+    ["Last 24 h", "Last 3 days", "Last 7 days", "Last 30 days", "Full loaded window", "Custom…"],
     index=1,
 )
 
@@ -115,7 +128,7 @@ elif preset == "Last 7 days":
 elif preset == "Last 30 days":
     start_ts = max_dt - pd.Timedelta(days=30)
     end_ts = max_dt + pd.Timedelta(minutes=5)
-elif preset == "All data":
+elif preset == "Full loaded window":
     start_ts = min_dt - pd.Timedelta(minutes=5)
     end_ts = max_dt + pd.Timedelta(minutes=5)
 else:  # Custom…
@@ -138,8 +151,26 @@ df_win = df.loc[mask].copy()
 
 st.sidebar.caption(
     f"Latest reading: **{max_dt.strftime('%Y-%m-%d %H:%M %Z')}**  \n"
-    f"Record span: {min_dt.strftime('%Y-%m-%d')} → {max_dt.strftime('%Y-%m-%d')}"
+    f"Loaded window: {min_dt.strftime('%Y-%m-%d')} → {max_dt.strftime('%Y-%m-%d')} "
+    f"(most recent ~{APP_WINDOW_DAYS} days)"
 )
+
+# Older data isn't loaded into the app (keeps it under Streamlit's RAM cap) but is
+# available in full at hourly resolution via the archive.
+_archive_bytes = cached_archive_bytes()
+if _archive_bytes is not None:
+    st.sidebar.download_button(
+        "⬇️ Download full history (hourly T + RH)",
+        data=_archive_bytes,
+        file_name="tower_hourly_archive.csv",
+        mime="text/csv",
+        use_container_width=True,
+        help=(
+            "Complete record since install, hourly temperature + relative humidity, "
+            "one column per sensor height. The dashboard itself shows only the most "
+            f"recent ~{APP_WINDOW_DAYS} days to stay fast."
+        ),
+    )
 
 page = st.sidebar.radio(
     "View",
