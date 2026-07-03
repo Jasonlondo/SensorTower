@@ -73,6 +73,16 @@ Temperature and dew point come back in **°F**; the parser converts to °C.
 
 Every 15-min cron run commits a `data: auto-pull …` entry if CSVs changed. This drives Streamlit rebuilds automatically. Commit noise is expected and desired — it's how freshness reaches the dashboard. If this becomes problematic, the alternative is to pull live from LI-COR inside the Streamlit app itself (requires the token as a Streamlit secret), but that was deliberately not done because it puts the token on a different platform and adds page-load latency.
 
+### App memory bound — rolling window + downloadable archive (2026-07-03)
+
+By July the committed day-files had accumulated to ~75 days. `load_all()` read *every* file on each rerun (~1.9 MB RAM/day, measured), which pushed the app past Streamlit Community Cloud's ~1 GB RAM cap. Fixed in commit `b9e892a`:
+
+- **Rolling window.** `data_loader.load_all` / `load_newa` take a `window_days` arg that filters day-files by their date-stamped *filenames before reading them*, so old data never enters RAM. The window is anchored on the **newest available file, not wall-clock** — a stalled or backfilling pipeline still shows its last N days instead of going blank. `window_days=None` keeps load-everything for the legacy analysis scripts. The app uses `APP_WINDOW_DAYS = 30`.
+- **Archive + prune.** `scripts/build_archive.py` rolls all history into `data/archive/tower_hourly_archive.csv` — **hourly means of Temperature + RH only**, wide (one column per height) — then prunes raw `licor_*.csv` older than `RETENTION_DAYS = 35`. Order is strict: **archive first, delete second**, so nothing is removed before it's captured; raw 5-min data also stays in git history. NEWA files (tiny) and the legacy freeze-event exports (irreplaceable) are never pruned.
+- **Download.** The app exposes the archive via a sidebar "Download full history" button; it never loads the archive into memory for charts.
+
+Post-fix growth: app RAM flat at ~35 days × 1.9 MB ≈ 67 MB; archive ≈ 1.2 MB/yr. **Invariant: keep `APP_WINDOW_DAYS ≤ RETENTION_DAYS`** so the loaded window never outruns the raw files still on disk.
+
 ### NEWA overlay on tower charts
 
 NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA as a red fine-dashed line (`line_color="#d62728"`, `dash="3,3"`, `mode="lines+markers"`) on every temperature and humidity chart makes the station's position in the vertical profile explicit at a glance.
@@ -88,12 +98,14 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 - `scripts/newa_api.py` — NEWA hourly client, unit conversions
 - `scripts/pull_daily.py` — rolling yesterday→now window, splits to per-UTC-day CSVs
 - `scripts/pull_newa_daily.py` — same pattern, per-local-day CSVs
-- `scripts/data_loader.py` — `load_all` (legacy+API dedup, phase column), `load_newa`, `wide_temperature`, `THRESHOLDS`
+- `scripts/data_loader.py` — `load_all` (legacy+API dedup, phase column, `window_days` rolling filter), `load_newa`, `wide_temperature`, `THRESHOLDS`
+- `scripts/build_archive.py` — rolls history into `data/archive/tower_hourly_archive.csv` (hourly T+RH) and prunes raw `licor_*.csv` older than 35 days; run by the workflow after each pull
 - `scripts/load_data.py` — legacy loader (kept for scripts 02/03)
 - `scripts/02_plot_freeze_event.py`, `03_figures_fahrenheit.py` — legacy per-event figure scripts
 
 ### Dashboard (`app.py`)
-- Sidebar: units (°C/°F), time-range presets (24h / 3d / 7d / 30d / All / Custom)
+- Loads only the most recent `APP_WINDOW_DAYS = 30` of data (rolling window) to stay under Streamlit's RAM cap; older history is in the downloadable archive
+- Sidebar: units (°C/°F), time-range presets (24h / 3d / 7d / 30d / Full loaded window / Custom), and a "Download full history (hourly T + RH)" button serving `data/archive/tower_hourly_archive.csv`
 - Latest-reading freshness indicator
 - **Overview** — custom HTML metric cards (small font to fit 9 cards) showing the *latest* reading regardless of window; vertical-gradient info box; chart that follows the sidebar time range, with a header that echoes the active preset ("Tower — last 24 h", etc.) and a NEWA overlay
 - **Time series** — full timeseries + delta-from-ground, both with NEWA overlay
@@ -103,7 +115,7 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 - **NEWA comparison** — dedicated page with per-height agreement stats, 1:1 scatter, RH+DP overlays
 
 ### Ops
-- `.github/workflows/daily_pull.yml` — every 15 min, rebases before commit, concurrency group
+- `.github/workflows/daily_pull.yml` — every 15 min, rebases before commit, concurrency group; runs `build_archive.py` after the pulls and stages prunes + archive via `git add -A data/`
 - `LICOR_TOKEN` in GitHub repo secrets
 - `.gitattributes` normalizes LF for CSV + source files
 - Streamlit Community Cloud app, deployed from `main`, auto-rebuild on push
@@ -166,10 +178,12 @@ SensorTower/
 │   ├── licor_api.py, newa_api.py
 │   ├── pull_daily.py, pull_newa_daily.py
 │   ├── data_loader.py, load_data.py
+│   ├── build_archive.py                            # hourly T+RH archive + prune raw files
 │   └── 02_plot_freeze_event.py, 03_figures_fahrenheit.py
 ├── data/
 │   ├── freeze2-*.csv, freezefrost20260421c-*.csv   # legacy datalogger wide CSVs
-│   ├── licor_YYYY-MM-DD.csv                         # per-UTC-day long CSVs
+│   ├── licor_YYYY-MM-DD.csv                         # per-UTC-day long CSVs (last ~35 days)
+│   ├── archive/tower_hourly_archive.csv            # full history, hourly T+RH, downloadable
 │   └── newa/newa_YYYY-MM-DD.csv                     # per-local-day NEWA long CSVs
 └── outputs/                                          # static figures from legacy scripts
 ```
