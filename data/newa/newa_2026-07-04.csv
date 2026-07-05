@@ -139,7 +139,7 @@ timestamp_local,variable,value,units
 2026-07-04T17:00:00-04:00,Leaf Wetness,5.0,min/h
 2026-07-04T17:00:00-04:00,Precipitation,0.0,mm
 2026-07-04T17:00:00-04:00,RH,90.0,%
-2026-07-04T17:00:00-04:00,Solar Radiation,17.0,W/m²
+2026-07-04T17:00:00-04:00,Solar Radiation,16.0,W/m²
 2026-07-04T17:00:00-04:00,Temperature,23.72222222222222,°C
 2026-07-04T17:00:00-04:00,Wind Direction,17.0,deg
 2026-07-04T17:00:00-04:00,Wind Speed,3.978656,m/s
@@ -163,6 +163,7 @@ timestamp_local,variable,value,units
 2026-07-04T20:00:00-04:00,Leaf Wetness,12.0,min/h
 2026-07-04T20:00:00-04:00,Precipitation,0.0,mm
 2026-07-04T20:00:00-04:00,RH,90.0,%
+2026-07-04T20:00:00-04:00,Solar Radiation,2.0,W/m²
 2026-07-04T20:00:00-04:00,Temperature,23.111111111111107,°C
 2026-07-04T20:00:00-04:00,Wind Direction,0.0,deg
 2026-07-04T20:00:00-04:00,Wind Speed,0.312928,m/s
@@ -170,6 +171,23 @@ timestamp_local,variable,value,units
 2026-07-04T21:00:00-04:00,Leaf Wetness,37.0,min/h
 2026-07-04T21:00:00-04:00,Precipitation,0.0,mm
 2026-07-04T21:00:00-04:00,RH,92.0,%
+2026-07-04T21:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-07-04T21:00:00-04:00,Temperature,21.22222222222222,°C
 2026-07-04T21:00:00-04:00,Wind Direction,0.0,deg
 2026-07-04T21:00:00-04:00,Wind Speed,0.0,m/s
+2026-07-04T22:00:00-04:00,Dew Point,20.38888888888889,°C
+2026-07-04T22:00:00-04:00,Leaf Wetness,60.0,min/h
+2026-07-04T22:00:00-04:00,Precipitation,0.0,mm
+2026-07-04T22:00:00-04:00,RH,95.0,%
+2026-07-04T22:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-07-04T22:00:00-04:00,Temperature,21.22222222222222,°C
+2026-07-04T22:00:00-04:00,Wind Direction,0.0,deg
+2026-07-04T22:00:00-04:00,Wind Speed,0.0,m/s
+2026-07-04T23:00:00-04:00,Dew Point,20.833333333333332,°C
+2026-07-04T23:00:00-04:00,Leaf Wetness,60.0,min/h
+2026-07-04T23:00:00-04:00,Precipitation,0.0,mm
+2026-07-04T23:00:00-04:00,RH,96.0,%
+2026-07-04T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-07-04T23:00:00-04:00,Temperature,21.5,°C
+2026-07-04T23:00:00-04:00,Wind Direction,0.0,deg
+2026-07-04T23:00:00-04:00,Wind Speed,0.0,m/s
