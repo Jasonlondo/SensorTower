@@ -131,7 +131,7 @@ timestamp_local,variable,value,units
 2026-07-10T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-10T16:00:00-04:00,Precipitation,0.0,mm
 2026-07-10T16:00:00-04:00,RH,71.0,%
-2026-07-10T16:00:00-04:00,Solar Radiation,60.0,W/m²
+2026-07-10T16:00:00-04:00,Solar Radiation,61.0,W/m²
 2026-07-10T16:00:00-04:00,Temperature,26.0,°C
 2026-07-10T16:00:00-04:00,Wind Direction,32.0,deg
 2026-07-10T16:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -139,7 +139,7 @@ timestamp_local,variable,value,units
 2026-07-10T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-10T17:00:00-04:00,Precipitation,0.0,mm
 2026-07-10T17:00:00-04:00,RH,59.0,%
-2026-07-10T17:00:00-04:00,Solar Radiation,49.0,W/m²
+2026-07-10T17:00:00-04:00,Solar Radiation,50.0,W/m²
 2026-07-10T17:00:00-04:00,Temperature,26.722222222222218,°C
 2026-07-10T17:00:00-04:00,Wind Direction,15.0,deg
 2026-07-10T17:00:00-04:00,Wind Speed,2.01168,m/s
@@ -179,6 +179,7 @@ timestamp_local,variable,value,units
 2026-07-10T22:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-07-10T22:00:00-04:00,Precipitation,0.0,mm
 2026-07-10T22:00:00-04:00,RH,92.0,%
+2026-07-10T22:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-07-10T22:00:00-04:00,Temperature,18.77777777777778,°C
 2026-07-10T22:00:00-04:00,Wind Direction,156.0,deg
 2026-07-10T22:00:00-04:00,Wind Speed,0.0,m/s
@@ -186,6 +187,7 @@ timestamp_local,variable,value,units
 2026-07-10T23:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-07-10T23:00:00-04:00,Precipitation,0.0,mm
 2026-07-10T23:00:00-04:00,RH,94.0,%
+2026-07-10T23:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-07-10T23:00:00-04:00,Temperature,18.277777777777782,°C
 2026-07-10T23:00:00-04:00,Wind Direction,358.0,deg
 2026-07-10T23:00:00-04:00,Wind Speed,0.715264,m/s
