@@ -131,7 +131,7 @@ timestamp_local,variable,value,units
 2026-07-11T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-11T16:00:00-04:00,Precipitation,0.0,mm
 2026-07-11T16:00:00-04:00,RH,59.0,%
-2026-07-11T16:00:00-04:00,Solar Radiation,61.0,W/m²
+2026-07-11T16:00:00-04:00,Solar Radiation,60.0,W/m²
 2026-07-11T16:00:00-04:00,Temperature,26.77777777777778,°C
 2026-07-11T16:00:00-04:00,Wind Direction,37.0,deg
 2026-07-11T16:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -139,7 +139,7 @@ timestamp_local,variable,value,units
 2026-07-11T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-11T17:00:00-04:00,Precipitation,0.0,mm
 2026-07-11T17:00:00-04:00,RH,59.0,%
-2026-07-11T17:00:00-04:00,Solar Radiation,49.0,W/m²
+2026-07-11T17:00:00-04:00,Solar Radiation,50.0,W/m²
 2026-07-11T17:00:00-04:00,Temperature,26.38888888888889,°C
 2026-07-11T17:00:00-04:00,Wind Direction,13.0,deg
 2026-07-11T17:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -183,4 +183,11 @@ timestamp_local,variable,value,units
 2026-07-11T22:00:00-04:00,Temperature,17.38888888888889,°C
 2026-07-11T22:00:00-04:00,Wind Direction,310.0,deg
 2026-07-11T22:00:00-04:00,Wind Speed,0.715264,m/s
+2026-07-11T23:00:00-04:00,Dew Point,13.722222222222223,°C
+2026-07-11T23:00:00-04:00,Leaf Wetness,47.0,min/h
 2026-07-11T23:00:00-04:00,Precipitation,0.0,mm
+2026-07-11T23:00:00-04:00,RH,76.0,%
+2026-07-11T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-07-11T23:00:00-04:00,Temperature,18.000000000000004,°C
+2026-07-11T23:00:00-04:00,Wind Direction,302.0,deg
+2026-07-11T23:00:00-04:00,Wind Speed,0.715264,m/s
