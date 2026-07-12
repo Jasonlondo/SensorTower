@@ -131,6 +131,7 @@ timestamp_local,variable,value,units
 2026-07-12T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-12T16:00:00-04:00,Precipitation,0.0,mm
 2026-07-12T16:00:00-04:00,RH,43.0,%
+2026-07-12T16:00:00-04:00,Solar Radiation,61.0,W/m²
 2026-07-12T16:00:00-04:00,Temperature,28.000000000000004,°C
 2026-07-12T16:00:00-04:00,Wind Direction,48.0,deg
 2026-07-12T16:00:00-04:00,Wind Speed,2.2799039999999997,m/s
