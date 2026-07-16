@@ -91,7 +91,7 @@ timestamp_local,variable,value,units
 2026-07-16T11:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-16T11:00:00-04:00,Precipitation,0.0,mm
 2026-07-16T11:00:00-04:00,RH,60.0,%
-2026-07-16T11:00:00-04:00,Solar Radiation,38.0,W/m²
+2026-07-16T11:00:00-04:00,Solar Radiation,33.0,W/m²
 2026-07-16T11:00:00-04:00,Temperature,25.611111111111107,°C
 2026-07-16T11:00:00-04:00,Wind Direction,263.0,deg
 2026-07-16T11:00:00-04:00,Wind Speed,3.308096,m/s
@@ -139,6 +139,7 @@ timestamp_local,variable,value,units
 2026-07-16T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-16T17:00:00-04:00,Precipitation,0.0,mm
 2026-07-16T17:00:00-04:00,RH,42.0,%
+2026-07-16T17:00:00-04:00,Solar Radiation,49.0,W/m²
 2026-07-16T17:00:00-04:00,Temperature,28.72222222222222,°C
 2026-07-16T17:00:00-04:00,Wind Direction,302.0,deg
 2026-07-16T17:00:00-04:00,Wind Speed,2.995168,m/s
