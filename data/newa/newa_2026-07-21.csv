@@ -107,6 +107,16 @@ timestamp_local,variable,value,units
 2026-07-21T13:00:00-04:00,Leaf Wetness,1.0,min/h
 2026-07-21T13:00:00-04:00,Precipitation,0.0,mm
 2026-07-21T13:00:00-04:00,RH,75.0,%
+2026-07-21T13:00:00-04:00,Solar Radiation,19.0,W/m²
 2026-07-21T13:00:00-04:00,Temperature,24.27777777777778,°C
 2026-07-21T13:00:00-04:00,Wind Direction,236.0,deg
 2026-07-21T13:00:00-04:00,Wind Speed,5.006848,m/s
+2026-07-21T14:00:00-04:00,Dew Point,17.0,°C
+2026-07-21T14:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-07-21T14:00:00-04:00,Precipitation,0.0,mm
+2026-07-21T14:00:00-04:00,RH,61.0,%
+2026-07-21T14:00:00-04:00,Solar Radiation,42.0,W/m²
+2026-07-21T14:00:00-04:00,Temperature,24.944444444444446,°C
+2026-07-21T14:00:00-04:00,Wind Direction,192.0,deg
+2026-07-21T14:00:00-04:00,Wind Speed,5.498592,m/s
+2026-07-21T15:00:00-04:00,Precipitation,0.0,mm
