@@ -107,6 +107,7 @@ timestamp_local,variable,value,units
 2026-07-24T13:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-24T13:00:00-04:00,Precipitation,0.0,mm
 2026-07-24T13:00:00-04:00,RH,50.0,%
+2026-07-24T13:00:00-04:00,Solar Radiation,72.0,W/m²
 2026-07-24T13:00:00-04:00,Temperature,24.88888888888889,°C
 2026-07-24T13:00:00-04:00,Wind Direction,129.0,deg
 2026-07-24T13:00:00-04:00,Wind Speed,3.308096,m/s
@@ -114,6 +115,14 @@ timestamp_local,variable,value,units
 2026-07-24T14:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-07-24T14:00:00-04:00,Precipitation,0.0,mm
 2026-07-24T14:00:00-04:00,RH,47.0,%
+2026-07-24T14:00:00-04:00,Solar Radiation,71.0,W/m²
 2026-07-24T14:00:00-04:00,Temperature,26.0,°C
 2026-07-24T14:00:00-04:00,Wind Direction,112.0,deg
 2026-07-24T14:00:00-04:00,Wind Speed,2.995168,m/s
+2026-07-24T15:00:00-04:00,Dew Point,13.333333333333334,°C
+2026-07-24T15:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-07-24T15:00:00-04:00,Precipitation,0.0,mm
+2026-07-24T15:00:00-04:00,RH,45.0,%
+2026-07-24T15:00:00-04:00,Temperature,26.22222222222222,°C
+2026-07-24T15:00:00-04:00,Wind Direction,143.0,deg
+2026-07-24T15:00:00-04:00,Wind Speed,2.2799039999999997,m/s
