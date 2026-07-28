@@ -75,7 +75,7 @@ timestamp_local,variable,value,units
 2026-07-28T09:00:00-04:00,Leaf Wetness,38.0,min/h
 2026-07-28T09:00:00-04:00,Precipitation,0.0,mm
 2026-07-28T09:00:00-04:00,RH,93.0,%
-2026-07-28T09:00:00-04:00,Solar Radiation,13.0,W/m²
+2026-07-28T09:00:00-04:00,Solar Radiation,14.0,W/m²
 2026-07-28T09:00:00-04:00,Temperature,20.222222222222225,°C
 2026-07-28T09:00:00-04:00,Wind Direction,218.0,deg
 2026-07-28T09:00:00-04:00,Wind Speed,2.68224,m/s
@@ -123,6 +123,14 @@ timestamp_local,variable,value,units
 2026-07-28T15:00:00-04:00,Leaf Wetness,9.0,min/h
 2026-07-28T15:00:00-04:00,Precipitation,0.0,mm
 2026-07-28T15:00:00-04:00,RH,88.0,%
+2026-07-28T15:00:00-04:00,Solar Radiation,30.0,W/m²
 2026-07-28T15:00:00-04:00,Temperature,23.22222222222222,°C
 2026-07-28T15:00:00-04:00,Wind Direction,94.0,deg
 2026-07-28T15:00:00-04:00,Wind Speed,0.983488,m/s
+2026-07-28T16:00:00-04:00,Dew Point,20.777777777777782,°C
+2026-07-28T16:00:00-04:00,Leaf Wetness,5.0,min/h
+2026-07-28T16:00:00-04:00,Precipitation,0.0,mm
+2026-07-28T16:00:00-04:00,RH,88.0,%
+2026-07-28T16:00:00-04:00,Temperature,22.88888888888889,°C
+2026-07-28T16:00:00-04:00,Wind Direction,91.0,deg
+2026-07-28T16:00:00-04:00,Wind Speed,1.6987519999999998,m/s
