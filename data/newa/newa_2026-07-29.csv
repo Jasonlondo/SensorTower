@@ -83,7 +83,7 @@ timestamp_local,variable,value,units
 2026-07-29T10:00:00-04:00,Leaf Wetness,34.0,min/h
 2026-07-29T10:00:00-04:00,Precipitation,0.0,mm
 2026-07-29T10:00:00-04:00,RH,97.0,%
-2026-07-29T10:00:00-04:00,Solar Radiation,20.0,W/m²
+2026-07-29T10:00:00-04:00,Solar Radiation,19.0,W/m²
 2026-07-29T10:00:00-04:00,Temperature,20.27777777777778,°C
 2026-07-29T10:00:00-04:00,Wind Direction,317.0,deg
 2026-07-29T10:00:00-04:00,Wind Speed,1.296416,m/s
@@ -131,6 +131,7 @@ timestamp_local,variable,value,units
 2026-07-29T16:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-07-29T16:00:00-04:00,Precipitation,2.032,mm
 2026-07-29T16:00:00-04:00,RH,98.0,%
+2026-07-29T16:00:00-04:00,Solar Radiation,34.0,W/m²
 2026-07-29T16:00:00-04:00,Temperature,18.61111111111111,°C
 2026-07-29T16:00:00-04:00,Wind Direction,347.0,deg
 2026-07-29T16:00:00-04:00,Wind Speed,2.2799039999999997,m/s
@@ -141,3 +142,10 @@ timestamp_local,variable,value,units
 2026-07-29T17:00:00-04:00,Temperature,19.222222222222218,°C
 2026-07-29T17:00:00-04:00,Wind Direction,303.0,deg
 2026-07-29T17:00:00-04:00,Wind Speed,2.01168,m/s
+2026-07-29T18:00:00-04:00,Dew Point,19.055555555555557,°C
+2026-07-29T18:00:00-04:00,Leaf Wetness,12.0,min/h
+2026-07-29T18:00:00-04:00,Precipitation,0.0,mm
+2026-07-29T18:00:00-04:00,RH,92.0,%
+2026-07-29T18:00:00-04:00,Temperature,20.38888888888889,°C
+2026-07-29T18:00:00-04:00,Wind Direction,336.0,deg
+2026-07-29T18:00:00-04:00,Wind Speed,1.6987519999999998,m/s
