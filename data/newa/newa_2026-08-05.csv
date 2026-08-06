@@ -107,7 +107,7 @@ timestamp_local,variable,value,units
 2026-08-05T13:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-08-05T13:00:00-04:00,Precipitation,0.0,mm
 2026-08-05T13:00:00-04:00,RH,62.0,%
-2026-08-05T13:00:00-04:00,Solar Radiation,59.0,W/m²
+2026-08-05T13:00:00-04:00,Solar Radiation,58.0,W/m²
 2026-08-05T13:00:00-04:00,Temperature,28.77777777777778,°C
 2026-08-05T13:00:00-04:00,Wind Direction,119.0,deg
 2026-08-05T13:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -147,6 +147,7 @@ timestamp_local,variable,value,units
 2026-08-05T18:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-08-05T18:00:00-04:00,Precipitation,0.0,mm
 2026-08-05T18:00:00-04:00,RH,53.0,%
+2026-08-05T18:00:00-04:00,Solar Radiation,19.0,W/m²
 2026-08-05T18:00:00-04:00,Temperature,30.77777777777778,°C
 2026-08-05T18:00:00-04:00,Wind Direction,139.0,deg
 2026-08-05T18:00:00-04:00,Wind Speed,2.995168,m/s
@@ -154,6 +155,14 @@ timestamp_local,variable,value,units
 2026-08-05T19:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-08-05T19:00:00-04:00,Precipitation,0.0,mm
 2026-08-05T19:00:00-04:00,RH,61.0,%
+2026-08-05T19:00:00-04:00,Solar Radiation,8.0,W/m²
 2026-08-05T19:00:00-04:00,Temperature,28.77777777777778,°C
 2026-08-05T19:00:00-04:00,Wind Direction,133.0,deg
 2026-08-05T19:00:00-04:00,Wind Speed,1.6987519999999998,m/s
+2026-08-05T20:00:00-04:00,Dew Point,20.27777777777778,°C
+2026-08-05T20:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-08-05T20:00:00-04:00,Precipitation,0.0,mm
+2026-08-05T20:00:00-04:00,RH,64.0,%
+2026-08-05T20:00:00-04:00,Temperature,27.722222222222225,°C
+2026-08-05T20:00:00-04:00,Wind Direction,160.0,deg
+2026-08-05T20:00:00-04:00,Wind Speed,0.715264,m/s
