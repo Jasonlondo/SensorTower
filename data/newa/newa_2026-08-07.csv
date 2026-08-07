@@ -131,6 +131,8 @@ timestamp_local,variable,value,units
 2026-08-07T16:00:00-04:00,Leaf Wetness,16.0,min/h
 2026-08-07T16:00:00-04:00,Precipitation,0.0,mm
 2026-08-07T16:00:00-04:00,RH,81.0,%
+2026-08-07T16:00:00-04:00,Solar Radiation,46.0,W/m²
 2026-08-07T16:00:00-04:00,Temperature,26.0,°C
 2026-08-07T16:00:00-04:00,Wind Direction,7.0,deg
 2026-08-07T16:00:00-04:00,Wind Speed,1.296416,m/s
+2026-08-07T17:00:00-04:00,Precipitation,0.0,mm
