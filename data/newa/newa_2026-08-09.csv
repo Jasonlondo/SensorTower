@@ -79,4 +79,12 @@ timestamp_local,variable,value,units
 2026-08-09T09:00:00-04:00,Temperature,21.666666666666668,°C
 2026-08-09T09:00:00-04:00,Wind Direction,274.0,deg
 2026-08-09T09:00:00-04:00,Wind Speed,3.12928,m/s
+2026-08-09T10:00:00-04:00,Dew Point,15.5,°C
+2026-08-09T10:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-08-09T10:00:00-04:00,Precipitation,0.0,mm
+2026-08-09T10:00:00-04:00,RH,65.0,%
+2026-08-09T10:00:00-04:00,Solar Radiation,40.0,W/m²
+2026-08-09T10:00:00-04:00,Temperature,22.5,°C
+2026-08-09T10:00:00-04:00,Wind Direction,292.0,deg
+2026-08-09T10:00:00-04:00,Wind Speed,3.531616,m/s
+2026-08-09T11:00:00-04:00,Precipitation,0.0,mm
