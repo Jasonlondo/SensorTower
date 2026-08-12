@@ -123,6 +123,7 @@ timestamp_local,variable,value,units
 2026-08-12T15:00:00-04:00,Leaf Wetness,26.0,min/h
 2026-08-12T15:00:00-04:00,Precipitation,0.0,mm
 2026-08-12T15:00:00-04:00,RH,78.0,%
+2026-08-12T15:00:00-04:00,Solar Radiation,16.0,W/m²
 2026-08-12T15:00:00-04:00,Temperature,23.5,°C
 2026-08-12T15:00:00-04:00,Wind Direction,317.0,deg
 2026-08-12T15:00:00-04:00,Wind Speed,0.983488,m/s
