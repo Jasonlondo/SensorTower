@@ -155,6 +155,7 @@ timestamp_local,variable,value,units
 2026-08-14T19:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-08-14T19:00:00-04:00,Precipitation,0.0,mm
 2026-08-14T19:00:00-04:00,RH,64.0,%
+2026-08-14T19:00:00-04:00,Solar Radiation,14.0,W/m²
 2026-08-14T19:00:00-04:00,Temperature,24.111111111111114,°C
 2026-08-14T19:00:00-04:00,Wind Direction,28.0,deg
 2026-08-14T19:00:00-04:00,Wind Speed,3.308096,m/s
@@ -162,6 +163,8 @@ timestamp_local,variable,value,units
 2026-08-14T20:00:00-04:00,Leaf Wetness,2.0,min/h
 2026-08-14T20:00:00-04:00,Precipitation,0.0,mm
 2026-08-14T20:00:00-04:00,RH,80.0,%
+2026-08-14T20:00:00-04:00,Solar Radiation,2.0,W/m²
 2026-08-14T20:00:00-04:00,Temperature,20.777777777777782,°C
 2026-08-14T20:00:00-04:00,Wind Direction,45.0,deg
 2026-08-14T20:00:00-04:00,Wind Speed,1.296416,m/s
+2026-08-14T21:00:00-04:00,Precipitation,0.0,mm
