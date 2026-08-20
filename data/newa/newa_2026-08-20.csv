@@ -135,4 +135,12 @@ timestamp_local,variable,value,units
 2026-08-20T16:00:00-04:00,Temperature,20.222222222222225,°C
 2026-08-20T16:00:00-04:00,Wind Direction,208.0,deg
 2026-08-20T16:00:00-04:00,Wind Speed,0.983488,m/s
+2026-08-20T17:00:00-04:00,Dew Point,16.5,°C
+2026-08-20T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-08-20T17:00:00-04:00,Precipitation,0.0,mm
+2026-08-20T17:00:00-04:00,RH,78.0,%
+2026-08-20T17:00:00-04:00,Solar Radiation,27.0,W/m²
+2026-08-20T17:00:00-04:00,Temperature,20.555555555555557,°C
+2026-08-20T17:00:00-04:00,Wind Direction,23.0,deg
+2026-08-20T17:00:00-04:00,Wind Speed,2.190496,m/s
+2026-08-20T18:00:00-04:00,Precipitation,0.0,mm
