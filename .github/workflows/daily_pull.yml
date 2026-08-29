@@ -39,6 +39,7 @@ jobs:
           LICOR_TOKEN: ${{ secrets.LICOR_TOKEN }}
           LICOR_DEVICE_SN: ${{ vars.LICOR_DEVICE_SN || '22411541' }}
           PULL_DATE: ${{ github.event.inputs.pull_date }}
+          STALE_HOURS: ${{ vars.STALE_HOURS || '24' }}
         run: python scripts/pull_daily.py
 
       - name: Pull NEWA Geneva (AgriTech Gates) data
@@ -73,6 +74,20 @@ jobs:
           else
             git commit -m "data: auto-pull $(date -u +%Y-%m-%dT%H:%MZ)"
             git push
+          fi
+
+      - name: Alert on stale tower uplink
+        # pull_daily sets tower_stale=1 when the device's lastConnectionTime is older
+        # than STALE_HOURS. Runs last so data always commits first. Always surfaces a
+        # warning annotation; hard-fails the run once per day (12:00–12:14 UTC slot) so
+        # the outage emails the repo owner without one email per 15-min cycle while down.
+        if: always() && steps.licor.outputs.tower_stale == '1'
+        run: |
+          echo "::warning title=Tower uplink stale::LI-COR tower offline ${{ steps.licor.outputs.tower_stale_hours }}h — data buffering on the logger or uplink down."
+          H=$(date -u +%H); M=$((10#$(date -u +%M)))
+          if [ "$H" = "12" ] && [ "$M" -lt 15 ]; then
+            echo "Daily stale-tower alert: failing this run so it notifies."
+            exit 1
           fi
 
 concurrency:

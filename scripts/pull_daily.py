@@ -45,6 +45,53 @@ def resolve_window() -> tuple[datetime, datetime]:
     return start, now
 
 
+def _gh_write(var: str, key: str, value: str) -> None:
+    """Append 'key=value' to a GitHub Actions file ($GITHUB_OUTPUT/$GITHUB_STEP_SUMMARY). No-op locally."""
+    path = os.environ.get(var)
+    if not path:
+        return
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(f"{key}={value}\n" if key else f"{value}\n")
+
+
+def report_staleness(client: "LicorClient", n_rows: int) -> None:
+    """Warn loudly if the tower hasn't connected to the LI-COR cloud recently.
+
+    A dropped uplink makes the pull return zero rows while still exiting 0, so the
+    scheduled job stays green (see the July 2026 month-long silent outage). This
+    surfaces the device's lastConnectionTime as a GitHub Actions warning + step
+    output so a stall is visible within a day instead of at the next data request.
+    """
+    threshold = float(os.environ.get("STALE_HOURS", "24"))
+    try:
+        dev = client.list_devices(include_sensors=False)
+        last_conn = dev["devices"][0].get("lastConnectionTime")
+    except Exception as e:  # never let the health check break the pull
+        print(f"[staleness] could not read device status: {type(e).__name__}: {e}")
+        return
+    if not last_conn:
+        print("[staleness] device has no lastConnectionTime; skipping check")
+        return
+
+    last = datetime.fromisoformat(last_conn.replace("Z", "+00:00"))
+    hours = (datetime.now(timezone.utc) - last).total_seconds() / 3600.0
+    stale = hours > threshold
+    print(
+        f"[staleness] tower last cloud connection {hours:.1f}h ago "
+        f"(lastConnectionTime={last_conn}); this pull returned {n_rows} rows"
+    )
+    _gh_write("GITHUB_OUTPUT", "tower_stale", "1" if stale else "0")
+    _gh_write("GITHUB_OUTPUT", "tower_stale_hours", f"{hours:.1f}")
+    if stale:
+        msg = (
+            f"LI-COR tower has not connected to the cloud for {hours:.1f}h "
+            f"(threshold {threshold:.0f}h). Data may be buffering on the logger, "
+            f"or the field uplink is down."
+        )
+        print(f"::warning title=Tower uplink stale::{msg}")
+        _gh_write("GITHUB_STEP_SUMMARY", "", f"⚠️ **Tower uplink stale** — {msg}")
+
+
 def write_day_file(data_dir: Path, day_iso: str, rows: list[dict]) -> Path:
     rows.sort(key=lambda r: (r["timestamp_utc"], r["sensor_sn"], r["measurement_type"]))
     out_path = data_dir / f"licor_{day_iso}.csv"
@@ -87,6 +134,10 @@ def main() -> int:
     sensor_blocks = client.fetch_window_paginated(start, end)
     rows = sensors_to_long_records(sensor_blocks)
     print(f"[pull_daily] fetched {len(rows)} rows across {len(sensor_blocks)} sensor blocks")
+
+    # Health check runs regardless of whether rows came back — zero rows is itself
+    # the symptom of a dropped uplink, so this must fire before the early return.
+    report_staleness(client, len(rows))
 
     if not rows:
         print("[pull_daily] no data returned; skipping write")
