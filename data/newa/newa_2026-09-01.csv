@@ -1,0 +1,8 @@
+timestamp_local,variable,value,units
+2026-09-01T00:00:00-04:00,Dew Point,19.499999999999996,°C
+2026-09-01T00:00:00-04:00,Leaf Wetness,60.0,min/h
+2026-09-01T00:00:00-04:00,Precipitation,0.0,mm
+2026-09-01T00:00:00-04:00,RH,100.0,%
+2026-09-01T00:00:00-04:00,Temperature,19.499999999999996,°C
+2026-09-01T00:00:00-04:00,Wind Direction,199.0,deg
+2026-09-01T00:00:00-04:00,Wind Speed,0.0,m/s
