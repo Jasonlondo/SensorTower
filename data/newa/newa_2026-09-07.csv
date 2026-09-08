@@ -155,7 +155,7 @@ timestamp_local,variable,value,units
 2026-09-07T19:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-09-07T19:00:00-04:00,Precipitation,0.0,mm
 2026-09-07T19:00:00-04:00,RH,77.0,%
-2026-09-07T19:00:00-04:00,Solar Radiation,3.0,W/m²
+2026-09-07T19:00:00-04:00,Solar Radiation,4.0,W/m²
 2026-09-07T19:00:00-04:00,Temperature,19.777777777777775,°C
 2026-09-07T19:00:00-04:00,Wind Direction,25.0,deg
 2026-09-07T19:00:00-04:00,Wind Speed,0.0,m/s
