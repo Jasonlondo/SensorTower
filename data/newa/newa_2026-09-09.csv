@@ -139,7 +139,7 @@ timestamp_local,variable,value,units
 2026-09-09T17:00:00-04:00,Leaf Wetness,55.0,min/h
 2026-09-09T17:00:00-04:00,Precipitation,3.8099999999999996,mm
 2026-09-09T17:00:00-04:00,RH,96.0,%
-2026-09-09T17:00:00-04:00,Solar Radiation,12.0,W/m²
+2026-09-09T17:00:00-04:00,Solar Radiation,11.0,W/m²
 2026-09-09T17:00:00-04:00,Temperature,22.277777777777775,°C
 2026-09-09T17:00:00-04:00,Wind Direction,197.0,deg
 2026-09-09T17:00:00-04:00,Wind Speed,2.01168,m/s
@@ -187,6 +187,7 @@ timestamp_local,variable,value,units
 2026-09-09T23:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-09-09T23:00:00-04:00,Precipitation,2.2859999999999996,mm
 2026-09-09T23:00:00-04:00,RH,96.0,%
+2026-09-09T23:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-09-09T23:00:00-04:00,Temperature,21.722222222222218,°C
 2026-09-09T23:00:00-04:00,Wind Direction,258.0,deg
 2026-09-09T23:00:00-04:00,Wind Speed,0.983488,m/s
