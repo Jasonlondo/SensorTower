@@ -115,7 +115,7 @@ timestamp_local,variable,value,units
 2026-09-10T14:00:00-04:00,Leaf Wetness,9.0,min/h
 2026-09-10T14:00:00-04:00,Precipitation,0.0,mm
 2026-09-10T14:00:00-04:00,RH,55.0,%
-2026-09-10T14:00:00-04:00,Solar Radiation,61.0,W/m²
+2026-09-10T14:00:00-04:00,Solar Radiation,60.0,W/m²
 2026-09-10T14:00:00-04:00,Temperature,25.0,°C
 2026-09-10T14:00:00-04:00,Wind Direction,302.0,deg
 2026-09-10T14:00:00-04:00,Wind Speed,3.7104320000000004,m/s
@@ -163,6 +163,7 @@ timestamp_local,variable,value,units
 2026-09-10T20:00:00-04:00,Leaf Wetness,4.0,min/h
 2026-09-10T20:00:00-04:00,Precipitation,0.0,mm
 2026-09-10T20:00:00-04:00,RH,73.0,%
+2026-09-10T20:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-09-10T20:00:00-04:00,Temperature,20.11111111111111,°C
 2026-09-10T20:00:00-04:00,Wind Direction,278.0,deg
 2026-09-10T20:00:00-04:00,Wind Speed,0.983488,m/s
@@ -170,6 +171,23 @@ timestamp_local,variable,value,units
 2026-09-10T21:00:00-04:00,Leaf Wetness,12.0,min/h
 2026-09-10T21:00:00-04:00,Precipitation,0.0,mm
 2026-09-10T21:00:00-04:00,RH,74.0,%
+2026-09-10T21:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-09-10T21:00:00-04:00,Temperature,19.72222222222222,°C
 2026-09-10T21:00:00-04:00,Wind Direction,324.0,deg
 2026-09-10T21:00:00-04:00,Wind Speed,0.983488,m/s
+2026-09-10T22:00:00-04:00,Dew Point,15.11111111111111,°C
+2026-09-10T22:00:00-04:00,Leaf Wetness,12.0,min/h
+2026-09-10T22:00:00-04:00,Precipitation,0.0,mm
+2026-09-10T22:00:00-04:00,RH,80.0,%
+2026-09-10T22:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-09-10T22:00:00-04:00,Temperature,18.61111111111111,°C
+2026-09-10T22:00:00-04:00,Wind Direction,358.0,deg
+2026-09-10T22:00:00-04:00,Wind Speed,0.0,m/s
+2026-09-10T23:00:00-04:00,Dew Point,14.944444444444445,°C
+2026-09-10T23:00:00-04:00,Leaf Wetness,12.0,min/h
+2026-09-10T23:00:00-04:00,Precipitation,0.0,mm
+2026-09-10T23:00:00-04:00,RH,83.0,%
+2026-09-10T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-09-10T23:00:00-04:00,Temperature,17.88888888888889,°C
+2026-09-10T23:00:00-04:00,Wind Direction,306.0,deg
+2026-09-10T23:00:00-04:00,Wind Speed,0.715264,m/s
