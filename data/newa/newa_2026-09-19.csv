@@ -83,7 +83,7 @@ timestamp_local,variable,value,units
 2026-09-19T10:00:00-04:00,Leaf Wetness,15.0,min/h
 2026-09-19T10:00:00-04:00,Precipitation,0.0,mm
 2026-09-19T10:00:00-04:00,RH,75.0,%
-2026-09-19T10:00:00-04:00,Solar Radiation,29.0,W/m²
+2026-09-19T10:00:00-04:00,Solar Radiation,30.0,W/m²
 2026-09-19T10:00:00-04:00,Temperature,16.0,°C
 2026-09-19T10:00:00-04:00,Wind Direction,51.0,deg
 2026-09-19T10:00:00-04:00,Wind Speed,0.715264,m/s
@@ -91,7 +91,7 @@ timestamp_local,variable,value,units
 2026-09-19T11:00:00-04:00,Leaf Wetness,10.0,min/h
 2026-09-19T11:00:00-04:00,Precipitation,0.0,mm
 2026-09-19T11:00:00-04:00,RH,61.0,%
-2026-09-19T11:00:00-04:00,Solar Radiation,38.0,W/m²
+2026-09-19T11:00:00-04:00,Solar Radiation,36.0,W/m²
 2026-09-19T11:00:00-04:00,Temperature,16.5,°C
 2026-09-19T11:00:00-04:00,Wind Direction,198.0,deg
 2026-09-19T11:00:00-04:00,Wind Speed,0.715264,m/s
@@ -131,6 +131,16 @@ timestamp_local,variable,value,units
 2026-09-19T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-09-19T16:00:00-04:00,Precipitation,0.0,mm
 2026-09-19T16:00:00-04:00,RH,63.0,%
+2026-09-19T16:00:00-04:00,Solar Radiation,23.0,W/m²
 2026-09-19T16:00:00-04:00,Temperature,17.22222222222222,°C
 2026-09-19T16:00:00-04:00,Wind Direction,53.0,deg
 2026-09-19T16:00:00-04:00,Wind Speed,0.715264,m/s
+2026-09-19T17:00:00-04:00,Dew Point,10.777777777777779,°C
+2026-09-19T17:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-09-19T17:00:00-04:00,Precipitation,0.0,mm
+2026-09-19T17:00:00-04:00,RH,68.0,%
+2026-09-19T17:00:00-04:00,Solar Radiation,18.0,W/m²
+2026-09-19T17:00:00-04:00,Temperature,16.72222222222222,°C
+2026-09-19T17:00:00-04:00,Wind Direction,46.0,deg
+2026-09-19T17:00:00-04:00,Wind Speed,0.983488,m/s
+2026-09-19T18:00:00-04:00,Precipitation,0.0,mm
