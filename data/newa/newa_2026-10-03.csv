@@ -91,7 +91,7 @@ timestamp_local,variable,value,units
 2026-10-03T11:00:00-04:00,Leaf Wetness,12.0,min/h
 2026-10-03T11:00:00-04:00,Precipitation,0.0,mm
 2026-10-03T11:00:00-04:00,RH,72.0,%
-2026-10-03T11:00:00-04:00,Solar Radiation,38.0,W/m²
+2026-10-03T11:00:00-04:00,Solar Radiation,37.0,W/m²
 2026-10-03T11:00:00-04:00,Temperature,13.88888888888889,°C
 2026-10-03T11:00:00-04:00,Wind Direction,22.0,deg
 2026-10-03T11:00:00-04:00,Wind Speed,3.308096,m/s
@@ -131,6 +131,7 @@ timestamp_local,variable,value,units
 2026-10-03T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-10-03T16:00:00-04:00,Precipitation,0.0,mm
 2026-10-03T16:00:00-04:00,RH,57.0,%
+2026-10-03T16:00:00-04:00,Solar Radiation,36.0,W/m²
 2026-10-03T16:00:00-04:00,Temperature,16.38888888888889,°C
 2026-10-03T16:00:00-04:00,Wind Direction,39.0,deg
 2026-10-03T16:00:00-04:00,Wind Speed,2.68224,m/s
@@ -138,6 +139,22 @@ timestamp_local,variable,value,units
 2026-10-03T17:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-10-03T17:00:00-04:00,Precipitation,0.0,mm
 2026-10-03T17:00:00-04:00,RH,60.0,%
+2026-10-03T17:00:00-04:00,Solar Radiation,22.0,W/m²
 2026-10-03T17:00:00-04:00,Temperature,15.5,°C
 2026-10-03T17:00:00-04:00,Wind Direction,14.0,deg
 2026-10-03T17:00:00-04:00,Wind Speed,2.2799039999999997,m/s
+2026-10-03T18:00:00-04:00,Dew Point,8.11111111111111,°C
+2026-10-03T18:00:00-04:00,Leaf Wetness,0.0,min/h
+2026-10-03T18:00:00-04:00,Precipitation,0.0,mm
+2026-10-03T18:00:00-04:00,RH,65.0,%
+2026-10-03T18:00:00-04:00,Solar Radiation,8.0,W/m²
+2026-10-03T18:00:00-04:00,Temperature,14.61111111111111,°C
+2026-10-03T18:00:00-04:00,Wind Direction,8.0,deg
+2026-10-03T18:00:00-04:00,Wind Speed,1.6987519999999998,m/s
+2026-10-03T19:00:00-04:00,Dew Point,7.222222222222222,°C
+2026-10-03T19:00:00-04:00,Leaf Wetness,5.0,min/h
+2026-10-03T19:00:00-04:00,Precipitation,0.0,mm
+2026-10-03T19:00:00-04:00,RH,77.0,%
+2026-10-03T19:00:00-04:00,Temperature,11.11111111111111,°C
+2026-10-03T19:00:00-04:00,Wind Direction,340.0,deg
+2026-10-03T19:00:00-04:00,Wind Speed,0.715264,m/s
