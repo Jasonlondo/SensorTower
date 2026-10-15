@@ -139,7 +139,7 @@ timestamp_local,variable,value,units
 2026-10-14T17:00:00-04:00,Leaf Wetness,12.0,min/h
 2026-10-14T17:00:00-04:00,Precipitation,0.0,mm
 2026-10-14T17:00:00-04:00,RH,83.0,%
-2026-10-14T17:00:00-04:00,Solar Radiation,7.0,W/m²
+2026-10-14T17:00:00-04:00,Solar Radiation,6.0,W/m²
 2026-10-14T17:00:00-04:00,Temperature,15.222222222222221,°C
 2026-10-14T17:00:00-04:00,Wind Direction,330.0,deg
 2026-10-14T17:00:00-04:00,Wind Speed,1.296416,m/s
@@ -163,6 +163,7 @@ timestamp_local,variable,value,units
 2026-10-14T20:00:00-04:00,Leaf Wetness,12.0,min/h
 2026-10-14T20:00:00-04:00,Precipitation,0.0,mm
 2026-10-14T20:00:00-04:00,RH,84.0,%
+2026-10-14T20:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-10-14T20:00:00-04:00,Temperature,13.499999999999998,°C
 2026-10-14T20:00:00-04:00,Wind Direction,336.0,deg
 2026-10-14T20:00:00-04:00,Wind Speed,2.2799039999999997,m/s
@@ -170,6 +171,23 @@ timestamp_local,variable,value,units
 2026-10-14T21:00:00-04:00,Leaf Wetness,12.0,min/h
 2026-10-14T21:00:00-04:00,Precipitation,0.0,mm
 2026-10-14T21:00:00-04:00,RH,86.0,%
+2026-10-14T21:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-10-14T21:00:00-04:00,Temperature,12.5,°C
 2026-10-14T21:00:00-04:00,Wind Direction,319.0,deg
 2026-10-14T21:00:00-04:00,Wind Speed,1.6987519999999998,m/s
+2026-10-14T22:00:00-04:00,Dew Point,9.888888888888888,°C
+2026-10-14T22:00:00-04:00,Leaf Wetness,12.0,min/h
+2026-10-14T22:00:00-04:00,Precipitation,0.0,mm
+2026-10-14T22:00:00-04:00,RH,87.0,%
+2026-10-14T22:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-10-14T22:00:00-04:00,Temperature,12.0,°C
+2026-10-14T22:00:00-04:00,Wind Direction,326.0,deg
+2026-10-14T22:00:00-04:00,Wind Speed,1.296416,m/s
+2026-10-14T23:00:00-04:00,Dew Point,9.333333333333332,°C
+2026-10-14T23:00:00-04:00,Leaf Wetness,13.0,min/h
+2026-10-14T23:00:00-04:00,Precipitation,0.0,mm
+2026-10-14T23:00:00-04:00,RH,88.0,%
+2026-10-14T23:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-10-14T23:00:00-04:00,Temperature,11.222222222222223,°C
+2026-10-14T23:00:00-04:00,Wind Direction,341.0,deg
+2026-10-14T23:00:00-04:00,Wind Speed,0.983488,m/s
