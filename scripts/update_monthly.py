@@ -80,7 +80,7 @@ def merge_into_months(fresh: pd.DataFrame) -> list[Path]:
         part = part.sort_index().reset_index()[monthly_columns()]
         new_text = part.to_csv(index=False, lineterminator="\n")
         if not path.exists() or path.read_text() != new_text:
-            path.write_text(new_text)
+            path.write_text(new_text, newline="\n")
             written.append(path)
     return written
 
