@@ -1,6 +1,6 @@
 # SensorTower Project
 
-> **Dashboard & deployment:** see [`README.md`](README.md) for the Streamlit app, daily GitHub Actions pull, and sensor_map crosswalk. This file documents the underlying physics, thresholds, and legacy analysis scripts.
+> **Dashboard & deployment:** see [`README.md`](README.md) for the GitHub Pages dashboard (https://jasonlondo.github.io/SensorTower/), the 15-min GitHub Actions pull and deploy, and the sensor_map crosswalk. This file documents the underlying physics, thresholds, and legacy analysis scripts.
 
 ## Project Overview
 

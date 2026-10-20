@@ -7,13 +7,13 @@ Short-lived task state belongs in GitHub issues or commit messages, not here.
 
 ## What this is
 
-A vertical temperature + humidity tower in an apple block at Cornell AgriTech (Geneva, NY), plus a Streamlit dashboard that makes the data immediately usable for frost/freeze management. The tower's job is to capture canopy-level microclimate that a single standard weather station misses.
+A vertical temperature + humidity tower in an apple block at Cornell AgriTech (Geneva, NY), plus a GitHub Pages dashboard that makes the data immediately usable for frost/freeze management. The tower's job is to capture canopy-level microclimate that a single standard weather station misses.
 
 - **PI:** Jason Londo, Cornell AgriTech
 - **Crops:** Honeycrisp and Fuji apple, semi-dwarf
 - **Tower:** One LI-COR / Onset HOBO RX2100 datalogger, 9 T+RH+DewPoint sensor heads at 2, 22, 42, 62, 82, 102, 122, 142, 162 in, 5-min cadence
 - **Install:** 2026-04-19 16:00 EDT; sensor height labels set in licor.cloud at 19:00 EDT
-- **Dashboard:** Streamlit Community Cloud, deployed from public GitHub repo `Jasonlondo/SensorTower`
+- **Dashboard:** GitHub Pages, https://jasonlondo.github.io/SensorTower/, built from public repo `Jasonlondo/SensorTower` (Streamlit Community Cloud until 2026-10-20)
 
 ---
 
@@ -28,7 +28,7 @@ A vertical temperature + humidity tower in an apple block at Cornell AgriTech (G
 ┌────────────────────┐        │ pull_newa_daily.py  │                 │
 │ NEWA / NRCC hourly │──API──►│ (rolling            │                 ▼
 │ hrly.nrcc...       │        │  yesterday→now      │        ┌──────────────────┐
-│ stnHrly            │        │  window)            │        │ Streamlit Cloud  │
+│ stnHrly            │        │  window)            │        │ GitHub Pages     │
 └────────────────────┘        └─────────────────────┘        │ auto-rebuilds    │
                                                              │ on every commit  │
                                                              └──────────────────┘
@@ -36,7 +36,7 @@ A vertical temperature + humidity tower in an apple block at Cornell AgriTech (G
 
 **Effective latency:** ~15–30 min (GitHub Actions scheduler adds 5–15 min jitter on top of the 15-min cron).
 
-**No secrets on Streamlit side.** The LI-COR token is a GitHub repository secret (`LICOR_TOKEN`). The app reads committed CSVs, never hits the API itself. NEWA needs no auth at all.
+**No secrets in the page.** The LI-COR token is a GitHub repository secret (`LICOR_TOKEN`). The site reads committed CSVs, never hits the API itself. NEWA needs no auth at all.
 
 ---
 
@@ -71,7 +71,7 @@ Temperature and dew point come back in **°F**; the parser converts to °C.
 
 ### Commit-on-every-run
 
-Every 15-min cron run commits a `data: auto-pull …` entry if CSVs changed. This drives Streamlit rebuilds automatically. Commit noise is expected and desired — it's how freshness reaches the dashboard. If this becomes problematic, the alternative is to pull live from LI-COR inside the Streamlit app itself (requires the token as a Streamlit secret), but that was deliberately not done because it puts the token on a different platform and adds page-load latency.
+Every 15-min cron run commits a `data: auto-pull …` entry if CSVs changed. The `deploy` job then rebuilds and publishes the Pages site. Commit noise is expected; the commits are the permanent data record.
 
 ### App memory bound — rolling window + downloadable archive (2026-07-03)
 
@@ -112,22 +112,22 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 - `scripts/load_data.py` — legacy loader (kept for scripts 02/03)
 - `scripts/02_plot_freeze_event.py`, `03_figures_fahrenheit.py` — legacy per-event figure scripts
 
-### Dashboard (`app.py`)
-- Loads only the most recent `APP_WINDOW_DAYS = 30` of data (rolling window) to stay under Streamlit's RAM cap; older history is in the downloadable archive
-- Sidebar: units (°C/°F), time-range presets (24h / 3d / 7d / 30d / Full loaded window / Custom), and a "Download full history (hourly T + RH)" button serving `data/archive/tower_hourly_archive.csv`
-- Latest-reading freshness indicator
-- **Overview** — custom HTML metric cards (small font to fit 9 cards) showing the *latest* reading regardless of window; vertical-gradient info box; chart that follows the sidebar time range, with a header that echoes the active preset ("Tower — last 24 h", etc.) and a NEWA overlay
-- **Time series** — full timeseries + delta-from-ground, both with NEWA overlay
-- **Inversions** — gradient chart with freezing-inversion shading (light blue rectangles where gradient > 0.3 AND ground < freeze line), heatmap, peak-events table
-- **Threshold exposure** — MSU bud-stage selector (default Full bloom), **per-event tables** (one per frost night with ≥1 min of 10% kill exposure, laid out in a 2-column grid), and a per-night bar chart (0–720 min fixed axis + hours on right side). Nights are defined noon-to-noon so events crossing midnight stay in one bucket.
-- **Humidity & dew point** — per-height lines + NEWA overlay
-- **NEWA comparison** — dedicated page with per-height agreement stats, 1:1 scatter, RH+DP overlays
+### Dashboard (`site/index.html`, GitHub Pages)
+- Live at https://jasonlondo.github.io/SensorTower/ and linked from the lab website tools page. Plain JS + Plotly; loads only the monthly files a window needs
+- Controls: units (°C/°F), time range (last 24 h / 7 days / 30 days / custom up to 30 days anywhere in the record), "Download this window (5-min CSV)", "Download full history (hourly T + RH)". The URL hash stores the view
+- Freshness line flags the tower as possibly offline if the newest reading is over 3 h old
+- **Overview**: cards for the latest reading, 2 in on the left to 162 in on the right; vertical-gradient box; temperature chart with NEWA overlay
+- **Time series**: temperature + departure from 2 in, NEWA overlay
+- **Inversions**: gradient with freezing-inversion shading, shifted RdYlBu_r heatmap (matches `02_plot_freeze_event.py`), top-10 peaks
+- **Threshold exposure**: MSU bud-stage selector, per-night tables (noon to noon), per-night bar chart (0–720 min fixed axis + hours axis)
+- **Humidity & dew point**: per-height lines + NEWA overlay
+- Streamlit app (`app.py`) retired and removed 2026-10-20
 
 ### Ops
 - `.github/workflows/daily_pull.yml` — every 15 min, rebases before commit, concurrency group; runs `build_archive.py` after the pulls and stages prunes + archive via `git add -A data/`
 - `LICOR_TOKEN` in GitHub repo secrets
 - `.gitattributes` normalizes LF for CSV + source files
-- Streamlit Community Cloud app, deployed from `main`, auto-rebuild on push
+- `deploy` job publishes `_site/` to GitHub Pages after every pull (Pages source: GitHub Actions)
 
 ### Backfill available
 - Legacy datalogger CSVs: `freeze2-*.csv`, `freezefrost20260421c-*.csv` (covers 2026-04-19 16:30 → 2026-04-21 10:00)
@@ -152,7 +152,7 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 - [ ] Add alerts (email/SMS/Slack) when tower gradient flips into freezing-inversion territory, or when 2 in drops below a user-set threshold. Likely a separate scheduled workflow checking the most recent CSV row.
 - [ ] Phenology-stage auto-picker on the Threshold page based on date / GDD, so the threshold defaults make sense for the current time of year instead of always Full bloom.
 - [ ] Add humidity to the threshold analysis — dew-point depression is itself a radiation-frost predictor (T approaching DP + RH climbing toward 100 % is the classic setup).
-- [ ] Reduce commit noise: either throttle the cron during quiet periods or move to live-API-from-Streamlit with the token as a Streamlit secret.
+- [ ] Reduce commit noise: throttle the cron during quiet periods (e.g. hourly outside frost season).
 - [ ] Pursue official NEWA API access (email newa@cornell.edu) so we're not dependent on a reverse-engineered endpoint.
 - [ ] Add a second tower at another site for comparison, once one exists.
 - [ ] Ingest historical NEWA data for the AgriTech Gates station (multi-year) to characterize "typical" April inversion patterns and put this year's events in context.
@@ -161,15 +161,15 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 
 ## Non-obvious gotchas
 
-- **Streamlit ≠ browser reload.** After a code push, Streamlit Cloud needs an explicit *app reboot* (Manage app → ⋯ → Reboot) to pick up new code. A browser reload only re-renders the current container.
-- **Charts must respect the sidebar time range.** Earlier bug: the Overview chart was `.tail(24*12)` which ignored the preset selector. Any new chart should slice the already-filtered frame (`wide_disp` for tower T, `newa_series(var, start_ts, end_ts)` for NEWA) — never re-window with `.tail()` or `.head()` unless there's a specific "latest N" reason.
+- **Pages caches for ~10 min.** After a deploy, a hard refresh (Ctrl+Shift+R) shows the new page. Data files carry a `?v=<build time>` query so they refresh on each build.
+- **A code push does not deploy by itself.** The workflow runs on its cron or by hand (`gh workflow run daily_pull.yml`).
+- **Charts must respect the selected time range.** New charts in `site/index.html` should draw from `view.rows` / `view.newa` (already windowed), and only the Overview cards deliberately show the latest reading.
 - **Group by "frost night," not calendar day, for freeze-event aggregation.** A radiation frost typically starts ~20:00 and ends ~07:00, crossing midnight. Grouping by calendar day splits one event into two buckets and hides the total duration. We use `(index − 12h).normalize()` so 12:00–23:59 belongs to its own night and 00:00–11:59 belongs to the *previous* night. Labels read "Night of YYYY-MM-DD" meaning that afternoon into the next morning.
 - **Don't use `min(2,22,42)` as the near-ground reference for "current gradient."** That metric was tuned for nighttime inversion detection where 2 in is the coldest sensor (cold-air drainage). On sunny afternoons the sun-heated 2 in is the *warmest* sensor near ground, so `min()` silently skips it and the displayed gradient gets compressed by 1–2 °C. The Overview page now uses the 2 in reading directly. Inversion-detection logic on the Inversions page still uses `min(2,22,42)` because there it serves the original purpose.
 - **API clients must retry on `requests.Timeout` / `requests.ConnectionError`, not only on 429.** Caught 2026-04-26: an overnight LI-COR pull failed with a 30 s read timeout because `_get` only retried on rate-limit responses. Both `licor_api.py` and `newa_api.py` now use 5 attempts with exponential backoff (1, 2, 4, 8, 16 s) and a 60 s default timeout. The workflow also marks each pull `continue-on-error: true` so a single-source transient failure doesn't block the other source's commit.
-- **Private repo breaks Streamlit free tier.** Streamlit Community Cloud only has OAuth access to public repos by default; installing the "Deploy to Streamlit" GitHub App for a private repo was brittle. Currently the repo is public — keep it that way unless you set up the GitHub App properly.
+- **Keep the repo public.** GitHub Pages on a free account requires a public repo.
 - **Line endings matter.** GitHub Actions runners produce LF; Windows git produces CRLF. `.gitattributes` forces LF on the data CSVs and source files to prevent every CI run from rewriting the whole file with cosmetic diffs.
 - **NEWA sid has a space in it.** `"ny_geng nwon"` — the space is significant. URL-encode it correctly if you ever move to form-encoded POST.
-- **`replace_all` in edit tools is sharp.** During development, an `st.plotly_chart → show_chart` replace_all hit the body of `show_chart` itself and produced infinite recursion. Lesson applies to any helper that calls the primitive it's wrapping.
 
 ---
 
@@ -177,7 +177,7 @@ NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA 
 
 ```
 SensorTower/
-├── app.py                          # Streamlit entrypoint
+├── site/index.html                 # Pages dashboard
 ├── requirements.txt
 ├── sensor_map.csv                  # SN → height crosswalk
 ├── CLAUDE.md, project_scope.md, README.md, SESSION_SEED_sensortower.md
@@ -187,11 +187,14 @@ SensorTower/
 │   ├── licor_api.py, newa_api.py
 │   ├── pull_daily.py, pull_newa_daily.py
 │   ├── data_loader.py, load_data.py
-│   ├── build_archive.py                            # hourly T+RH archive + prune raw files
+│   ├── update_monthly.py                           # raw -> data/monthly 5-min record
+│   ├── build_archive.py                            # monthly -> hourly archive, prune raw files
+│   ├── build_site.py                               # assemble _site/ for Pages
 │   └── 02_plot_freeze_event.py, 03_figures_fahrenheit.py
 ├── data/
 │   ├── freeze2-*.csv, freezefrost20260421c-*.csv   # legacy datalogger wide CSVs
 │   ├── licor_YYYY-MM-DD.csv                         # per-UTC-day long CSVs (last ~35 days)
+│   ├── monthly/tower_YYYY-MM.csv                   # permanent 5-min record (T, RH, DP)
 │   ├── archive/tower_hourly_archive.csv            # full history, hourly T+RH, downloadable
 │   └── newa/newa_YYYY-MM-DD.csv                     # per-local-day NEWA long CSVs
 └── outputs/                                          # static figures from legacy scripts

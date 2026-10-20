@@ -2,7 +2,7 @@
 
 Vertical temperature-gradient monitor for an instrumented apple block at Cornell AgriTech. A 9-sensor tower (2–162 in) with LI-COR / HOBO RX2100 datalogger captures air temperature, relative humidity, and dew point at 5-minute resolution through the canopy.
 
-**Live dashboard:** https://jasonlondo.github.io/SensorTower/ (static GitHub Pages site, since 2026-10-20). The older Streamlit app (`app.py`) runs alongside it until retired.
+**Live dashboard:** https://jasonlondo.github.io/SensorTower/ (static GitHub Pages site, since 2026-10-20).
 
 ## GitHub Pages site (current)
 
@@ -25,39 +25,31 @@ python scripts/build_site.py --out _site
 python -m http.server 8000 --directory _site
 ```
 
-## Architecture (Streamlit app, legacy)
-
-```
-LI-COR Cloud  ──►  GitHub Actions (daily cron)  ──►  data/licor_YYYY-MM-DD.csv  ──►  Streamlit Cloud
-                   uses LICOR_TOKEN secret              committed to repo            reads committed CSVs
-```
-
-- Data lives in `data/` (committed to git) — no live API calls from the dashboard
-- Legacy datalogger CSVs (`freeze*.csv`) and API-pulled CSVs (`licor_*.csv`) are unified by `scripts/data_loader.py`
-- The `sensor_map.csv` crosswalk maps each serial number to its physical height — rebuilt empirically by matching API values against the original datalogger CSVs
-- Workflow runs every 15 minutes with `*/15 * * * *` cron. Each run pulls a rolling window (yesterday 00:00 UTC → now for LI-COR; same for NEWA local time) and splits output into per-day CSVs. Effective dashboard lag: ~15–30 min including GitHub Actions scheduler jitter.
-
 ## Repo layout
 
 ```
 SensorTower/
-├── app.py                         # Streamlit app (entry point)
+├── site/index.html                # dashboard page (JS + Plotly), published by the deploy job
 ├── requirements.txt
 ├── sensor_map.csv                 # SN → height crosswalk
 ├── .env.example                   # template; copy to .env for local runs
 ├── .github/workflows/
-│   └── daily_pull.yml             # daily cron
+│   └── daily_pull.yml             # 15-min pull + Pages deploy
 ├── scripts/
-│   ├── licor_api.py               # LI-COR Cloud API client
-│   ├── pull_daily.py              # CI entry point — pulls yesterday's data
-│   ├── data_loader.py             # unified legacy + API loader
+│   ├── licor_api.py, newa_api.py  # API clients
+│   ├── pull_daily.py, pull_newa_daily.py
+│   ├── data_loader.py             # unified legacy + API loader, THRESHOLDS
+│   ├── update_monthly.py          # raw day-files -> data/monthly/
+│   ├── build_archive.py           # monthly -> hourly archive, prune raw files
+│   ├── build_site.py              # assemble _site/ for Pages
 │   ├── load_data.py               # legacy loader (kept for the 02/03 scripts)
-│   ├── 02_plot_freeze_event.py    # legacy per-event figure script (°C)
-│   └── 03_figures_fahrenheit.py   # legacy per-event figure script (°F)
+│   └── 02_plot_freeze_event.py, 03_figures_fahrenheit.py
 ├── data/
-│   ├── freeze2-*.csv              # legacy datalogger export (wide format)
-│   ├── freezefrost20260421c-*.csv # legacy datalogger export
-│   └── licor_YYYY-MM-DD.csv       # daily API pulls (long format, T + RH + DP)
+│   ├── monthly/tower_YYYY-MM.csv  # permanent 5-min record (T, RH, DP)
+│   ├── archive/tower_hourly_archive.csv
+│   ├── licor_YYYY-MM-DD.csv       # raw API pulls, last ~35 days
+│   ├── newa/newa_YYYY-MM-DD.csv   # NEWA hourly pulls
+│   └── freeze2-*.csv, freezefrost20260421c-*.csv   # legacy datalogger exports
 └── outputs/                       # static figures from legacy scripts
 ```
 
@@ -77,25 +69,23 @@ pip install -r requirements.txt
 cp .env.example .env
 # edit .env and set LICOR_TOKEN=...
 
-# 4. Run a daily pull (defaults to yesterday UTC)
+# 4. Pull, then update the monthly record and archive
 python scripts/pull_daily.py
+python scripts/update_monthly.py
+python scripts/build_archive.py --no-prune
 
-# 5. Launch the dashboard
-streamlit run app.py
+# 5. Build and preview the site
+python scripts/build_site.py --out _site
+python -m http.server 8000 --directory _site
 ```
 
-## Deployment — GitHub + Streamlit Cloud
+## Deployment
 
-1. **Push to GitHub.** The `.env` file is gitignored; the token does not leave your machine.
-2. **Add the API token as a repo secret.** On GitHub:
-   `Settings > Secrets and variables > Actions > New repository secret`
-   - Name: `LICOR_TOKEN`
-   - Value: your licor.cloud API token
-   - (Optional) also set a repo variable `LICOR_DEVICE_SN` if you ever swap the device; the workflow defaults to `22411541`.
-3. **Connect the repo to Streamlit Community Cloud.**
-   - [share.streamlit.io](https://share.streamlit.io) → New app → point at `app.py` on the `main` branch.
-   - No Streamlit secrets needed — the app reads committed CSVs.
-4. **Enable the workflow.** The cron in `.github/workflows/daily_pull.yml` runs at 10:00 UTC daily. You can also trigger it manually from the Actions tab (workflow_dispatch) with an optional `pull_date` input to backfill a specific day.
+1. **Add the API token as a repo secret.** `Settings > Secrets and variables > Actions > New repository secret`, name `LICOR_TOKEN`. Optionally set a repo variable `LICOR_DEVICE_SN` if the device changes (default `22411541`).
+2. **Set Pages to deploy from Actions.** `Settings > Pages > Source: GitHub Actions`.
+3. **The workflow does the rest.** `.github/workflows/daily_pull.yml` runs every 15 minutes. The `pull` job pulls and commits data, then the `deploy` job builds `_site/` and publishes it. Trigger it by hand from the Actions tab (workflow_dispatch), optionally with a `pull_date` to backfill one day. A code push alone does not deploy.
+
+The Streamlit Community Cloud app that served the dashboard until 2026-10-20 was shut down that day and `app.py` removed.
 
 ## Token rotation
 
