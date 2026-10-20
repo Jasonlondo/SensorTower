@@ -83,6 +83,15 @@ By July the committed day-files had accumulated to ~75 days. `load_all()` read *
 
 Post-fix growth: app RAM flat at ~35 days × 1.9 MB ≈ 67 MB; archive ≈ 1.2 MB/yr. **Invariant: keep `APP_WINDOW_DAYS ≤ RETENTION_DAYS`** so the loaded window never outruns the raw files still on disk.
 
+### GitHub Pages site + monthly record (2026-10-20)
+
+The dashboard moved from Streamlit Community Cloud to a static GitHub Pages site (`site/index.html`, plain JS + Plotly), following the grape-ripening-explorer pattern. Reasons: Streamlit's free tier sleeps when idle and caps RAM at ~1 GB, which forced the 30-day window.
+
+- **Permanent 5-min record.** `data/monthly/tower_YYYY-MM.csv`, wide T/RH/DP, ISO local time with offset (keeps the DST fall-back hour unique). Backfilled from git history of pruned licor files. `update_monthly.py` merge rule is stored-values-win; fresh data only fills blanks.
+- **Archive bug fixed.** The old `build_archive.py` merged `resample("1h")` output into the archive with fresh-wins, so blank hours between the April legacy exports and the 35-day window overwrote real values (May–Sep blank by Oct 2026). The archive is now rebuilt from the monthly record each run, and pruning refuses to delete a raw file whose day is not in the monthly record.
+- **Page behavior.** Presets 24 h / 7 d / 30 d plus custom (max 30 days). NEWA comparison tab dropped; NEWA red fine-dash overlay kept on T/RH/DP charts. Threshold exposure counts 5 min per reading at or below a threshold (previously time since the prior reading, which over-counted after gaps). Inversion threshold 0.3 °C is applied in °C regardless of display units.
+- **Known data gap.** 2026-08-28 08:30–14:55 EDT is missing from LI-COR Cloud itself; the rest of the Jul 27–Aug 29 uplink outage backfilled.
+
 ### NEWA overlay on tower charts
 
 NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA as a red fine-dashed line (`line_color="#d62728"`, `dash="3,3"`, `mode="lines+markers"`) on every temperature and humidity chart makes the station's position in the vertical profile explicit at a glance.

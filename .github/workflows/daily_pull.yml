@@ -55,10 +55,15 @@ jobs:
           echo "Both LI-COR and NEWA pulls failed — flagging the run as failed."
           exit 1
 
-      - name: Update archive and prune stale raw files
-        # Rolls aged-out data into data/archive/tower_hourly_archive.csv (temp + RH,
-        # hourly) BEFORE deleting raw licor day-files older than the retention window.
-        # Idempotent — safe to run every cycle.
+      - name: Update monthly 5-min record
+        # Merges raw licor day-files into data/monthly/tower_YYYY-MM.csv, the permanent
+        # 5-min record the Pages site reads. Must succeed before anything is pruned.
+        run: python scripts/update_monthly.py
+
+      - name: Rebuild archive and prune stale raw files
+        # Rebuilds data/archive/tower_hourly_archive.csv (hourly T + RH) from the monthly
+        # record, then deletes raw licor day-files older than the retention window, but
+        # only if their days are already in the monthly record. Idempotent.
         run: python scripts/build_archive.py
 
       - name: Commit new data
@@ -89,6 +94,44 @@ jobs:
             echo "Daily stale-tower alert: failing this run so it notifies."
             exit 1
           fi
+
+  deploy:
+    # Publishes the static site to GitHub Pages after every pull, including runs the
+    # stale-uplink alert marks as failed, so the page always shows the latest commit.
+    needs: pull
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build site
+        run: |
+          pip install "pandas>=2.0"
+          python scripts/build_site.py --out _site
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
 concurrency:
   group: realtime-pull

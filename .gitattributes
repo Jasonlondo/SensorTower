@@ -2,6 +2,8 @@
 # (avoids CRLF/LF-only diffs on every GitHub Actions pull)
 data/licor_*.csv text eol=lf
 data/newa/*.csv  text eol=lf
+data/monthly/*.csv text eol=lf
+data/archive/*.csv text eol=lf
 
 # Source files: LF in the repo, auto-convert on Windows checkout
 *.py        text eol=lf

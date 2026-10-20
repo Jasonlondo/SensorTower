@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sensor Tower</title>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-cartesian-dist-min@2.35.2/plotly-cartesian.min.js"></script>
+<style>
+  :root{
+    --ink:#1c2321; --muted:#5c6b66; --line:#d9e0dd; --bg:#f7f9f8; --card:#ffffff;
+    --accent:#2f5d8a; --accent-dark:#1f4266; --chip:#eaf0f6; --warn:#a12a1f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+  header h1{font-size:21px;margin:0 0 2px}
+  header .sub{margin:0;color:var(--muted)}
+  .fresh{margin:6px 0 0;font-size:13px;color:var(--muted)}
+  .fresh.stale{color:var(--warn);font-weight:600}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0}
+  .controls{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:flex-end}
+  .ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .seg button{font:13px inherit;padding:6px 12px;border:0;border-right:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+  .seg button:last-child{border-right:0}
+  .seg button.on{background:var(--accent);color:#fff}
+  input[type=date],select{font:13px inherit;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+  .custom{display:none;gap:10px;align-items:flex-end}
+  .custom.show{display:flex}
+  .dl{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+  a.btn,button.btn{font:13px inherit;padding:6px 12px;border:1px solid var(--accent-dark);background:var(--accent);color:#fff;border-radius:6px;cursor:pointer;text-decoration:none;display:inline-block}
+  a.btn.secondary,button.btn.secondary{background:#fff;color:var(--accent-dark)}
+  .msg{font-size:12px;color:var(--warn);margin-top:6px;min-height:0}
+  .winlabel{font-size:13px;color:var(--muted);margin-top:8px}
+  nav.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);margin-top:18px}
+  nav.tabs button{font:14px inherit;padding:8px 14px;border:1px solid transparent;border-bottom:0;background:none;color:var(--muted);cursor:pointer;border-radius:8px 8px 0 0}
+  nav.tabs button.on{background:var(--card);border-color:var(--line);color:var(--ink);font-weight:600;margin-bottom:-1px}
+  section.tab{display:none}
+  section.tab.on{display:block}
+  h2{font-size:17px;margin:20px 0 6px}
+  .cards{display:grid;grid-template-columns:repeat(9,1fr);gap:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 4px}
+  .card{text-align:center;padding:4px 2px;border-left:1px solid var(--line)}
+  .card:first-child{border-left:0}
+  .card .h{font-size:12px;color:var(--muted)}
+  .card .v{font-size:18px;font-weight:600}
+  .card .v small{font-size:11px;color:var(--muted);font-weight:400;margin-left:2px}
+  .card .d{font-size:12px}
+  .info{background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin:12px 0;font-size:14px}
+  .chart{width:100%;min-height:380px}
+  .caption{font-size:13px;color:var(--muted);margin:4px 0 10px}
+  table{border-collapse:collapse;width:100%;font-size:13px;background:var(--card)}
+  th,td{padding:5px 9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{background:#f0f4f7;font-weight:600}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .night h3{font-size:14px;margin:10px 0 6px}
+  .night h3 span{font-weight:400;color:var(--muted)}
+  .empty{color:var(--muted);font-style:italic;padding:12px 0}
+  footer{color:var(--muted);font-size:12px;margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
+  footer a{color:var(--accent-dark)}
+  @media (max-width:760px){
+    .cards{grid-template-columns:repeat(3,1fr);row-gap:8px}
+    .card:nth-child(3n+1){border-left:0}
+    .grid2{grid-template-columns:1fr}
+    .dl{margin-left:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Sensor Tower</h1>
+    <p class="sub">Cornell AgriTech, Geneva NY. Honeycrisp and Fuji apple block. Air temperature, humidity and dew point at nine heights from 2 to 162 in, every 5 minutes.</p>
+    <p class="fresh" id="fresh">Loading…</p>
+  </header>
+
+  <div class="panel">
+    <div class="controls">
+      <div class="ctl">Units
+        <div class="seg" id="units"><button data-v="C" class="on">°C</button><button data-v="F">°F</button></div>
+      </div>
+      <div class="ctl">Time range
+        <div class="seg" id="range">
+          <button data-v="24h">Last 24 h</button><button data-v="7d" class="on">Last 7 days</button><button data-v="30d">Last 30 days</button><button data-v="custom">Custom</button>
+        </div>
+      </div>
+      <div class="custom" id="customBox">
+        <label class="ctl">Start<input type="date" id="start"></label>
+        <label class="ctl">End<input type="date" id="end"></label>
+      </div>
+      <div class="dl">
+        <button class="btn secondary" id="dlWindow">Download this window (5-min CSV)</button>
+        <a class="btn" id="dlArchive" download>Download full history (hourly T + RH)</a>
+      </div>
+    </div>
+    <div class="msg" id="msg"></div>
+    <div class="winlabel" id="winlabel"></div>
+  </div>
+
+  <nav class="tabs" id="tabs">
+    <button data-t="overview" class="on">Overview</button>
+    <button data-t="series">Time series</button>
+    <button data-t="inversions">Inversions</button>
+    <button data-t="threshold">Threshold exposure</button>
+    <button data-t="humidity">Humidity &amp; dew point</button>
+  </nav>
+
+  <section class="tab on" id="tab-overview">
+    <h2>Current conditions</h2>
+    <div class="cards" id="cards"></div>
+    <div class="info" id="gradInfo"></div>
+    <h2 id="ovTitle">Tower</h2>
+    <div class="chart" id="ovChart"></div>
+  </section>
+
+  <section class="tab" id="tab-series">
+    <h2 id="tsTitle">Temperature</h2>
+    <div class="chart" id="tsChart" style="min-height:500px"></div>
+    <h2>Departure from the 2 in sensor</h2>
+    <div class="chart" id="deltaChart"></div>
+  </section>
+
+  <section class="tab" id="tab-inversions">
+    <h2 id="invTitle">Vertical temperature gradient</h2>
+    <div class="chart" id="gradChart"></div>
+    <p class="caption" id="gradCaption"></p>
+    <h2>Heatmap</h2>
+    <div class="chart" id="heatChart"></div>
+    <h2>Peak inversion events</h2>
+    <div id="peaks"></div>
+  </section>
+
+  <section class="tab" id="tab-threshold">
+    <h2>Time below apple bud-stage kill thresholds</h2>
+    <label class="ctl" style="max-width:240px">Bud stage<select id="stage"></select></label>
+    <p class="caption" id="stageCaption"></p>
+    <div id="nights"></div>
+    <h2>Minutes per frost night at or below the 10% kill temperature</h2>
+    <div class="chart" id="barChart"></div>
+  </section>
+
+  <section class="tab" id="tab-humidity">
+    <h2>Relative humidity (%)</h2>
+    <div class="chart" id="rhChart"></div>
+    <h2 id="dpTitle">Dew point</h2>
+    <div class="chart" id="dpChart"></div>
+  </section>
+
+  <footer>
+    Data pulled every 15 minutes from LI-COR Cloud (HOBO RX2100 logger) by GitHub Actions. The red dashed line is the NEWA Geneva (AgriTech Gates) station at 1.5 m, hourly.
+    Bud-stage thresholds from the <a href="https://www.canr.msu.edu/fruit/uploads/files/PictureTableofFruitFreezeDamageThresholds.pdf">MSU Extension table</a> (apple values from WSU EB0913, compiled by M. Longstroth).
+    Londo Lab, Cornell AgriTech.
+  </footer>
+</div>
+
+<script>
+"use strict";
+const HEIGHTS = [2, 22, 42, 62, 82, 102, 122, 142, 162];
+const MIN = 60000, HOUR = 3600000, DAY = 86400000;
+const MAX_CUSTOM_DAYS = 30;
+const SAMPLE_MIN = 5;               // logging interval; each sample counts 5 min of exposure
+const INV_THRESHOLD_C = 0.3;        // gradient (°C) that counts as a real inversion
+
+// MSU Extension / WSU EB0913, native °F (converted to °C below)
+const STAGES = [
+  ["Silver tip", 15, 2], ["Green tip", 18, 10], ["Half-inch green", 23, 15],
+  ["Tight cluster", 27, 21], ["First pink", 28, 24], ["Full pink", 28, 25],
+  ["First bloom", 28, 25], ["Full bloom", 28, 25], ["Post bloom", 28, 25],
+].map(([name, k10f, k90f]) => ({name, k10f, k90f, k10: (k10f - 32) * 5 / 9, k90: (k90f - 32) * 5 / 9}));
+const BLOOM_10C = STAGES.find(s => s.name === "Full bloom").k10;
+
+const NEWA = {name: "NEWA (AgriTech Gates)", line: {color: "#d62728", width: 2, dash: "3px,3px"}, marker: {size: 4}};
+const VIRIDIS = ["#440154", "#472d7b", "#3b528b", "#2c728e", "#21918c", "#28ae80", "#5ec962", "#addc30", "#fde725"];
+// RdYlBu reversed (blue -> yellow -> red), 11 classes
+const RDYLBU_R = ["#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"];
+
+const state = {units: "C", range: "7d", start: null, end: null, tab: "overview", stage: "Full bloom"};
+let manifest = null;
+const monthCache = {};   // "tower_2026-05" -> Promise<rows>
+let view = null;         // rows + NEWA for the current window
+
+// ---------------- helpers ----------------
+const $ = id => document.getElementById(id);
+const toF = c => c == null ? null : c * 9 / 5 + 32;
+const disp = c => state.units === "F" ? toF(c) : c;
+const dispDelta = d => d == null ? null : (state.units === "F" ? d * 9 / 5 : d);
+const unit = () => state.units === "F" ? "°F" : "°C";
+const freezeLine = () => state.units === "F" ? 32 : 0;
+const fmt = (v, n = 2) => v == null || Number.isNaN(v) ? "—" : v.toFixed(n);
+const label = iso => iso.slice(0, 16).replace("T", " ");    // local wall-clock for axes
+const dateStr = d => d.toISOString().slice(0, 10);            // for <input type=date> on UTC-midnight dates
+const addDays = (ymd, n) => dateStr(new Date(Date.parse(ymd + "T00:00:00Z") + n * DAY));
+const daySpan = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / DAY) + 1;
+
+function parseCSV(text) {
+  const lines = text.trim().split("\n");
+  const cols = lines[0].split(",");
+  return lines.slice(1).map(line => {
+    const parts = line.split(",");
+    const row = {iso: parts[0], ms: Date.parse(parts[0]), x: label(parts[0])};
+    for (let i = 1; i < cols.length; i++) row[cols[i]] = parts[i] === "" || parts[i] === undefined ? null : +parts[i];
+    return row;
+  });
+}
+
+function loadMonth(kind, month) {
+  const key = kind + "_" + month;
+  if (!monthCache[key]) {
+    monthCache[key] = fetch(`data/${key}.csv?v=${encodeURIComponent(manifest.built_utc)}`)
+      .then(r => r.ok ? r.text() : "").then(t => t ? parseCSV(t) : []);
+  }
+  return monthCache[key];
+}
+
+function monthsBetween(a, b) {      // "YYYY-MM" inclusive
+  const out = [];
+  let [y, m] = a.split("-").map(Number);
+  const [yb, mb] = b.split("-").map(Number);
+  while (y < yb || (y === yb && m <= mb)) {
+    out.push(`${y}-${String(m).padStart(2, "0")}`);
+    if (++m > 12) { m = 1; y++; }
+  }
+  return out;
+}
+
+// Window as [startLabel, endLabel) in local wall-clock "YYYY-MM-DD HH:MM" strings.
+function currentWindow() {
+  const lastMs = Date.parse(manifest.last);
+  if (state.range === "custom") {
+    return {lo: state.start + " 00:00", hi: addDays(state.end, 1) + " 00:00",
+            title: `${state.start} to ${state.end}`, byLabel: true};
+  }
+  const span = {"24h": DAY, "7d": 7 * DAY, "30d": 30 * DAY}[state.range];
+  const title = {"24h": "last 24 h", "7d": "last 7 days", "30d": "last 30 days"}[state.range];
+  return {loMs: lastMs - span, hiMs: lastMs + MIN, title, byLabel: false,
+          lo: label(new Date(lastMs - span - 5 * HOUR).toISOString()), hi: label(manifest.last)};
+}
+
+async function loadWindow() {
+  const w = currentWindow();
+  const first = w.byLabel ? w.lo.slice(0, 7) : w.lo.slice(0, 7);
+  const months = monthsBetween(first < manifest.months[0] ? manifest.months[0] : first, manifest.last.slice(0, 7))
+    .filter(m => m <= (w.byLabel ? w.hi.slice(0, 7) : manifest.last.slice(0, 7)));
+  const tower = (await Promise.all(months.filter(m => manifest.months.includes(m)).map(m => loadMonth("tower", m)))).flat();
+  const newa = (await Promise.all(months.filter(m => manifest.newa_months.includes(m)).map(m => loadMonth("newa", m)))).flat();
+  const inWin = r => w.byLabel ? (r.x >= w.lo && r.x < w.hi) : (r.ms >= w.loMs && r.ms < w.hiMs);
+  return {w, rows: tower.filter(inWin), newa: newa.filter(inWin)};
+}
+
+// ---------------- plotting ----------------
+const baseLayout = (ytitle, extra = {}) => Object.assign({
+  margin: {l: 56, r: 16, t: 16, b: 44}, height: 420,
+  xaxis: {title: "Local time", type: "date"},
+  yaxis: {title: ytitle, tickformat: ".2f", hoverformat: ".2f", zeroline: false},
+  legend: {traceorder: "reversed"}, hovermode: "x unified",
+  paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "#fff", font: {size: 12},
+}, extra);
+const PCONF = {responsive: true, displaylogo: false};
+
+function heightTraces(rows, prefix, conv, skip2 = false, deltaFrom2 = false) {
+  return HEIGHTS.map((h, i) => {
+    if (skip2 && h === 2) return null;
+    const y = rows.map(r => {
+      const v = r[`${prefix}_${h}in`];
+      if (!deltaFrom2) return conv(v);
+      const g = r[`${prefix}_2in`];
+      return v == null || g == null ? null : dispDelta(v - g);
+    });
+    return {x: rows.map(r => r.x), y, mode: "lines", name: `${h} in`, line: {color: VIRIDIS[i], width: 1.6}};
+  }).filter(Boolean);
+}
+
+function newaTrace(newa, key, conv) {
+  if (!newa.length) return null;
+  return Object.assign({x: newa.map(r => r.x), y: newa.map(r => conv(r[key])), mode: "lines+markers"}, NEWA);
+}
+
+function hline(y, dash, color, text) {
+  const shape = {type: "line", xref: "paper", x0: 0, x1: 1, y0: y, y1: y, line: {dash, color, width: 1.5}};
+  const ann = text ? {xref: "paper", x: 1, y, xanchor: "right", yanchor: "bottom", text, showarrow: false, font: {size: 11, color}} : null;
+  return {shape, ann};
+}
+
+function tempChart(el, rows, newa, height) {
+  const traces = heightTraces(rows, "t", disp);
+  const nt = newaTrace(newa, "t", disp);
+  if (nt) traces.push(nt);
+  const f = hline(freezeLine(), "dash", "steelblue", `Freeze (${freezeLine()} ${unit()})`);
+  const b = hline(disp(BLOOM_10C), "dot", "firebrick", `Full bloom 10% kill (${fmt(disp(BLOOM_10C), 1)} ${unit()})`);
+  Plotly.react(el, traces, baseLayout(`Temperature (${unit()})`, {height, shapes: [f.shape, b.shape], annotations: [f.ann, b.ann]}), PCONF);
+}
+
+function emptyChart(el, text) {
+  Plotly.react(el, [], {height: 200, xaxis: {visible: false}, yaxis: {visible: false},
+    annotations: [{text, showarrow: false, font: {size: 14, color: "#5c6b66"}}],
+    paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)"}, PCONF);
+}
+
+// ---------------- tabs ----------------
+function renderOverview(latest) {
+  // Cards always show the newest reading, whatever the selected window.
+  const ref = latest.t_2in;
+  $("cards").innerHTML = HEIGHTS.slice().reverse().map(h => {
+    const v = latest[`t_${h}in`];
+    const d = (v == null || ref == null) ? null : dispDelta(v - ref);
+    const col = h === 2 || d == null ? "#888" : d > 0 ? "#2c974b" : d < 0 ? "#cf222e" : "#888";
+    const dtxt = h === 2 ? "ground ref." : (d == null ? "—" : (d > 0 ? "+" : "") + d.toFixed(2));
+    return `<div class="card"><div class="h">${h} in</div><div class="v">${fmt(disp(v))}<small>${unit()}</small></div><div class="d" style="color:${col}">${dtxt}</div></div>`;
+  }).join("");
+
+  const tops = [122, 142, 162].map(h => latest[`t_${h}in`]).filter(v => v != null);
+  const ground = latest.t_2in;
+  const g = tops.length && ground != null ? tops.reduce((a, b) => a + b) / tops.length - ground : null;
+  const st = g == null ? "—" : g > INV_THRESHOLD_C ? "inversion (ground colder than aloft, frost-favorable)"
+    : g < -INV_THRESHOLD_C ? "daytime profile (ground warmer than aloft)" : "well mixed";
+  $("gradInfo").innerHTML = `Vertical gradient at ${label(latest.iso)}: <b>${g == null ? "—" : (g >= 0 ? "+" : "") + dispDelta(g).toFixed(2)} ${unit()}</b> (mean of 122, 142, 162 in minus 2 in), ${st}.`;
+
+  $("ovTitle").textContent = `Tower, ${view.w.title}`;
+  if (!view.rows.length) return emptyChart($("ovChart"), "No tower data in this window");
+  tempChart($("ovChart"), view.rows, view.newa, 440);
+}
+
+function renderSeries() {
+  const {rows, newa} = view;
+  $("tsTitle").textContent = `Temperature (${unit()}), ${view.w.title}`;
+  if (!rows.length) { emptyChart($("tsChart"), "No tower data in this window"); emptyChart($("deltaChart"), ""); return; }
+  tempChart($("tsChart"), rows, newa, 520);
+
+  const traces = heightTraces(rows, "t", null, true, true);
+  if (newa.length) {
+    const byX = new Map(rows.map(r => [r.x, r.t_2in]));
+    const y = newa.map(n => { const g = byX.get(n.x); return n.t == null || g == null ? null : dispDelta(n.t - g); });
+    traces.push(Object.assign({x: newa.map(n => n.x), y, mode: "lines+markers"}, NEWA));
+  }
+  const z = hline(0, "solid", "black");
+  Plotly.react($("deltaChart"), traces, baseLayout(`ΔT from 2 in (${unit()})`, {shapes: [z.shape]}), PCONF);
+}
+
+function renderInversions() {
+  const {rows} = view;
+  $("invTitle").textContent = `Vertical temperature gradient (${unit()}), ${view.w.title}`;
+  if (!rows.length) { ["gradChart", "heatChart"].forEach(id => emptyChart($(id), "No tower data in this window")); $("peaks").innerHTML = ""; $("gradCaption").textContent = ""; return; }
+
+  // Gradient in °C: mean(122,142,162) minus min(2,22,42). Thresholds are applied in °C
+  // so °F display cannot change which periods count as inversions.
+  const grad = rows.map(r => {
+    const top = [122, 142, 162].map(h => r[`t_${h}in`]).filter(v => v != null);
+    const bot = [2, 22, 42].map(h => r[`t_${h}in`]).filter(v => v != null);
+    if (!top.length || !bot.length) return {g: null, bot: null};
+    return {g: top.reduce((a, b) => a + b) / top.length - Math.min(...bot), bot: Math.min(...bot)};
+  });
+  const runs = [];
+  let open = null;
+  grad.forEach((p, i) => {
+    const flag = p.g != null && p.g > INV_THRESHOLD_C && p.bot < 0;
+    if (flag && open === null) open = i;
+    if (!flag && open !== null) { runs.push([open, i - 1]); open = null; }
+  });
+  if (open !== null) runs.push([open, rows.length - 1]);
+
+  const shapes = runs.map(([a, b]) => ({type: "rect", xref: "x", yref: "paper", x0: rows[a].x, x1: rows[b].x, y0: 0, y1: 1,
+    fillcolor: "rgba(135,206,250,0.28)", line: {width: 0}, layer: "below"}));
+  shapes.push(hline(0, "solid", "black").shape);
+  Plotly.react($("gradChart"), [{x: rows.map(r => r.x), y: grad.map(p => dispDelta(p.g)), mode: "lines",
+    name: "Aloft mean minus ground min", line: {color: "black", width: 1.4}}],
+    baseLayout(`Aloft minus ground (${unit()})`, {shapes, showlegend: false}), PCONF);
+  $("gradCaption").textContent = `Shaded: inversion (gradient above ${fmt(dispDelta(INV_THRESHOLD_C), 2)} ${unit()}) while the coldest of 2, 22, 42 in is below freezing. ${runs.length} event${runs.length === 1 ? "" : "s"} in this window.`;
+
+  // Heatmap: RdYlBu_r shifted so freezing sits at the blue/yellow boundary (same as
+  // 02_plot_freeze_event.py). The blue half spans the sub-freezing range and the red
+  // half the rest; the colorbar axis stays linear with equidistant ticks.
+  const zc = HEIGHTS.map(h => rows.map(r => disp(r[`t_${h}in`])));
+  const flat = zc.flat().filter(v => v != null);
+  const zmin = Math.floor(Math.min(...flat)), zmax = Math.ceil(Math.max(...flat)), f0 = freezeLine();
+  const posOf = v => v < f0 ? 0.5 * (v - zmin) / (f0 - zmin) : (zmax > f0 ? 0.5 + 0.5 * (v - f0) / (zmax - f0) : 0.5);
+  const colorAt = pos => {             // pos in [0,1] on RdYlBu_r
+    const p = Math.min(Math.max(pos, 0), 1) * (RDYLBU_R.length - 1), i = Math.floor(p), t = p - i;
+    const a = RDYLBU_R[i], b = RDYLBU_R[Math.min(i + 1, RDYLBU_R.length - 1)];
+    const c = k => Math.round(parseInt(a.substr(k, 2), 16) * (1 - t) + parseInt(b.substr(k, 2), 16) * t);
+    return `rgb(${c(1)},${c(3)},${c(5)})`;
+  };
+  const scale = Array.from({length: 65}, (_, k) => { const v = zmin + (zmax - zmin) * k / 64; return [k / 64, colorAt(posOf(v))]; });
+  Plotly.react($("heatChart"), [{type: "heatmap", z: zc, x: rows.map(r => r.x), y: HEIGHTS.map(h => `${h} in`),
+    zmin, zmax, colorscale: scale, colorbar: {title: {text: unit()}, dtick: state.units === "F" ? 2 : 1},
+    hovertemplate: "%{x}<br>%{y}: %{z:.2f} " + unit() + "<extra></extra>"}],
+    baseLayout("Height", {yaxis: {title: "Height", type: "category"}, hovermode: "closest"}), PCONF);
+
+  // Top 10 peaks, at least 3 h apart
+  const order = grad.map((p, i) => [p.g, i]).filter(([g]) => g != null && g > INV_THRESHOLD_C).sort((a, b) => b[0] - a[0]);
+  const peaks = [];
+  for (const [g, i] of order) {
+    if (peaks.every(([, j]) => Math.abs(rows[i].ms - rows[j].ms) >= 3 * HOUR)) peaks.push([g, i]);
+    if (peaks.length >= 10) break;
+  }
+  $("peaks").innerHTML = peaks.length
+    ? `<div class="tablewrap"><table><tr><th>Local time</th><th>Gradient (${unit()})</th><th>2 in temp (${unit()})</th></tr>` +
+      peaks.map(([g, i]) => `<tr><td>${rows[i].x}</td><td>${fmt(dispDelta(g))}</td><td>${fmt(disp(rows[i].t_2in))}</td></tr>`).join("") + "</table></div>"
+    : `<p class="empty">No inversions above ${fmt(dispDelta(INV_THRESHOLD_C))} ${unit()} in this window.</p>`;
+}
+
+function renderThreshold() {
+  const {rows} = view;
+  const s = STAGES.find(x => x.name === state.stage);
+  $("stageCaption").innerHTML = `10% kill: <b>${s.k10.toFixed(1)}°C (${s.k10f}°F)</b>. 90% kill: <b>${s.k90.toFixed(1)}°C (${s.k90f}°F)</b>. Nights run noon to noon, so an event that crosses midnight stays in one night. Each 5-minute reading at or below a threshold counts 5 minutes.`;
+  if (!rows.length) { $("nights").innerHTML = ""; emptyChart($("barChart"), "No tower data in this window"); return; }
+
+  // Night of D = D 12:00 through D+1 11:55 local
+  const nightOf = x => x.slice(11, 13) < "12" ? addDays(x.slice(0, 10), -1) : x.slice(0, 10);
+  const nights = new Map();
+  for (const r of rows) {
+    const k = nightOf(r.x);
+    if (!nights.has(k)) nights.set(k, HEIGHTS.map(() => ({min: Infinity, m10: 0, m90: 0})));
+    const acc = nights.get(k);
+    HEIGHTS.forEach((h, i) => {
+      const v = r[`t_${h}in`];
+      if (v == null) return;
+      acc[i].min = Math.min(acc[i].min, v);
+      if (v <= s.k10) acc[i].m10 += SAMPLE_MIN;
+      if (v <= s.k90) acc[i].m90 += SAMPLE_MIN;
+    });
+  }
+  const hit = [...nights.entries()].filter(([, acc]) => acc.some(a => a.m10 > 0));
+  if (!hit.length) {
+    const mins = rows.map(r => r.t_2in).filter(v => v != null);
+    $("nights").innerHTML = `<p class="empty">No readings at or below the ${s.name} 10% kill temperature in this window. Lowest 2 in reading: ${fmt(disp(Math.min(...mins)))} ${unit()}.</p>`;
+    emptyChart($("barChart"), "No exposure in this window");
+    return;
+  }
+  $("nights").innerHTML = `<p class="caption"><b>${hit.length} frost night${hit.length === 1 ? "" : "s"}</b> with readings at or below the 10% kill temperature.</p><div class="grid2">` +
+    hit.map(([k, acc]) => `<div class="night"><h3>Night of ${k} <span>(${k} PM to ${addDays(k, 1)} AM)</span></h3><div class="tablewrap"><table>
+      <tr><th>Height</th><th>Min (${unit()})</th><th>Min ≤ 10% kill</th><th>Min ≤ 90% kill</th></tr>` +
+      HEIGHTS.map((h, i) => [h, acc[i]]).reverse().map(([h, a]) => `<tr><td>${h} in</td><td>${fmt(disp(a.min === Infinity ? null : a.min))}</td><td>${a.m10}</td><td>${a.m90}</td></tr>`).join("") +
+      "</table></div></div>").join("") + "</div>";
+
+  const traces = HEIGHTS.map((h, i) => ({type: "bar", x: hit.map(([k]) => k), y: hit.map(([, acc]) => acc[i].m10), name: `${h} in`, marker: {color: VIRIDIS[i]}}));
+  traces.push({x: [hit[0][0]], y: [0], yaxis: "y2", mode: "markers", marker: {opacity: 0}, showlegend: false, hoverinfo: "skip"});
+  Plotly.react($("barChart"), traces, baseLayout("Minutes ≤ 10% kill", {
+    barmode: "group", bargap: 0.15, bargroupgap: 0.02, hovermode: "x unified", margin: {l: 56, r: 56, t: 16, b: 60},
+    xaxis: {title: "Frost night (noon to noon, labeled by start date)", type: "category"},
+    yaxis: {title: "Minutes ≤ 10% kill", range: [0, 720], dtick: 60, tickformat: ".0f", hoverformat: ".0f",
+            minor: {dtick: 30, showgrid: true, gridcolor: "rgba(128,128,128,0.15)"}, gridcolor: "rgba(128,128,128,0.35)"},
+    yaxis2: {title: "Hours", range: [0, 12], dtick: 1, overlaying: "y", side: "right", showgrid: false},
+  }), PCONF);
+}
+
+function renderHumidity() {
+  const {rows, newa} = view;
+  $("dpTitle").textContent = `Dew point (${unit()})`;
+  if (!rows.length) { emptyChart($("rhChart"), "No tower data in this window"); emptyChart($("dpChart"), ""); return; }
+  const rh = heightTraces(rows, "rh", v => v);
+  const nrh = newaTrace(newa, "rh", v => v); if (nrh) rh.push(nrh);
+  Plotly.react($("rhChart"), rh, baseLayout("RH (%)"), PCONF);
+  const dp = heightTraces(rows, "dp", disp);
+  const ndp = newaTrace(newa, "dp", disp); if (ndp) dp.push(ndp);
+  Plotly.react($("dpChart"), dp, baseLayout(`Dew point (${unit()})`), PCONF);
+}
+
+const RENDER = {overview: () => renderOverview(view.latest), series: renderSeries, inversions: renderInversions, threshold: renderThreshold, humidity: renderHumidity};
+const dirty = new Set();
+
+function renderActive() {
+  RENDER[state.tab]();
+  dirty.delete(state.tab);
+}
+
+// ---------------- state + UI ----------------
+function writeHash() {
+  const p = new URLSearchParams({u: state.units, r: state.range, t: state.tab});
+  if (state.range === "custom") { p.set("s", state.start); p.set("e", state.end); }
+  if (state.stage !== "Full bloom") p.set("st", state.stage);
+  history.replaceState(null, "", "#" + p.toString());
+}
+
+function readHash() {
+  const p = new URLSearchParams(location.hash.slice(1));
+  if (["C", "F"].includes(p.get("u"))) state.units = p.get("u");
+  if (["24h", "7d", "30d", "custom"].includes(p.get("r"))) state.range = p.get("r");
+  if (RENDER[p.get("t")]) state.tab = p.get("t");
+  if (STAGES.some(s => s.name === p.get("st"))) state.stage = p.get("st");
+  if (p.get("s")) state.start = p.get("s");
+  if (p.get("e")) state.end = p.get("e");
+}
+
+function syncControls() {
+  document.querySelectorAll("#units button").forEach(b => b.classList.toggle("on", b.dataset.v === state.units));
+  document.querySelectorAll("#range button").forEach(b => b.classList.toggle("on", b.dataset.v === state.range));
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.t === state.tab));
+  document.querySelectorAll("section.tab").forEach(s => s.classList.toggle("on", s.id === "tab-" + state.tab));
+  $("customBox").classList.toggle("show", state.range === "custom");
+  $("start").value = state.start; $("end").value = state.end;
+  $("stage").value = state.stage;
+}
+
+// Clamp custom dates to the record and to a 30-day span; report any change.
+function clampCustom(changed) {
+  const first = manifest.first.slice(0, 10), last = manifest.last.slice(0, 10);
+  const notes = [];
+  if (state.start < first) { state.start = first; notes.push(`start moved to the first reading (${first})`); }
+  if (state.end > last) { state.end = last; notes.push(`end moved to the latest reading (${last})`); }
+  if (state.start > last) state.start = last;
+  if (state.end < state.start) {
+    if (changed === "end") state.start = state.end; else state.end = state.start;
+  }
+  if (daySpan(state.start, state.end) > MAX_CUSTOM_DAYS) {
+    if (changed === "start") { state.end = addDays(state.start, MAX_CUSTOM_DAYS - 1); notes.push(`end moved to ${state.end} (30-day limit)`); }
+    else { state.start = addDays(state.end, -(MAX_CUSTOM_DAYS - 1)); notes.push(`start moved to ${state.start} (30-day limit)`); }
+  }
+  $("msg").textContent = notes.length ? "Custom range adjusted: " + notes.join("; ") + "." : "";
+}
+
+async function refreshData() {
+  $("winlabel").textContent = "Loading…";
+  const loaded = await loadWindow();
+  const latestMonth = await loadMonth("tower", manifest.months[manifest.months.length - 1]);
+  view = Object.assign(loaded, {latest: latestMonth[latestMonth.length - 1]});
+  const n = view.rows.length;
+  $("winlabel").textContent = n
+    ? `Showing ${view.rows[0].x} to ${view.rows[n - 1].x} local time (${n.toLocaleString()} readings).`
+    : "No tower readings in this window.";
+  Object.keys(RENDER).forEach(t => dirty.add(t));
+  renderActive();
+}
+
+function onChange(what) {
+  writeHash(); syncControls();
+  if (what === "data") refreshData();
+  else { Object.keys(RENDER).forEach(t => dirty.add(t)); renderActive(); }
+}
+
+function wire() {
+  $("units").onclick = e => { const v = e.target.dataset.v; if (v && v !== state.units) { state.units = v; onChange("render"); } };
+  $("range").onclick = e => {
+    const v = e.target.dataset.v; if (!v || v === state.range) return;
+    state.range = v; $("msg").textContent = "";
+    if (v === "custom") clampCustom();
+    onChange("data");
+  };
+  $("start").onchange = () => { state.start = $("start").value || state.start; clampCustom("start"); onChange("data"); };
+  $("end").onchange = () => { state.end = $("end").value || state.end; clampCustom("end"); onChange("data"); };
+  $("tabs").onclick = e => {
+    const t = e.target.dataset.t; if (!t) return;
+    state.tab = t; writeHash(); syncControls();
+    if (dirty.has(t)) renderActive(); else window.dispatchEvent(new Event("resize"));
+  };
+  $("stage").onchange = () => { state.stage = $("stage").value; onChange("render"); };
+  $("dlWindow").onclick = () => {
+    if (!view || !view.rows.length) return;
+    const cols = ["datetime_local", ...["t", "rh", "dp"].flatMap(p => HEIGHTS.map(h => `${p}_${h}in`))];
+    const body = view.rows.map(r => [r.iso, ...cols.slice(1).map(c => r[c] ?? "")].join(","));
+    const blob = new Blob([cols.join(",") + "\n" + body.join("\n") + "\n"], {type: "text/csv"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `sensor_tower_${view.rows[0].x.slice(0, 10)}_to_${view.rows[view.rows.length - 1].x.slice(0, 10)}.csv`;
+    a.click(); URL.revokeObjectURL(a.href);
+  };
+}
+
+async function init() {
+  $("stage").innerHTML = STAGES.map(s => `<option>${s.name}</option>`).join("");
+  try {
+    const r = await fetch("data/manifest.json?v=" + Date.now());
+    if (!r.ok) throw new Error("manifest " + r.status);
+    manifest = await r.json();
+  } catch (err) {
+    $("fresh").textContent = "Could not load data (" + err.message + ").";
+    $("fresh").classList.add("stale");
+    return;
+  }
+  const ageH = (Date.now() - Date.parse(manifest.last)) / HOUR;
+  $("fresh").textContent = `Latest reading ${label(manifest.last)} local time (${ageH < 1 ? Math.round(ageH * 60) + " min" : ageH.toFixed(1) + " h"} ago).` +
+    (ageH > 3 ? " The tower has not reported recently; the logger may be offline." : "");
+  $("fresh").classList.toggle("stale", ageH > 3);
+  if (manifest.archive) $("dlArchive").href = "data/" + manifest.archive + "?v=" + encodeURIComponent(manifest.built_utc);
+  else $("dlArchive").style.display = "none";
+
+  const last = manifest.last.slice(0, 10);
+  state.end = last; state.start = addDays(last, -6);
+  readHash();
+  if (state.range === "custom") clampCustom();
+  wire(); syncControls(); writeHash();
+  await refreshData();
+}
+init();
+</script>
+</body>
+</html>

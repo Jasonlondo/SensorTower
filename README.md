@@ -1,10 +1,31 @@
 # Sensor Tower
 
-Vertical temperature-gradient monitor for an instrumented apple block at Cornell AgriTech. A 9-sensor tower (2–162 in) with LI-COR / HOBO RX2100 datalogger captures air temperature, relative humidity, and dew point at 5-minute resolution through the canopy, feeding a Streamlit dashboard that surfaces frost events, inversions, and bud-stage threshold exposure.
+Vertical temperature-gradient monitor for an instrumented apple block at Cornell AgriTech. A 9-sensor tower (2–162 in) with LI-COR / HOBO RX2100 datalogger captures air temperature, relative humidity, and dew point at 5-minute resolution through the canopy.
 
-**Live dashboard:** (add Streamlit Cloud URL once deployed)
+**Live dashboard:** https://jasonlondo.github.io/SensorTower/ (static GitHub Pages site, since 2026-10-20). The older Streamlit app (`app.py`) runs alongside it until retired.
 
-## Architecture
+## GitHub Pages site (current)
+
+```
+LI-COR Cloud + NEWA ──► GitHub Actions (every 15 min) ──► data/ committed ──► deploy job ──► GitHub Pages
+                         pull_daily.py, pull_newa_daily.py      data/monthly/      build_site.py
+                         update_monthly.py, build_archive.py    data/archive/      -> _site/
+```
+
+- `data/monthly/tower_YYYY-MM.csv` is the permanent 5-min record (T, RH, DP at all heights, ISO local time with UTC offset). `scripts/update_monthly.py` merges raw day-files into it each run; stored values never change and new data only fills blanks.
+- `scripts/build_archive.py` rebuilds the hourly T + RH download (`data/archive/tower_hourly_archive.csv`) from the monthly record, then prunes raw `licor_*.csv` older than 35 days once their days are in the monthly record.
+- `scripts/build_site.py` copies `site/index.html`, the monthly files, monthly NEWA files and the archive into `_site/`, which the workflow's `deploy` job publishes. The page loads only the months a chosen window needs.
+- Time ranges are last 24 h, 7 days, 30 days, or a custom range of up to 30 days anywhere in the record. The URL hash stores the view, so links are shareable.
+- Pages source is set to "GitHub Actions" in repo Settings → Pages.
+
+Preview locally:
+
+```bash
+python scripts/build_site.py --out _site
+python -m http.server 8000 --directory _site
+```
+
+## Architecture (Streamlit app, legacy)
 
 ```
 LI-COR Cloud  ──►  GitHub Actions (daily cron)  ──►  data/licor_YYYY-MM-DD.csv  ──►  Streamlit Cloud

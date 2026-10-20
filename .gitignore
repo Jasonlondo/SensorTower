@@ -44,3 +44,6 @@ Thumbs.db
 # (keep data/ and outputs/ tracked — data is the product)
 *.log
 *.tmp
+
+# Built GitHub Pages site (rebuilt by the workflow)
+_site/
