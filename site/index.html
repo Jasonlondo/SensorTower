@@ -300,7 +300,7 @@ function emptyChart(el, text) {
 function renderOverview(latest) {
   // Cards always show the newest reading, whatever the selected window.
   const ref = latest.t_2in;
-  $("cards").innerHTML = HEIGHTS.slice().reverse().map(h => {
+  $("cards").innerHTML = HEIGHTS.map(h => {
     const v = latest[`t_${h}in`];
     const d = (v == null || ref == null) ? null : dispDelta(v - ref);
     const col = h === 2 || d == null ? "#888" : d > 0 ? "#2c974b" : d < 0 ? "#cf222e" : "#888";
