@@ -2,9 +2,10 @@ name: Near-realtime LI-COR + NEWA pull
 
 on:
   schedule:
-    # Every 15 minutes. GitHub Actions cron has ~5–15 min jitter on top,
-    # so expect ~15–30 min effective latency from sensor to dashboard.
-    - cron: "*/15 * * * *"
+    # Every 15 minutes, offset from :00/:15/:30/:45, which GitHub's scheduler
+    # delays or drops most under load. Scheduled runs are still best effort; an
+    # external trigger (workflow_dispatch) fills the gaps.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
     inputs:
       pull_date:
