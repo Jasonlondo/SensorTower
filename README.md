@@ -84,6 +84,7 @@ python -m http.server 8000 --directory _site
 1. **Add the API token as a repo secret.** `Settings > Secrets and variables > Actions > New repository secret`, name `LICOR_TOKEN`. Optionally set a repo variable `LICOR_DEVICE_SN` if the device changes (default `22411541`).
 2. **Set Pages to deploy from Actions.** `Settings > Pages > Source: GitHub Actions`.
 3. **The workflow does the rest.** `.github/workflows/daily_pull.yml` runs every 15 minutes. The `pull` job pulls and commits data, then the `deploy` job builds `_site/` and publishes it. Trigger it by hand from the Actions tab (workflow_dispatch), optionally with a `pull_date` to backfill one day. A code push alone does not deploy.
+4. **External trigger.** GitHub's cron is best effort and fires only every few hours, so a Windows scheduled task on Jason's laptop ("SensorTower pull trigger", script in `C:\Users\jpl275\Scripts\SensorTower\`) dispatches the workflow every 15 minutes. See the session seed for details.
 
 The Streamlit Community Cloud app that served the dashboard until 2026-10-20 was shut down that day and `app.py` removed.
 

@@ -92,6 +92,16 @@ The dashboard moved from Streamlit Community Cloud to a static GitHub Pages site
 - **Page behavior.** Presets 24 h / 7 d / 30 d plus custom (max 30 days). NEWA comparison tab dropped; NEWA red fine-dash overlay kept on T/RH/DP charts. Threshold exposure counts 5 min per reading at or below a threshold (previously time since the prior reading, which over-counted after gaps). Inversion threshold 0.3 °C is applied in °C regardless of display units.
 - **Known data gap.** 2026-08-28 08:30–14:55 EDT is missing from LI-COR Cloud itself; the rest of the Jul 27–Aug 29 uplink outage backfilled.
 
+### External 15-min trigger on Jason's laptop (2026-10-21)
+
+GitHub's scheduled cron fired only ~5 times/day by Oct 2026 (about 22/day in Aug), so the "every 15 min" cadence was never real. Manual `workflow_dispatch` runs start within seconds. The cron was moved to minutes 7,22,37,52 (off the busiest slots), and a Windows scheduled task on Jason's laptop (Dell Precision 7560, never sleeps on AC) now dispatches the workflow every 15 min:
+
+- Task: **"SensorTower pull trigger"** (Task Scheduler). Runs only while Jason is logged in, so it pauses after a reboot until he signs in, and on battery once the laptop sleeps (10 min).
+- Script: `C:\Users\jpl275\Scripts\SensorTower\trigger.ps1`, launched hidden by `run_hidden.vbs`. Uses the existing `gh` CLI login (account Jasonlondo); no extra token.
+- Log: `C:\Users\jpl275\Scripts\SensorTower\trigger.log`, one line per attempt, trimmed to ~30 days.
+- The page's status line says "automatic update is running late" when the last pull is over 1 h old, which is the first sign the trigger stopped.
+- If the laptop is retired, move the trigger to an always-on machine or an external scheduler (cron-job.org calling workflow_dispatch with a fine-grained token).
+
 ### NEWA overlay on tower charts
 
 NEWA's 1.5 m sensor sits between tower heights 42 in and 62 in. Overlaying NEWA as a red fine-dashed line (`line_color="#d62728"`, `dash="3,3"`, `mode="lines+markers"`) on every temperature and humidity chart makes the station's position in the vertical profile explicit at a glance.
