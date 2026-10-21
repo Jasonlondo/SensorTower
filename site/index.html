@@ -566,10 +566,17 @@ async function init() {
     $("fresh").classList.add("stale");
     return;
   }
+  // Two separate delays: the logger not reporting (gap between the newest reading and
+  // the last pull) versus the GitHub scheduler running late (age of the last pull).
+  const ago = h => h < 1 ? Math.round(h * 60) + " min" : h.toFixed(1) + " h";
   const ageH = (Date.now() - Date.parse(manifest.last)) / HOUR;
-  $("fresh").textContent = `Latest reading ${label(manifest.last)} local time (${ageH < 1 ? Math.round(ageH * 60) + " min" : ageH.toFixed(1) + " h"} ago).` +
-    (ageH > 3 ? " The tower has not reported recently; the logger may be offline." : "");
-  $("fresh").classList.toggle("stale", ageH > 3);
+  const loggerGapH = (Date.parse(manifest.built_utc) - Date.parse(manifest.last)) / HOUR;
+  const pullAgeH = (Date.now() - Date.parse(manifest.built_utc)) / HOUR;
+  let note = "";
+  if (loggerGapH > 3) note = ` The tower had not reported for ${ago(loggerGapH)} at the last update; the logger may be offline.`;
+  else if (pullAgeH > 1) note = ` Data last pulled ${ago(pullAgeH)} ago; the automatic update is running late.`;
+  $("fresh").textContent = `Latest reading ${label(manifest.last)} local time (${ago(ageH)} ago).` + note;
+  $("fresh").classList.toggle("stale", loggerGapH > 3);
   if (manifest.archive) $("dlArchive").href = "data/" + manifest.archive + "?v=" + encodeURIComponent(manifest.built_utc);
   else $("dlArchive").style.display = "none";
 
