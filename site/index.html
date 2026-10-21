@@ -248,14 +248,26 @@ async function loadWindow() {
 }
 
 // ---------------- plotting ----------------
-const baseLayout = (ytitle, extra = {}) => Object.assign({
-  margin: {l: 56, r: 16, t: 16, b: 44}, height: 420,
-  xaxis: {title: "Local time", type: "date"},
-  yaxis: {title: ytitle, tickformat: ".2f", hoverformat: ".2f", zeroline: false},
-  legend: {traceorder: "reversed"}, hovermode: "x unified",
-  paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "#fff", font: {size: 12},
-}, extra);
-const PCONF = {responsive: true, displaylogo: false};
+const narrow = () => window.matchMedia("(max-width: 760px)").matches;
+const baseLayout = (ytitle, extra = {}) => {
+  const L = Object.assign({
+    margin: {l: 56, r: 16, t: 16, b: 44}, height: 420,
+    xaxis: {title: "Local time", type: "date"},
+    yaxis: {title: ytitle, tickformat: ".2f", hoverformat: ".2f", zeroline: false},
+    legend: {traceorder: "reversed"}, hovermode: "x unified",
+    paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "#fff", font: {size: 12},
+  }, extra);
+  // Phones: horizontal legend above the plot so the traces get the full width.
+  // Reads left to right from 2 in, matching the Overview cards.
+  if (narrow()) {
+    L.legend = {orientation: "h", x: -0.12, xanchor: "left", y: 1.02, yanchor: "bottom", traceorder: "normal",
+                font: {size: 11}, itemwidth: 30, entrywidth: 40, entrywidthmode: "pixels"};
+    L.margin = Object.assign({}, L.margin, {l: 46, r: L.margin.r > 16 ? 46 : 8});
+  }
+  return L;
+};
+// Toolbar hidden on phones, where it would cover the legend.
+const pconf = () => ({responsive: true, displaylogo: false, displayModeBar: narrow() ? false : "hover"});
 
 function heightTraces(rows, prefix, conv, skip2 = false, deltaFrom2 = false) {
   return HEIGHTS.map((h, i) => {
@@ -272,7 +284,7 @@ function heightTraces(rows, prefix, conv, skip2 = false, deltaFrom2 = false) {
 
 function newaTrace(newa, key, conv) {
   if (!newa.length) return null;
-  return Object.assign({x: newa.map(r => r.x), y: newa.map(r => conv(r[key])), mode: "lines+markers"}, NEWA);
+  return Object.assign({x: newa.map(r => r.x), y: newa.map(r => conv(r[key])), mode: "lines+markers"}, NEWA, narrow() ? {name: "NEWA"} : {});
 }
 
 function hline(y, dash, color, text) {
@@ -287,13 +299,13 @@ function tempChart(el, rows, newa, height) {
   if (nt) traces.push(nt);
   const f = hline(freezeLine(), "dash", "steelblue", `Freeze (${freezeLine()} ${unit()})`);
   const b = hline(disp(BLOOM_10C), "dot", "firebrick", `Full bloom 10% kill (${fmt(disp(BLOOM_10C), 1)} ${unit()})`);
-  Plotly.react(el, traces, baseLayout(`Temperature (${unit()})`, {height, shapes: [f.shape, b.shape], annotations: [f.ann, b.ann]}), PCONF);
+  Plotly.react(el, traces, baseLayout(`Temperature (${unit()})`, {height, shapes: [f.shape, b.shape], annotations: [f.ann, b.ann]}), pconf());
 }
 
 function emptyChart(el, text) {
   Plotly.react(el, [], {height: 200, xaxis: {visible: false}, yaxis: {visible: false},
     annotations: [{text, showarrow: false, font: {size: 14, color: "#5c6b66"}}],
-    paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)"}, PCONF);
+    paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)"}, pconf());
 }
 
 // ---------------- tabs ----------------
@@ -330,10 +342,10 @@ function renderSeries() {
   if (newa.length) {
     const byX = new Map(rows.map(r => [r.x, r.t_2in]));
     const y = newa.map(n => { const g = byX.get(n.x); return n.t == null || g == null ? null : dispDelta(n.t - g); });
-    traces.push(Object.assign({x: newa.map(n => n.x), y, mode: "lines+markers"}, NEWA));
+    traces.push(Object.assign({x: newa.map(n => n.x), y, mode: "lines+markers"}, NEWA, narrow() ? {name: "NEWA"} : {}));
   }
   const z = hline(0, "solid", "black");
-  Plotly.react($("deltaChart"), traces, baseLayout(`ΔT from 2 in (${unit()})`, {shapes: [z.shape]}), PCONF);
+  Plotly.react($("deltaChart"), traces, baseLayout(`ΔT from 2 in (${unit()})`, {shapes: [z.shape]}), pconf());
 }
 
 function renderInversions() {
@@ -363,7 +375,7 @@ function renderInversions() {
   shapes.push(hline(0, "solid", "black").shape);
   Plotly.react($("gradChart"), [{x: rows.map(r => r.x), y: grad.map(p => dispDelta(p.g)), mode: "lines",
     name: "Aloft mean minus ground min", line: {color: "black", width: 1.4}}],
-    baseLayout(`Aloft minus ground (${unit()})`, {shapes, showlegend: false}), PCONF);
+    baseLayout(`Aloft minus ground (${unit()})`, {shapes, showlegend: false}), pconf());
   $("gradCaption").textContent = `Shaded: inversion (gradient above ${fmt(dispDelta(INV_THRESHOLD_C), 2)} ${unit()}) while the coldest of 2, 22, 42 in is below freezing. ${runs.length} event${runs.length === 1 ? "" : "s"} in this window.`;
 
   // Heatmap: RdYlBu_r shifted so freezing sits at the blue/yellow boundary (same as
@@ -383,7 +395,7 @@ function renderInversions() {
   Plotly.react($("heatChart"), [{type: "heatmap", z: zc, x: rows.map(r => r.x), y: HEIGHTS.map(h => `${h} in`),
     zmin, zmax, colorscale: scale, colorbar: {title: {text: unit()}, dtick: state.units === "F" ? 2 : 1},
     hovertemplate: "%{x}<br>%{y}: %{z:.2f} " + unit() + "<extra></extra>"}],
-    baseLayout("Height", {yaxis: {title: "Height", type: "category"}, hovermode: "closest"}), PCONF);
+    baseLayout("Height", {yaxis: {title: "Height", type: "category"}, hovermode: "closest"}), pconf());
 
   // Top 10 peaks, at least 3 h apart
   const order = grad.map((p, i) => [p.g, i]).filter(([g]) => g != null && g > INV_THRESHOLD_C).sort((a, b) => b[0] - a[0]);
@@ -440,7 +452,7 @@ function renderThreshold() {
     yaxis: {title: "Minutes ≤ 10% kill", range: [0, 720], dtick: 60, tickformat: ".0f", hoverformat: ".0f",
             minor: {dtick: 30, showgrid: true, gridcolor: "rgba(128,128,128,0.15)"}, gridcolor: "rgba(128,128,128,0.35)"},
     yaxis2: {title: "Hours", range: [0, 12], dtick: 1, overlaying: "y", side: "right", showgrid: false},
-  }), PCONF);
+  }), pconf());
 }
 
 function renderHumidity() {
@@ -449,14 +461,21 @@ function renderHumidity() {
   if (!rows.length) { emptyChart($("rhChart"), "No tower data in this window"); emptyChart($("dpChart"), ""); return; }
   const rh = heightTraces(rows, "rh", v => v);
   const nrh = newaTrace(newa, "rh", v => v); if (nrh) rh.push(nrh);
-  Plotly.react($("rhChart"), rh, baseLayout("RH (%)"), PCONF);
+  Plotly.react($("rhChart"), rh, baseLayout("RH (%)"), pconf());
   const dp = heightTraces(rows, "dp", disp);
   const ndp = newaTrace(newa, "dp", disp); if (ndp) dp.push(ndp);
-  Plotly.react($("dpChart"), dp, baseLayout(`Dew point (${unit()})`), PCONF);
+  Plotly.react($("dpChart"), dp, baseLayout(`Dew point (${unit()})`), pconf());
 }
 
 const RENDER = {overview: () => renderOverview(view.latest), series: renderSeries, inversions: renderInversions, threshold: renderThreshold, humidity: renderHumidity};
 const dirty = new Set();
+let wasNarrow = narrow();
+window.addEventListener("resize", () => {
+  if (narrow() === wasNarrow || !view) return;
+  wasNarrow = narrow();
+  Object.keys(RENDER).forEach(t => dirty.add(t));
+  renderActive();
+});
 
 function renderActive() {
   RENDER[state.tab]();
