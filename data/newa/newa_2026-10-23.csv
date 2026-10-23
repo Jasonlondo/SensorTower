@@ -131,6 +131,8 @@ timestamp_local,variable,value,units
 2026-10-23T16:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-10-23T16:00:00-04:00,Precipitation,0.0,mm
 2026-10-23T16:00:00-04:00,RH,45.0,%
+2026-10-23T16:00:00-04:00,Solar Radiation,18.0,W/m²
 2026-10-23T16:00:00-04:00,Temperature,14.61111111111111,°C
 2026-10-23T16:00:00-04:00,Wind Direction,39.0,deg
 2026-10-23T16:00:00-04:00,Wind Speed,0.715264,m/s
+2026-10-23T17:00:00-04:00,Precipitation,0.0,mm
