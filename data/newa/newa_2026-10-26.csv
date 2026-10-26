@@ -47,4 +47,12 @@ timestamp_local,variable,value,units
 2026-10-26T05:00:00-04:00,Temperature,8.11111111111111,°C
 2026-10-26T05:00:00-04:00,Wind Direction,258.0,deg
 2026-10-26T05:00:00-04:00,Wind Speed,1.296416,m/s
+2026-10-26T06:00:00-04:00,Dew Point,3.0555555555555554,°C
+2026-10-26T06:00:00-04:00,Leaf Wetness,0.0,min/h
 2026-10-26T06:00:00-04:00,Precipitation,0.0,mm
+2026-10-26T06:00:00-04:00,RH,71.0,%
+2026-10-26T06:00:00-04:00,Solar Radiation,0.0,W/m²
+2026-10-26T06:00:00-04:00,Temperature,8.0,°C
+2026-10-26T06:00:00-04:00,Wind Direction,245.0,deg
+2026-10-26T06:00:00-04:00,Wind Speed,2.592832,m/s
+2026-10-26T07:00:00-04:00,Precipitation,0.0,mm
