@@ -179,6 +179,7 @@ timestamp_local,variable,value,units
 2026-10-28T22:00:00-04:00,Leaf Wetness,40.0,min/h
 2026-10-28T22:00:00-04:00,Precipitation,0.0,mm
 2026-10-28T22:00:00-04:00,RH,79.0,%
+2026-10-28T22:00:00-04:00,Solar Radiation,0.0,W/m²
 2026-10-28T22:00:00-04:00,Temperature,13.0,°C
 2026-10-28T22:00:00-04:00,Wind Direction,212.0,deg
 2026-10-28T22:00:00-04:00,Wind Speed,0.715264,m/s
