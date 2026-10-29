@@ -63,4 +63,10 @@ timestamp_local,variable,value,units
 2026-10-29T07:00:00-04:00,Temperature,10.5,°C
 2026-10-29T07:00:00-04:00,Wind Direction,192.0,deg
 2026-10-29T07:00:00-04:00,Wind Speed,1.6987519999999998,m/s
+2026-10-29T08:00:00-04:00,Dew Point,9.5,°C
+2026-10-29T08:00:00-04:00,Leaf Wetness,60.0,min/h
 2026-10-29T08:00:00-04:00,Precipitation,0.0,mm
+2026-10-29T08:00:00-04:00,RH,89.0,%
+2026-10-29T08:00:00-04:00,Temperature,11.222222222222223,°C
+2026-10-29T08:00:00-04:00,Wind Direction,195.0,deg
+2026-10-29T08:00:00-04:00,Wind Speed,2.01168,m/s
