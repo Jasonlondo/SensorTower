@@ -1,2 +1,8 @@
 timestamp_local,variable,value,units
+2026-10-30T00:00:00-04:00,Dew Point,12.888888888888891,°C
+2026-10-30T00:00:00-04:00,Leaf Wetness,25.0,min/h
 2026-10-30T00:00:00-04:00,Precipitation,0.0,mm
+2026-10-30T00:00:00-04:00,RH,75.0,%
+2026-10-30T00:00:00-04:00,Temperature,17.38888888888889,°C
+2026-10-30T00:00:00-04:00,Wind Direction,260.0,deg
+2026-10-30T00:00:00-04:00,Wind Speed,4.69392,m/s
