@@ -243,12 +243,11 @@ def load_newa(data_dir: str | Path = "data", window_days: int | None = None) -> 
     frames = []
     for f in files:
         df = pd.read_csv(f)
-        df["datetime_local"] = pd.to_datetime(df["timestamp_local"], utc=False)
-        # NEWA strings carry the -04:00/-05:00 offset; normalize to LOCAL_TZ
-        if df["datetime_local"].dt.tz is None:
-            df["datetime_local"] = df["datetime_local"].dt.tz_localize(LOCAL_TZ)
-        else:
-            df["datetime_local"] = df["datetime_local"].dt.tz_convert(LOCAL_TZ)
+        # NEWA strings carry the -04:00/-05:00 offset, and a DST-change day mixes
+        # both, so parse via UTC and convert to LOCAL_TZ
+        df["datetime_local"] = pd.to_datetime(
+            df["timestamp_local"], utc=True
+        ).dt.tz_convert(LOCAL_TZ)
         df["source"] = f"newa:{f.name}"
         frames.append(df[cols])
     out = pd.concat(frames, ignore_index=True)
