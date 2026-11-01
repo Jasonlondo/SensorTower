@@ -123,6 +123,7 @@ timestamp_local,variable,value,units
 2026-11-01T14:00:00-05:00,Leaf Wetness,0.0,min/h
 2026-11-01T14:00:00-05:00,Precipitation,0.0,mm
 2026-11-01T14:00:00-05:00,RH,45.0,%
+2026-11-01T14:00:00-05:00,Solar Radiation,31.0,W/m²
 2026-11-01T14:00:00-05:00,Temperature,18.5,°C
 2026-11-01T14:00:00-05:00,Wind Direction,114.0,deg
 2026-11-01T14:00:00-05:00,Wind Speed,2.995168,m/s
