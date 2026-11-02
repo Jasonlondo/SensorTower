@@ -71,16 +71,23 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Pull latest in case another scheduled run landed between our checkout and push
-          git pull --rebase origin main || true
           # -A so pruned (deleted) day-files and the archive are all staged, not just adds.
           git add -A data/
           if git diff --cached --quiet; then
             echo "No new data to commit."
-          else
-            git commit -m "data: auto-pull $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push
+            exit 0
           fi
+          git commit -m "data: auto-pull $(date -u +%Y-%m-%dT%H:%MZ)"
+          # Commit first, then rebase onto anything pushed since checkout (a code push
+          # mid-run) and push. Retries also cover transient GitHub push errors.
+          for i in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            echo "Push attempt $i failed; retrying in $((i * 15)) s"
+            sleep $((i * 15))
+          done
+          echo "::error::Push failed after 4 attempts"
+          exit 1
 
       - name: Alert on stale tower uplink
         # pull_daily sets tower_stale=1 when the device's lastConnectionTime is older
