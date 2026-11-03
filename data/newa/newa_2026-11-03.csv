@@ -1,2 +1,10 @@
 timestamp_local,variable,value,units
+2026-11-03T00:00:00-05:00,Dew Point,7.333333333333335,°C
+2026-11-03T00:00:00-05:00,Leaf Wetness,0.0,min/h
 2026-11-03T00:00:00-05:00,Precipitation,0.0,mm
+2026-11-03T00:00:00-05:00,RH,61.0,%
+2026-11-03T00:00:00-05:00,Solar Radiation,0.0,W/m²
+2026-11-03T00:00:00-05:00,Temperature,14.666666666666666,°C
+2026-11-03T00:00:00-05:00,Wind Direction,184.0,deg
+2026-11-03T00:00:00-05:00,Wind Speed,4.068064,m/s
+2026-11-03T01:00:00-05:00,Precipitation,0.0,mm
