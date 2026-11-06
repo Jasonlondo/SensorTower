@@ -1,2 +1,8 @@
 timestamp_local,variable,value,units
+2026-11-06T00:00:00-05:00,Dew Point,8.944444444444445,°C
+2026-11-06T00:00:00-05:00,Leaf Wetness,60.0,min/h
 2026-11-06T00:00:00-05:00,Precipitation,0.0,mm
+2026-11-06T00:00:00-05:00,RH,87.0,%
+2026-11-06T00:00:00-05:00,Temperature,10.999999999999998,°C
+2026-11-06T00:00:00-05:00,Wind Direction,205.0,deg
+2026-11-06T00:00:00-05:00,Wind Speed,1.296416,m/s
