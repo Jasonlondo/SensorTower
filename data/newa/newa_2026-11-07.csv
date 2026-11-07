@@ -35,6 +35,8 @@ timestamp_local,variable,value,units
 2026-11-07T04:00:00-05:00,Leaf Wetness,60.0,min/h
 2026-11-07T04:00:00-05:00,Precipitation,0.254,mm
 2026-11-07T04:00:00-05:00,RH,97.0,%
+2026-11-07T04:00:00-05:00,Solar Radiation,0.0,W/m²
 2026-11-07T04:00:00-05:00,Temperature,6.500000000000002,°C
 2026-11-07T04:00:00-05:00,Wind Direction,288.0,deg
 2026-11-07T04:00:00-05:00,Wind Speed,0.312928,m/s
+2026-11-07T05:00:00-05:00,Precipitation,0.0,mm
