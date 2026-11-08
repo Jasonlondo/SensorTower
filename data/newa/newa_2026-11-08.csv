@@ -107,6 +107,8 @@ timestamp_local,variable,value,units
 2026-11-08T13:00:00-05:00,Leaf Wetness,0.0,min/h
 2026-11-08T13:00:00-05:00,Precipitation,0.0,mm
 2026-11-08T13:00:00-05:00,RH,62.0,%
+2026-11-08T13:00:00-05:00,Solar Radiation,9.0,W/m²
 2026-11-08T13:00:00-05:00,Temperature,12.111111111111109,°C
 2026-11-08T13:00:00-05:00,Wind Direction,256.0,deg
 2026-11-08T13:00:00-05:00,Wind Speed,3.7104320000000004,m/s
+2026-11-08T14:00:00-05:00,Precipitation,0.0,mm
