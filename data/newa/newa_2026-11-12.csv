@@ -1,0 +1,3 @@
+timestamp_local,variable,value,units
+2026-11-12T00:00:00-05:00,Leaf Wetness,60.0,min/h
+2026-11-12T00:00:00-05:00,Precipitation,0.508,mm
