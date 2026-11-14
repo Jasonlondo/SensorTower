@@ -1,2 +1,8 @@
 timestamp_local,variable,value,units
+2026-11-14T00:00:00-05:00,Dew Point,-0.22222222222222143,°C
+2026-11-14T00:00:00-05:00,Leaf Wetness,35.0,min/h
 2026-11-14T00:00:00-05:00,Precipitation,0.0,mm
+2026-11-14T00:00:00-05:00,RH,87.0,%
+2026-11-14T00:00:00-05:00,Temperature,1.722222222222223,°C
+2026-11-14T00:00:00-05:00,Wind Direction,279.0,deg
+2026-11-14T00:00:00-05:00,Wind Speed,2.01168,m/s
