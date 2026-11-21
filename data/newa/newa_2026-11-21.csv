@@ -55,3 +55,4 @@ timestamp_local,variable,value,units
 2026-11-21T06:00:00-05:00,Temperature,0.9999999999999984,°C
 2026-11-21T06:00:00-05:00,Wind Direction,202.0,deg
 2026-11-21T06:00:00-05:00,Wind Speed,0.983488,m/s
+2026-11-21T07:00:00-05:00,Precipitation,0.0,mm
