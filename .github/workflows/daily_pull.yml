@@ -115,7 +115,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
     steps:
       - name: Checkout latest main
         uses: actions/checkout@v4
@@ -137,8 +137,22 @@ jobs:
         with:
           path: _site
 
+      # GitHub's artifact service sometimes has not registered the upload when the
+      # deploy action looks it up a second later ("No artifacts named github-pages",
+      # 19 of 100 runs on 2026-11-21). The first attempt may fail without failing the
+      # run. After a short wait a second attempt runs, and only its failure fails the job.
       - name: Deploy to GitHub Pages
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Wait before deploy retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+
+      - name: Deploy to GitHub Pages (retry)
+        id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
 
 concurrency:
