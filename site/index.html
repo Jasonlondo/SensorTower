@@ -315,6 +315,18 @@ function emptyChart(el, text) {
 }
 
 // ---------------- tabs ----------------
+// The logger can upload while a 5-min sweep is half done, so the newest row may hold
+// only one or two heights until the next pull fills it (seen 2026-11-24). The cards use
+// the newest row from the last hour with at least 7 of 9 temperatures. If no row in
+// that hour qualifies, they fall back to the newest row so real sensor dropouts still show.
+function newestComplete(rows) {
+  const MIN_HEIGHTS = 7, LOOKBACK = 12;
+  for (let i = rows.length - 1; i >= Math.max(0, rows.length - LOOKBACK); i--) {
+    if (HEIGHTS.filter(h => rows[i][`t_${h}in`] != null).length >= MIN_HEIGHTS) return rows[i];
+  }
+  return rows[rows.length - 1];
+}
+
 function renderOverview(latest) {
   // Cards always show the newest reading, whatever the selected window.
   const ref = latest.t_2in;
@@ -589,7 +601,7 @@ async function refreshData() {
   $("winlabel").textContent = "Loading…";
   const loaded = await loadWindow();
   const latestMonth = await loadMonth("tower", manifest.months[manifest.months.length - 1]);
-  view = Object.assign(loaded, {latest: latestMonth[latestMonth.length - 1]});
+  view = Object.assign(loaded, {latest: newestComplete(latestMonth)});
   const n = view.rows.length;
   $("winlabel").textContent = n
     ? `Showing ${view.rows[0].x} to ${view.rows[n - 1].x} local time (${n.toLocaleString()} readings).`
