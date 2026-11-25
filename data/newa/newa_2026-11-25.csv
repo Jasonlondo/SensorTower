@@ -83,7 +83,7 @@ timestamp_local,variable,value,units
 2026-11-25T10:00:00-05:00,Leaf Wetness,12.0,min/h
 2026-11-25T10:00:00-05:00,Precipitation,0.0,mm
 2026-11-25T10:00:00-05:00,RH,85.0,%
-2026-11-25T10:00:00-05:00,Solar Radiation,14.0,W/m²
+2026-11-25T10:00:00-05:00,Solar Radiation,13.0,W/m²
 2026-11-25T10:00:00-05:00,Temperature,0.4999999999999992,°C
 2026-11-25T10:00:00-05:00,Wind Direction,131.0,deg
 2026-11-25T10:00:00-05:00,Wind Speed,2.01168,m/s
@@ -131,6 +131,8 @@ timestamp_local,variable,value,units
 2026-11-25T16:00:00-05:00,Leaf Wetness,0.0,min/h
 2026-11-25T16:00:00-05:00,Precipitation,0.0,mm
 2026-11-25T16:00:00-05:00,RH,68.0,%
+2026-11-25T16:00:00-05:00,Solar Radiation,4.0,W/m²
 2026-11-25T16:00:00-05:00,Temperature,2.7222222222222214,°C
 2026-11-25T16:00:00-05:00,Wind Direction,94.0,deg
 2026-11-25T16:00:00-05:00,Wind Speed,0.983488,m/s
+2026-11-25T17:00:00-05:00,Precipitation,0.0,mm
