@@ -71,3 +71,4 @@ timestamp_local,variable,value,units
 2026-11-27T08:00:00-05:00,Temperature,5.0,°C
 2026-11-27T08:00:00-05:00,Wind Direction,112.0,deg
 2026-11-27T08:00:00-05:00,Wind Speed,0.715264,m/s
+2026-11-27T09:00:00-05:00,Precipitation,0.0,mm
